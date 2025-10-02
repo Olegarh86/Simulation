@@ -7,8 +7,6 @@ import simulation.utils.PathFinder;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
-import java.util.Map;
 
 // тратит ход на движение в сторону травы, либо на её поглощение
 public class Herbivore extends Creature{

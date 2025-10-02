@@ -4,8 +4,6 @@ import com.google.common.collect.HashBiMap;
 import simulation.entity.*;
 import simulation.utils.*;
 
-import java.util.*;
-
 public class MapOfWorld {
     public BiMap<Coordinate, Entity> biMap = HashBiMap.create();
     public BiMap<Entity, Coordinate> biMapOfCreatures = HashBiMap.create();

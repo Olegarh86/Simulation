@@ -5,9 +5,6 @@ import com.google.common.collect.BiMap;
 import simulation.map.Coordinate;
 import simulation.map.MapOfWorld;
 
-import java.util.Iterator;
-import java.util.Map;
-
 public abstract class Creature extends Entity implements Actions {
     private final int speed;
     private int hp;

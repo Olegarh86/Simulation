@@ -7,8 +7,6 @@ import simulation.utils.PathFinder;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
-import java.util.Map;
 
 // тратит ход:
 // Переместиться (чтобы приблизиться к жертве - травоядному)
