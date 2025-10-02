@@ -1,6 +1,7 @@
 package simulation.entity;
 
 import simulation.map.Coordinate;
+import simulation.map.MapOfWorld;
 
 public class EmptyCell extends Entity{
 
@@ -10,7 +11,7 @@ public class EmptyCell extends Entity{
     }
 
     @Override
-    public boolean getAvailableToMove() {
+    public boolean cellAvailableToMove(MapOfWorld map, Coordinate coordinate) {
         return true;
     }
 }

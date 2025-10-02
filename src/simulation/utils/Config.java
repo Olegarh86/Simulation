@@ -4,17 +4,17 @@ public class Config {
     private static final int HEIGHT = 10;
     private static final int WEIGHT = 10;
     private static final int HERBIVORES_SPEED = 1;
-    private static final int HERBIVORES_HP = 2;
+    private static final int HERBIVORES_HP = 10;
     private static final String TARGET_FOR_HERBIVORES = "Grass";
     private static final String TARGET_FOR_PREDATORS = "Herbivore";
     private static final int PREDATORS_SPEED = 1;
-    private static final int PREDATORS_HP = 2;
+    private static final int PREDATORS_HP = 5;
     private static final int PREDATORS_ATTACK_POWER = 1;
-    private static final int NUMBER_OF_ROCKS = 0;
-    private static final int NUMBER_OF_TREES = 0;
-    private static final int NUMBER_OF_GRASSES = 5;
-    private static final int NUMBER_OF_HERBIVORES = 2;
-    private static final int NUMBER_OF_PREDATORS = 2;
+    private static final int NUMBER_OF_ROCKS = 5;
+    private static final int NUMBER_OF_TREES = 5;
+    private static final int NUMBER_OF_GRASSES = 10;
+    private static final int NUMBER_OF_HERBIVORES = 10;
+    private static final int NUMBER_OF_PREDATORS = 10;
 
     public static int getHeight() {
         return HEIGHT;

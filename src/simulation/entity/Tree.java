@@ -1,5 +1,8 @@
 package simulation.entity;
 
+import simulation.map.Coordinate;
+import simulation.map.MapOfWorld;
+
 public class Tree extends Entity{
 
     @Override
@@ -7,7 +10,8 @@ public class Tree extends Entity{
         return "Tree";
     }
 
-    public boolean getAvailableToMove() {
+    @Override
+    public boolean cellAvailableToMove(MapOfWorld map, Coordinate coordinate) {
         return false;
     }
 }

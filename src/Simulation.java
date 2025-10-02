@@ -1,4 +1,5 @@
-package simulation;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import simulation.entity.*;
 import simulation.map.Coordinate;
 import simulation.map.MapOfWorld;
@@ -10,35 +11,41 @@ import simulation.utils.PathFinder;
 import simulation.utils.SimulationRenderer;
 
 public class Simulation {
-    public static final Random RANDOM = new Random();
     static int countOfMoves = 0;
 
     public static void main(String[] args) {
         MapOfWorld map = new MapOfWorld();
         initActions(map);
         SimulationRenderer.draw(map);
-        for (Map.Entry<Coordinate, Entity> entrySet : map.map.entrySet()) {
 
-            if (map.setOfCreatures.contains(entrySet.getValue())) {
-                Creature currentCreature = ((Creature) entrySet.getValue());
-                ArrayList<Coordinate> wayToTarget = PathFinder.findWayToTarget(map, entrySet.getKey(), currentCreature.getTarget());
-                Collections.reverse(wayToTarget);
-                if (wayToTarget.isEmpty()) {
-                    continue;
-                }
-                Coordinate coordinateForMove;
-                if (wayToTarget.size() > currentCreature.getSpeed()) {
-                    coordinateForMove = wayToTarget.get(currentCreature.getSpeed());
-                } else {
-                    coordinateForMove = wayToTarget.get(wayToTarget.size() - 1);
-                }
-                map.map.put(coordinateForMove, currentCreature);
-                map.map.put(entrySet.getKey(), new EmptyCell());
+        for (int i = 0; i < 18; i++) {
+
+            BiMap<Entity, Coordinate> newBiMapOfCreatures = HashBiMap.create();
+
+            for (Map.Entry<Entity, Coordinate> entry : map.biMapOfCreatures.entrySet()) {
+
+                Coordinate oldCoordinate = entry.getValue();
+                Entity entity = entry.getKey();
+                Creature creature = (Creature) entity;
+                creature.makeMove(map, newBiMapOfCreatures, creature, oldCoordinate);
+
                 countOfMoves++;
             }
+
+            map.biMapOfCreatures = newBiMapOfCreatures;
+
+            for (Map.Entry<Coordinate, Entity> entry : newBiMapOfCreatures.inverse().entrySet()) {
+                map.biMap.forcePut(entry.getKey(), entry.getValue());
+            }
+
+            SimulationRenderer.draw(map);
+            System.out.println(countOfMoves);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
-        SimulationRenderer.draw(map);
-        System.out.println(countOfMoves);
     }
 
     // просимулировать и отрендерить один ход

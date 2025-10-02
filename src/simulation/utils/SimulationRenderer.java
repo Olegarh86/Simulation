@@ -24,7 +24,7 @@ public class SimulationRenderer {
     public static void draw(MapOfWorld map) {
         StringBuilder stringBuilder = new StringBuilder();
         int count = 0;
-        for (Map.Entry<Coordinate, Entity> entry : map.map.entrySet()) {
+        for (Map.Entry<Coordinate, Entity> entry : map.biMap.entrySet()) {
             if (count < Config.getWeight()) {
                 stringBuilder.append(getSprite(entry.getValue())).append(" ");
                 count++;

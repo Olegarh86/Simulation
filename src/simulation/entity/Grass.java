@@ -1,8 +1,9 @@
 package simulation.entity;
 
 import simulation.map.Coordinate;
+import simulation.map.MapOfWorld;
 
-public class Grass extends Entity{
+public class Grass extends Entity implements Eateble{
 
     @Override
     public String getName() {
@@ -10,7 +11,7 @@ public class Grass extends Entity{
     }
 
     @Override
-    public boolean getAvailableToMove() {
+    public boolean cellAvailableToMove(MapOfWorld map, Coordinate coordinate) {
         return true;
     }
 }

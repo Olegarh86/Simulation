@@ -1,8 +1,5 @@
 package simulation.map;
 
-import simulation.Simulation;
-import simulation.entity.Creature;
-
 import java.util.*;
 
 public class Coordinate implements Comparable<Coordinate> {
@@ -15,8 +12,9 @@ public class Coordinate implements Comparable<Coordinate> {
     }
 
     public static Coordinate getRandomCoordinate(int strings, int columns) {
-        int randomString = Simulation.RANDOM.nextInt(strings) + 1;
-        int randomColumn = Simulation.RANDOM.nextInt(columns) + 1;
+        Random random = new Random();
+        int randomString = random.nextInt(strings) + 1;
+        int randomColumn = random.nextInt(columns) + 1;
         return new Coordinate(randomString, randomColumn);
     }
 

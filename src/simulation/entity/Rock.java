@@ -1,6 +1,7 @@
 package simulation.entity;
 
 import simulation.map.Coordinate;
+import simulation.map.MapOfWorld;
 
 public class Rock extends Entity{
 
@@ -9,7 +10,8 @@ public class Rock extends Entity{
         return "Rock";
     }
 
-    public boolean getAvailableToMove() {
+    @Override
+    public boolean cellAvailableToMove(MapOfWorld map, Coordinate coordinate) {
         return false;
     }
 }
