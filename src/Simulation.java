@@ -18,7 +18,7 @@ public class Simulation {
         initActions(map);
         SimulationRenderer.draw(map);
 
-        for (int i = 0; i < 18; i++) {
+        while (!map.biMapOfCreatures.isEmpty()) {
 
             BiMap<Entity, Coordinate> newBiMapOfCreatures = HashBiMap.create();
 
