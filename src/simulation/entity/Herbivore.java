@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 // тратит ход на движение в сторону травы, либо на её поглощение
-public class Herbivore extends Creature implements Eateble {
+public class Herbivore extends Creature{
     private static final String TARGET = "Grass";
 
     public Herbivore(int speed, int hp, String target) {
