@@ -203,6 +203,7 @@ public class Simulation {
 
         map.newBiMapOfCreatures.clear();
         countOfMoves++;
+        System.out.println(countOfMoves);
 
         try {
             Thread.sleep(Config.DELAY_BETWEEN_MOVES_IN_MILLISECONDS);
