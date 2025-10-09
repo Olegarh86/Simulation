@@ -3,7 +3,7 @@ package simulation.entity;
 import simulation.map.Coordinate;
 import simulation.map.MapOfWorld;
 
-public class Grass extends Entity{
+public class Grass extends Entity {
 
     @Override
     public String getName() {

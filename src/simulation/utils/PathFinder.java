@@ -38,7 +38,8 @@ public class PathFinder {
         Queue<Coordinate> queue = new LinkedList<>();
         Map<Coordinate, Coordinate> path = new HashMap<>();
         Set<Coordinate> visited = new HashSet<>();
-        ArrayList<Coordinate> way = new ArrayList<>();
+        ArrayList<Coordinate> wayToTarget = new ArrayList<>();
+
         queue.add(startCoordinate);
         path.put(startCoordinate, null);
         visited.add(startCoordinate);
@@ -47,7 +48,10 @@ public class PathFinder {
 
             Coordinate tempCoordinate = queue.poll();
             if (!map.biMap.get(tempCoordinate).getName().equals(creature.getTarget())) {
-                for (Coordinate coordinate1 : findAllCellsAvailableForMovement(map, tempCoordinate, creature)) {
+
+                Queue<Coordinate> cellsAvailableToMove = findAllCellsAvailableForMovement(map, tempCoordinate, creature);
+
+                for (Coordinate coordinate1 : cellsAvailableToMove) {
 
                     if (!visited.contains(coordinate1)) {
 
@@ -60,13 +64,13 @@ public class PathFinder {
 
                 while (tempCoordinate != null) {
 
-                    way.add(tempCoordinate);
+                    wayToTarget.add(tempCoordinate);
                     tempCoordinate = path.remove(tempCoordinate);
 
                 }
-                return way;
+                return wayToTarget;
             }
         }
-        return way;
+        return wayToTarget;
     }
 }
