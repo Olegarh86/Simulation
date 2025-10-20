@@ -1,9 +1,10 @@
 package simulation.entity;
 
-
 import simulation.map.Coordinate;
 import simulation.map.MapOfWorld;
-import simulation.utils.PathFinder;
+import simulation.map.BFSPathFinder;
+import simulation.map.PathFinder;
+import simulation.utils.Config;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,88 +13,79 @@ import java.util.Map;
 public abstract class Creature extends Entity implements Actions {
     private final int speed;
     private int hp;
-    private static String TARGET;
+    private static String target;
 
+
+    protected Creature(int speed, int hp) {
+        this.speed = speed;
+        this.hp = hp;
+    }
 
     public abstract String getTarget();
 
-    public abstract void attackTarget(MapOfWorld map, Creature creature, Coordinate oldCoordinate, Coordinate newCoordinate);
+    protected abstract void attackTarget(MapOfWorld map, Creature creature, Coordinate startCoordinate, Coordinate newCoordinate);
 
-    public int getHp() {
+    protected int getHp() {
         return hp;
     }
 
-    public void decrementHp(int hp) {
-
+    protected void decrementHp(int hp) {
          this.hp -= hp ;
     }
 
-    public void decrementHp() {
+    protected void decrementHp() {
         this.hp--;
     }
 
-    public void incrementHp(int hp) {
-        this.hp += hp;
-    }
-
-    public void incrementHp() {
+    protected void incrementHp() {
         this.hp++;
     }
 
-    public int getSpeed() {
+    protected int getSpeed() {
         return speed;
     }
 
-    public Creature(int speed, int hp, String target) {
-        this.speed = speed;
-        this.hp = hp;
-        TARGET = target;
-    }
+    public void makeMove(Config config, MapOfWorld map, Map.Entry<Entity, Coordinate> entry) {
+        CreatorOfEmptyCells emptyCellCreator =  new CreatorOfEmptyCells();
+        PathFinder bfsPathFinder = new BFSPathFinder(config);
 
-    public void makeMove(MapOfWorld map, Map.Entry<Entity, Coordinate> entry) {
+        Coordinate startCoordinate = entry.getValue();
+        Entity currentEntity = entry.getKey();
+        Creature currentCreature = (Creature) currentEntity;
 
-        Coordinate oldCoordinate = entry.getValue();
-        Entity entity = entry.getKey();
-        Creature creature = (Creature) entity;
-
-        ArrayList<Coordinate> wayToTarget = PathFinder.findWayToTarget(map, creature, oldCoordinate);
+        ArrayList<Coordinate> wayToTarget = bfsPathFinder.findWayToTarget(map, currentCreature, startCoordinate);
         Collections.reverse(wayToTarget);
 
         if (wayToTarget.isEmpty()) {
+            currentCreature.decrementHp();
 
-            creature.decrementHp();
-
-            if (creature.getHp() > 0) {
-                map.newBiMapOfCreatures.put(creature, oldCoordinate);
+            if (currentCreature.getHp() > 0) {
+                map.newBiMapOfCreatures.put(currentCreature, startCoordinate);
             } else {
-                map.biMap.put(oldCoordinate, new EmptyCell());
+                map.biMap.put(startCoordinate, emptyCellCreator.createEntity(config));
             }
             return;
         }
 
         Coordinate newCoordinate;
 
-
-        if (wayToTarget.size() > creature.getSpeed()) {
-            newCoordinate = wayToTarget.get(creature.getSpeed());
+        if (wayToTarget.size() > currentCreature.getSpeed()) {
+            newCoordinate = wayToTarget.get(currentCreature.getSpeed());
         } else {
             newCoordinate = wayToTarget.get(wayToTarget.size() - 1);
         }
 
-        if (map.biMap.get(newCoordinate).getName().equals(creature.getTarget())) {
-
-            creature.attackTarget(map, creature, oldCoordinate, newCoordinate);
-
+        if (map.biMap.get(newCoordinate).getName().equals(currentCreature.getTarget())) {
+            currentCreature.attackTarget(map, currentCreature, startCoordinate, newCoordinate);
         } else {
+            map.biMap.put(startCoordinate, emptyCellCreator.createEntity(config));
+            currentCreature.decrementHp();
 
-            map.biMap.put(oldCoordinate, new EmptyCell());
-            creature.decrementHp();
-
-            if (creature.getHp() > 0) {
-                map.newBiMapOfCreatures.forcePut(creature, newCoordinate);
-                map.biMap.put(newCoordinate, creature);
+            if (currentCreature.getHp() > 0) {
+                map.newBiMapOfCreatures.forcePut(currentCreature, newCoordinate);
+                map.biMap.put(newCoordinate, currentCreature);
             } else {
-                map.biMap.put(newCoordinate, new EmptyCell());
+                map.biMap.put(newCoordinate, emptyCellCreator.createEntity(config));
             }
         }
     }

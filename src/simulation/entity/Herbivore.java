@@ -5,20 +5,21 @@ import simulation.map.MapOfWorld;
 
 // тратит ход на движение в сторону травы, либо на её поглощение
 public class Herbivore extends Creature{
-    private final String TARGET = "Grass";
+    private static final String NAME = "Herbivore";
+    private static final String TARGET = "Grass";
 
-    public Herbivore(int speed, int hp, String target) {
-        super(speed, hp, target);
+    protected Herbivore(int speed, int hp) {
+        super(speed, hp);
     }
 
     @Override
     public String getTarget() {
-        return this.TARGET;
+        return TARGET;
     }
 
     @Override
-    public void attackTarget(MapOfWorld map, Creature creature, Coordinate oldCoordinate, Coordinate newCoordinate) {
-        map.biMap.put(oldCoordinate, new EmptyCell());
+    public void attackTarget(MapOfWorld map, Creature creature, Coordinate startCoordinate, Coordinate newCoordinate) {
+        map.biMap.put(startCoordinate, new EmptyCell());
         map.biMap.put(newCoordinate, creature);
         creature.incrementHp();
         map.newBiMapOfCreatures.forcePut(creature, newCoordinate);
@@ -26,7 +27,7 @@ public class Herbivore extends Creature{
 
     @Override
     public String getName() {
-        return "Herbivore";
+        return NAME;
     }
 
     @Override

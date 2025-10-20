@@ -7,18 +7,19 @@ import simulation.map.MapOfWorld;
 // Переместиться (чтобы приблизиться к жертве - травоядному)
 // Атаковать травоядное. При этом количество HP травоядного уменьшается на силу атаки хищника.
 // Если значение HP жертвы опускается до 0, травоядное исчезает
-public class Predator extends Creature{
-    private final String TARGET = "Herbivore";
+public class Predator extends Creature {
+    private static final String NAME = "Predator";
+    private static final String TARGET = "Herbivore";
     private final int attackPower;
 
-    public Predator(int speed, int hp, String target, int attackPower) {
-        super(speed, hp, target);
+    protected Predator(int speed, int hp, int attackPower) {
+        super(speed, hp);
         this.attackPower = attackPower;
     }
 
     @Override
     public String getName() {
-        return "Predator";
+        return NAME;
     }
 
     @Override
@@ -29,21 +30,21 @@ public class Predator extends Creature{
 
     @Override
     public String getTarget() {
-        return this.TARGET;
+        return TARGET;
     }
 
     @Override
-    public void attackTarget(MapOfWorld map, Creature creature, Coordinate oldCoordinate, Coordinate newCoordinate) {
+    public void attackTarget(MapOfWorld map, Creature creature, Coordinate startCoordinate, Coordinate newCoordinate) {
         Creature sacrifice = (Creature) map.biMap.get(newCoordinate);
         Predator predator = (Predator)creature;
         sacrifice.decrementHp(predator.getAttackPower());
         predator.incrementHp();
         if (sacrifice.getHp() <= 0) {
-            map.biMap.put(oldCoordinate, new EmptyCell());
+            map.biMap.put(startCoordinate, new EmptyCell());
             map.biMap.put(newCoordinate, predator);
             map.newBiMapOfCreatures.forcePut(predator, newCoordinate);
         } else {
-            map.newBiMapOfCreatures.forcePut(predator, oldCoordinate);
+            map.newBiMapOfCreatures.forcePut(predator, startCoordinate);
         }
 
     }

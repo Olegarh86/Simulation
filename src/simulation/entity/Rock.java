@@ -3,11 +3,14 @@ package simulation.entity;
 import simulation.map.Coordinate;
 import simulation.map.MapOfWorld;
 
-public class Rock extends Entity{
+public class Rock extends Entity {
+    private static final String NAME = "Rock";
+
+    protected Rock() {}
 
     @Override
     public String getName() {
-        return "Rock";
+        return NAME;
     }
 
     @Override

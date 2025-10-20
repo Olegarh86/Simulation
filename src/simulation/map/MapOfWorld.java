@@ -2,18 +2,21 @@ package simulation.map;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import simulation.entity.*;
+import simulation.entity.CreatorOfEmptyCells;
 import simulation.utils.*;
+
+import static simulation.map.Coordinate.getCoordinate;
 
 public class MapOfWorld {
     public BiMap<Coordinate, Entity> biMap = HashBiMap.create();
     public BiMap<Entity, Coordinate> biMapOfCreatures = HashBiMap.create();
     public BiMap<Entity, Coordinate> newBiMapOfCreatures = HashBiMap.create();
 
-    public MapOfWorld() {
-        for (int str = 1; str <= Config.getWeight(); str++) {
-            for (int col = 1; col <= Config.getHeight(); col++) {
-                Coordinate tempCoordinate = new Coordinate(str, col);
-                biMap.put(tempCoordinate, new EmptyCell());
+    public MapOfWorld(Config config) {
+        for (int line = 0; line < config.numberOfColumns; line++) {
+            for (int column = 0; column < config.numberOfLines; column++) {
+                Coordinate tempCoordinate = getCoordinate(line, column);
+                biMap.put(tempCoordinate, new CreatorOfEmptyCells().createEntity(config));
             }
         }
     }

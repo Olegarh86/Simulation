@@ -1,170 +1,103 @@
 import simulation.entity.*;
+import simulation.entity.Creator;
+import simulation.entity.CreatorOfGrasses;
+import simulation.entity.CreatorOfHerbivores;
+import simulation.entity.CreatorOfPredators;
 import simulation.map.Coordinate;
 import simulation.map.MapOfWorld;
+import simulation.utils.*;
 
-import java.util.*;
-
-import simulation.utils.Config;
-import simulation.utils.SimulationRenderer;
+import java.util.List;
+import java.util.Map;
 
 public class Simulation {
-    static int countOfMoves = 0;
-    private static volatile boolean paused = false;
-    private MapOfWorld map;
-    public final Object lock = new Object();
+    private static int countOfMoves = 0;
+    private final MapOfWorld map;
+    private final Renderer renderer;
+    private final Config config;
+    private final ThreadKeyListener threadKeyListener;
 
-    public Simulation(MapOfWorld map) {
-        this.map = map;
+    private Simulation() {
+        ConsoleScanner consoleScanner = new ConsoleScanner();
+        ConfigFactory configFactory = Config.changeConfigFactory(consoleScanner);
+        config = configFactory.get();
+        this.map = new MapOfWorld(config);
+        threadKeyListener = new ThreadKeyListener(config);
+        threadKeyListener.start();
+        initActions();
+        renderer = new BaseSimulationRenderer();
+        renderer.draw(config, map);
     }
 
     public static void main(String[] args) {
-        MapOfWorld map = new MapOfWorld();
+
+        Simulation simulation = new Simulation();
         try {
-            new Simulation(map).startEndlessSimulation();
+            simulation.startEndlessSimulation();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        initActions(map);
-        SimulationRenderer.draw(map);
-
     }
 
     private void startEndlessSimulation() throws InterruptedException {
-        Thread thread1 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(true) {
-                    synchronized (lock) {
-                        while (paused) {
-                            try {
-                                lock.wait();
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
 
+        do {
+            synchronized (threadKeyListener.lock) {
+                while (threadKeyListener.pauseSimulation) {
+                    try {
+                        threadKeyListener.lock.wait();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
                     }
-
-                    nextTurn(map);
                 }
             }
-        });
 
-        thread1.start();
-
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            String answerFromUser = scanner.nextLine();
-            if (answerFromUser.equalsIgnoreCase("p")) {
-                pause();
-            } else if (answerFromUser.equalsIgnoreCase("r")) {
-                resume();
+            nextTurn();
+            renderer.draw(config, map);
+            try {
+                Thread.sleep(config.delayBetweenMovesInMilliseconds);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
-        }
-
+        } while (!threadKeyListener.stopSimulation);
     }
 
-    private void pause() {
-        paused = true;
-    }
-
-    private void resume() {
-        synchronized (lock) {
-            paused = false;
-            lock.notifyAll();
-        }
-
-    }
 
     // действия, совершаемые перед стартом симуляции. Пример - расставить объекты и существ на карте
-    public static void initActions(MapOfWorld map) {
-        setupRocks(map);
-        setupTrees(map);
-        setupGrasses(map);
-        setupHerbivores(map);
-        setupPredators(map);
-    }
+    private void initActions() {
+        List<Creator> creators = List.of(new CreatorOfRocks(), new CreatorOfTrees(), new CreatorOfGrasses(),
+                new CreatorOfHerbivores(), new CreatorOfPredators());
 
-    private static void setupRocks(MapOfWorld map) {
-        int count = 0;
-        while (count < Config.getNumberOfRocks()) {
-            Entity entity = new Rock();
-            setEntityToRandomCoordinate(map, entity);
-            count++;
+        for (Creator creator : creators) {
+            setEntitiesToRandomCoordinate(config , map, creator);
         }
     }
 
-    private static void setupTrees(MapOfWorld map) {
-        int count = 0;
-        while (count < Config.getNumberOfTrees()) {
-            Entity entity = new Tree();
-            setEntityToRandomCoordinate(map, entity);
-            count++;
-        }
-    }
+    private static void setEntitiesToRandomCoordinate(Config config, MapOfWorld map, Creator creator) {
+        Coordinate randomCoordinate = Coordinate.getRandomCoordinate(config);
 
-    private static void setupGrasses(MapOfWorld map) {
-        int count = 0;
-        while (count < Config.getNumberOfGrasses()) {
-            Entity entity = new Grass();
-            setEntityToRandomCoordinate(map, entity);
-            count++;
-        }
-    }
+        for (Entity entity : creator.createMultipleEntities(config)) {
 
-    private static void setupPredators(MapOfWorld map) {
-        int count = 0;
-        while (count < Config.getNumberOfPredators()) {
-            Creature creature = new Predator(Config.getPredatorsSpeed(), Config.getPredatorsHp(), Config.getTargetForPredators(), Config.getPredatorsAttackPower());
-            setEntityToRandomCoordinate(map, creature);
-            count++;
-        }
-    }
+            while (!(map.biMap.get(randomCoordinate).getClass().getSimpleName().equals("EmptyCell"))) {
+                randomCoordinate = Coordinate.getRandomCoordinate(config);
+            }
 
-    private static void setupHerbivores(MapOfWorld map) {
-        int count = 0;
-        while (count < Config.getNumberOfHerbivores()) {
-            Creature creature = new Herbivore(Config.getHerbivoresSpeed(), Config.getHerbivoresHp(), Config.getTargetForHerbivores());
-            setEntityToRandomCoordinate(map, creature);
-            count++;
-        }
-    }
-
-    public static void setEntityToRandomCoordinate(MapOfWorld map, Entity entity) {
-        Coordinate randomCoordinate = Coordinate.getRandomCoordinate();
-
-        while (!(map.biMap.get(randomCoordinate).getClass().getSimpleName().equals("EmptyCell"))) {
-            randomCoordinate = Coordinate.getRandomCoordinate();
-        }
-
-        if (entity.getName().equals("Herbivore") || entity.getName().equals("Predator")) {
-            Creature creature = (Creature) entity;
-            map.biMap.put(randomCoordinate, entity);
-            map.biMapOfCreatures.put(creature, randomCoordinate);
-        } else {
-            map.biMap.put(randomCoordinate, entity);
-        }
-    }
-
-    // приостановить бесконечный цикл симуляции и рендеринга
-    public static void pauseSimulation(Simulation simulation) throws InterruptedException {
-        Scanner scanner = new Scanner(System.in);
-        synchronized (simulation) {
-//            scanner.nextLine();
-//            map.wait();
-//            scanner.nextLine();
-            System.out.println("Im dont sleep");
-            simulation.notify();
+            if (entity.getName().equals("Herbivore") || entity.getName().equals("Predator")) {
+                map.biMap.put(randomCoordinate, entity);
+                map.biMapOfCreatures.put(entity, randomCoordinate);
+            } else {
+                map.biMap.put(randomCoordinate, entity);
+            }
         }
     }
 
     // просимулировать и отрендерить один ход
-    public static void nextTurn(MapOfWorld map) {
+    private void nextTurn() {
 
         for (Map.Entry<Entity, Coordinate> entry : map.biMapOfCreatures.entrySet()) {
 
             Creature creature = (Creature) entry.getKey();
-            creature.makeMove(map, entry);
+            creature.makeMove(config, map, entry);
             countOfMoves++;
         }
 
@@ -175,47 +108,108 @@ public class Simulation {
             map.biMapOfCreatures.put(entry.getValue(), entry.getKey());
         }
 
-        int grassesCount = 0;
-        int herbivoresCount = 0;
-        int predatorsCount = 0;
-
-        for (Entity entity : map.biMap.values()) {
-            if (entity.getName().equals("Herbivore")) {
-                herbivoresCount++;
-            } else if (entity.getName().equals("Predator")) {
-                predatorsCount++;
-            } else if (entity.getName().equals("Grass")) {
-                grassesCount++;
-            }
-        }
-
-        if (herbivoresCount < 1) {
-            setupHerbivores(map);
-        }
-
-        if (predatorsCount < 1) {
-            setupPredators(map);
-        }
-
-        if (grassesCount < 1) {
-            setupGrasses(map);
-        }
+        addEntitiesIfTheyRunOut();
 
         map.newBiMapOfCreatures.clear();
         countOfMoves++;
         System.out.println(countOfMoves);
-
-        try {
-            Thread.sleep(Config.DELAY_BETWEEN_MOVES_IN_MILLISECONDS);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        SimulationRenderer.draw(map);
     }
 
     //  действия, совершаемые каждый ход. Примеры - передвижение существ, добавить травы или травоядных, если их осталось слишком мало
     public static void turnActions(MapOfWorld map) {
 
     }
+
+    private void addEntitiesIfTheyRunOut() {
+        int grassesCount = 0;
+        int herbivoresCount = 0;
+        int predatorsCount = 0;
+
+        for (Entity entity : map.biMap.values()) {
+            switch (entity.getName()) {
+                case "Herbivore" -> herbivoresCount++;
+                case "Predator" -> predatorsCount++;
+                case "Grass" -> grassesCount++;
+            }
+        }
+
+        if (herbivoresCount < 1) {
+            setEntitiesToRandomCoordinate(config, map, new CreatorOfHerbivores());
+        }
+
+        if (predatorsCount < 1) {
+            setEntitiesToRandomCoordinate(config, map, new CreatorOfPredators());
+        }
+
+        if (grassesCount < 1) {
+            setEntitiesToRandomCoordinate(config, map, new CreatorOfGrasses());
+        }
+    }
+
+    static class ThreadKeyListener extends Thread {
+        volatile boolean pauseSimulation = false;
+        volatile boolean stopSimulation = false;
+        final Object lock = new Object();
+        Config config;
+
+        public ThreadKeyListener(Config config) {
+            this.config = config;
+        }
+
+        @Override
+        public void run() {
+            ConsoleScanner consoleScanner = new ConsoleScanner();
+
+            while (!stopSimulation) {
+                String answerFromUser = consoleScanner.readString();
+
+                switch (answerFromUser) {
+                    case "1" -> pauseSimulation();
+                    case "2" -> resumeEndlessSimulation();
+                    case "" -> oneTurn();
+                    case " " -> stopSimulation();
+                    default -> { pauseSimulation();
+                        System.out.println("""
+                        Incorrect key. Please, enter key:
+                        1 - to pause the simulation
+                        2 - to start endless simulation
+                        Enter - to the next turn
+                        Space + Enter - to stop the simulation""");
+                    }
+                }
+            }
+        }
+
+        private void oneTurn() {
+
+            resumeEndlessSimulation();
+            try {
+                Thread.sleep(config.delayBetweenMovesInMilliseconds / 2);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            pauseSimulation();
+        }
+
+        private void pauseSimulation() {
+            pauseSimulation = true;
+        }
+
+        private void resumeEndlessSimulation() {
+            synchronized (lock) {
+                pauseSimulation = false;
+                lock.notifyAll();
+            }
+        }
+
+        private void stopSimulation() {
+            synchronized (lock) {
+                pauseSimulation = false;
+                stopSimulation = true;
+                lock.notifyAll();
+            }
+        }
+    }
 }
+
+

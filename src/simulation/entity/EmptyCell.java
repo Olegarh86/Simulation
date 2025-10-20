@@ -3,11 +3,14 @@ package simulation.entity;
 import simulation.map.Coordinate;
 import simulation.map.MapOfWorld;
 
-public class EmptyCell extends Entity{
+public class EmptyCell extends Entity {
+    private static final String NAME = "EmptyCell";
+
+    protected EmptyCell() {}
 
     @Override
     public String getName() {
-        return "EmptyCell";
+        return NAME;
     }
 
     @Override

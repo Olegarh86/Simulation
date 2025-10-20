@@ -5,18 +5,30 @@ import simulation.utils.Config;
 import java.util.*;
 
 public class Coordinate implements Comparable<Coordinate> {
-    public final int string;
-    public final int column;
+    private final int line;
+    private final int column;
 
-    public Coordinate(int string, int column) {
-        this.string = string;
+    private Coordinate(int line, int column) {
+        this.line = line;
         this.column = column;
     }
 
-    public static Coordinate getRandomCoordinate() {
+    public static Coordinate getCoordinate(int line, int column) {
+        return new Coordinate(line, column);
+    }
+
+    public int getLine() {
+        return line;
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
+    public static Coordinate getRandomCoordinate(Config config) {
         Random random = new Random();
-        int randomString = random.nextInt(Config.getWeight()) + 1;
-        int randomColumn = random.nextInt(Config.getHeight()) + 1;
+        int randomString = random.nextInt(config.numberOfColumns);
+        int randomColumn = random.nextInt(config.numberOfLines);
         return new Coordinate(randomString, randomColumn);
     }
 
@@ -24,20 +36,20 @@ public class Coordinate implements Comparable<Coordinate> {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Coordinate that = (Coordinate) o;
-        return string == that.string && column == that.column;
+        return line == that.line && column == that.column;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(string, column);
+        return Objects.hash(line, column);
     }
 
 
     @Override
     public int compareTo(Coordinate coordinate) {
-        if ((this.string * 10) + this.column > (coordinate.string * 10) + coordinate.column) {
+        if ((this.line * 10) + this.column > (coordinate.line * 10) + coordinate.column) {
             return 1;
-        } else if ((this.string * 10) + this.column < (coordinate.string * 10) + coordinate.column) {
+        } else if ((this.line * 10) + this.column < (coordinate.line * 10) + coordinate.column) {
             return -1;
         }
         return 0;

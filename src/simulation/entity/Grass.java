@@ -4,10 +4,13 @@ import simulation.map.Coordinate;
 import simulation.map.MapOfWorld;
 
 public class Grass extends Entity {
+    private static final String NAME = "Grass";
+
+    protected Grass() {}
 
     @Override
     public String getName() {
-        return "Grass";
+        return NAME;
     }
 
     @Override

@@ -4,8 +4,11 @@ import simulation.map.Coordinate;
 import simulation.map.MapOfWorld;
 
 public abstract class Entity {
+    protected static final String NAME = "";
 
-    abstract public String getName();
+    public String getName() {
+        return NAME;
+    }
 
     public abstract boolean cellAvailableToMove(MapOfWorld map, Coordinate coordinate);
 
