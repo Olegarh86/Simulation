@@ -1,6 +1,7 @@
 package simulation.entity;
 
-import simulation.utils.Config;
+import simulation.map.MapOfWorld;
+import simulation.utils.config.Config;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,16 +9,11 @@ import java.util.Set;
 public class CreatorOfTrees implements Creator {
 
     @Override
-    public Set<Entity> createMultipleEntities(Config config) {
+    public Set<Entity> createMultipleEntities(MapOfWorld map, Config config) {
         Set<Entity> entities = new HashSet<>();
         for (int i = 0; i < config.numberOfTrees; i++) {
             entities.add(new Tree());
         }
         return entities;
-    }
-
-    @Override
-    public Entity createEntity(Config config) {
-        return new Tree();
     }
 }

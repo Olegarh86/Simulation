@@ -5,8 +5,11 @@ import simulation.map.MapOfWorld;
 
 public class Grass extends Entity {
     private static final String NAME = "Grass";
+    static int grassCount = 0;
 
-    protected Grass() {}
+    protected Grass() {
+        grassCount++;
+    }
 
     @Override
     public String getName() {
@@ -16,5 +19,10 @@ public class Grass extends Entity {
     @Override
     public boolean cellAvailableToMove(MapOfWorld map, Coordinate coordinate) {
         return true;
+    }
+
+    @Override
+    protected void decrementCountOfCreature() {
+        grassCount--;
     }
 }

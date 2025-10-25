@@ -4,9 +4,12 @@ import simulation.map.Coordinate;
 import simulation.map.MapOfWorld;
 
 public class Rock extends Entity {
+    static int rocksCount = 0;
     private static final String NAME = "Rock";
 
-    protected Rock() {}
+    protected Rock() {
+        rocksCount++;
+    }
 
     @Override
     public String getName() {
@@ -16,5 +19,10 @@ public class Rock extends Entity {
     @Override
     public boolean cellAvailableToMove(MapOfWorld map, Coordinate coordinate) {
         return false;
+    }
+
+    @Override
+    protected void decrementCountOfCreature() {
+        rocksCount--;
     }
 }

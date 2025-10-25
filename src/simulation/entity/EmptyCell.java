@@ -4,9 +4,12 @@ import simulation.map.Coordinate;
 import simulation.map.MapOfWorld;
 
 public class EmptyCell extends Entity {
+    private static int emptyCellsCount = 0;
     private static final String NAME = "EmptyCell";
 
-    protected EmptyCell() {}
+    public EmptyCell() {
+        emptyCellsCount++;
+    }
 
     @Override
     public String getName() {
@@ -16,5 +19,10 @@ public class EmptyCell extends Entity {
     @Override
     public boolean cellAvailableToMove(MapOfWorld map, Coordinate coordinate) {
         return true;
+    }
+
+    @Override
+    protected void decrementCountOfCreature() {
+        emptyCellsCount--;
     }
 }

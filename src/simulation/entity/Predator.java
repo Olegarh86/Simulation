@@ -11,10 +11,12 @@ public class Predator extends Creature {
     private static final String NAME = "Predator";
     private static final String TARGET = "Herbivore";
     private final int attackPower;
+    static int predatorsCount = 0;
 
     protected Predator(int speed, int hp, int attackPower) {
         super(speed, hp);
         this.attackPower = attackPower;
+        predatorsCount++;
     }
 
     @Override
@@ -35,18 +37,24 @@ public class Predator extends Creature {
 
     @Override
     public void attackTarget(MapOfWorld map, Creature creature, Coordinate startCoordinate, Coordinate newCoordinate) {
-        Creature sacrifice = (Creature) map.biMap.get(newCoordinate);
+        Herbivore herbivore = (Herbivore) map.biMap.get(newCoordinate);//TODO
         Predator predator = (Predator)creature;
-        sacrifice.decrementHp(predator.getAttackPower());
+        herbivore.decrementHp(predator.getAttackPower());
         predator.incrementHp();
-        if (sacrifice.getHp() <= 0) {
+        if (herbivore.isAlive()) {
+            map.newBiMapOfCreatures.put(predator, startCoordinate);
+        } else {
             map.biMap.put(startCoordinate, new EmptyCell());
             map.biMap.put(newCoordinate, predator);
-            map.newBiMapOfCreatures.forcePut(predator, newCoordinate);
-        } else {
-            map.newBiMapOfCreatures.forcePut(predator, startCoordinate);
+            herbivore.decrementCountOfCreature();
+            map.newBiMapOfCreatures.remove(herbivore);
+            map.newBiMapOfCreatures.put(predator, newCoordinate);
         }
+    }
 
+    @Override
+    protected void decrementCountOfCreature() {
+        predatorsCount--;
     }
 
     public int getAttackPower() {

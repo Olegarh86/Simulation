@@ -1,6 +1,6 @@
-package simulation.utils;
+package simulation.utils.config;
 
-public class DefaultConfigFactory implements ConfigFactory{
+public class DefaultConfigFactory implements ConfigFactory {
     private final static int NUMBER_OF_COLUMNS = 10;
     private final static int NUMBER_OF_LINES = 10;
     private final static int HERBIVORES_HP = 10;
@@ -13,7 +13,7 @@ public class DefaultConfigFactory implements ConfigFactory{
     private final static int NUMBER_OF_GRASSES = 10;
     private final static int NUMBER_OF_HERBIVORES = 10;
     private final static int NUMBER_OF_PREDATORS = 10;
-    private final static int DELAY_BETWEEN_MOVES_IN_MILLISECONDS = 1000;
+    private final static int DELAY_BETWEEN_MOVES_IN_MILLISECONDS = 500;
 
     @Override
     public Config get() {

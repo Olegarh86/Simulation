@@ -1,10 +1,11 @@
-package simulation.utils;
+package simulation.utils.io;
 
 import java.util.Scanner;
 
-public class ConsoleScanner {
+public class ConsoleInput implements Input{
     Scanner scanner = new Scanner(System.in);
 
+    @Override
     public String readString() {
         return scanner.nextLine();
     }

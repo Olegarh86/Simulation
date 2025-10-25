@@ -1,6 +1,6 @@
 package simulation.map;
 
-import simulation.utils.Config;
+import simulation.utils.config.Config;
 
 import java.util.*;
 

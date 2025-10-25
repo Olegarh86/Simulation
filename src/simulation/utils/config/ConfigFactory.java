@@ -1,4 +1,4 @@
-package simulation.utils;
+package simulation.utils.config;
 
 public interface ConfigFactory {
 

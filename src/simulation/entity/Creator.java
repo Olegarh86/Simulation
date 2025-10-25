@@ -1,10 +1,12 @@
 package simulation.entity;
 
-import simulation.utils.Config;
+import simulation.map.MapOfWorld;
+import simulation.utils.config.Config;
+
+import java.util.Set;
 
 public interface Creator {
 
-    abstract Iterable<Entity> createMultipleEntities(Config config);
-    abstract Entity createEntity(Config config);
+    Set<Entity> createMultipleEntities(MapOfWorld map, Config config);
 }
 

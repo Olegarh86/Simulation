@@ -1,7 +1,7 @@
 package simulation.map;
 
 import simulation.entity.Creature;
-import simulation.utils.Config;
+import simulation.utils.config.Config;
 
 import java.util.*;
 
@@ -9,6 +9,7 @@ import static simulation.map.Coordinate.getCoordinate;
 
 public class BFSPathFinder implements PathFinder {
     Config config;
+
     public BFSPathFinder(Config config) {
         this.config = config;
     }
@@ -70,9 +71,11 @@ public class BFSPathFinder implements PathFinder {
                     wayToTarget.add(tempCoordinate);
                     tempCoordinate = path.remove(tempCoordinate);
                 }
+                Collections.reverse(wayToTarget);
                 return wayToTarget;
             }
         }
+        Collections.reverse(wayToTarget);
         return wayToTarget;
     }
 }

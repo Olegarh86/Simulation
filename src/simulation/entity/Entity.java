@@ -3,7 +3,7 @@ package simulation.entity;
 import simulation.map.Coordinate;
 import simulation.map.MapOfWorld;
 
-public abstract class Entity {
+public abstract class Entity implements Comparable<Entity> {
     protected static final String NAME = "";
 
     public String getName() {
@@ -20,6 +20,24 @@ public abstract class Entity {
     @Override
     public boolean equals(Object obj) {
         return super.equals(obj);
+    }
+
+    protected abstract void decrementCountOfCreature();
+
+    @Override
+    public int compareTo(Entity o) {
+        if (this.getName().equals("Herbivore") && o.getName().equals("Predator")) {
+            return -1;
+        }
+        if (this.getName().equals("Predator") && o.getName().equals("Herbivore")) {
+            return 1;
+        }
+
+        return Integer.compare(this.hashCode(), o.hashCode());
+    }
+
+    public void setEntity(MapOfWorld map, Coordinate coordinate) {
+        map.biMap.put(coordinate, this);
     }
 }
 
