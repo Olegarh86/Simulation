@@ -54,7 +54,7 @@ public class BFSPathFinder implements PathFinder {
         while (!queue.isEmpty()) {
             Coordinate tempCoordinate = queue.poll();
 
-            if (!map.biMap.get(tempCoordinate).getName().equals(creature.getTarget())) {
+            if (!map.coordinatesEntities.get(tempCoordinate).getName().equals(creature.getTarget())) {
                 ArrayList<Coordinate> cellsAvailableToMove = findAllCellsAvailableForMovement(map, creature, tempCoordinate);
 
                 for (Coordinate nextCoordinate : cellsAvailableToMove) {

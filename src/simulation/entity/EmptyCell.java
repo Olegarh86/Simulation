@@ -4,7 +4,7 @@ import simulation.map.Coordinate;
 import simulation.map.MapOfWorld;
 
 public class EmptyCell extends Entity {
-    private static int emptyCellsCount = 0;
+    public static int emptyCellsCount = 0;
     private static final String NAME = "EmptyCell";
 
     public EmptyCell() {
@@ -22,7 +22,7 @@ public class EmptyCell extends Entity {
     }
 
     @Override
-    protected void decrementCountOfCreature() {
+    protected void decrementCountOfEntity() {
         emptyCellsCount--;
     }
 }

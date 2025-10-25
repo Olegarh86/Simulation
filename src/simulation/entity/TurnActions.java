@@ -1,10 +1,8 @@
 package simulation.entity;
 
-import com.google.common.collect.BiMap;
 import simulation.map.Coordinate;
 import simulation.map.MapOfWorld;
 import simulation.map.PathFinder;
-import simulation.utils.config.Config;
 
 import java.util.Map;
 
@@ -15,24 +13,24 @@ public class TurnActions implements Actions{
 
     public TurnActions(MapOfWorld map, PathFinder pathFinder) {
         this.map = map;
-        this.biMapOfCreatures = map.biMapOfCreatures;
+        this.biMapOfCreatures = map.creaturesCoordinates;
         this.pathFinder = pathFinder;
     }
 
     @Override
     public void execute() {
-        for (Map.Entry<Entity, Coordinate> entry : map.biMapOfCreatures.entrySet()) {
+        for (Map.Entry<Entity, Coordinate> entry : map.creaturesCoordinates.entrySet()) {
 
             Creature creature = (Creature) entry.getKey();
             creature.makeMove(map, entry, pathFinder);
         }
-        map.biMapOfCreatures.clear();
+        map.creaturesCoordinates.clear();
 
-        for (Map.Entry<Entity, Coordinate> entry : map.newBiMapOfCreatures.entrySet()) {
+        for (Map.Entry<Entity, Coordinate> entry : map.newCreaturesCoordinates.entrySet()) {
 
-            map.biMap.forcePut(entry.getValue(), entry.getKey());
-            map.biMapOfCreatures.put(entry.getKey(), entry.getValue());
+            map.coordinatesEntities.put(entry.getValue(), entry.getKey());
+            map.creaturesCoordinates.put(entry.getKey(), entry.getValue());
         }
-        map.newBiMapOfCreatures.clear();
+        map.newCreaturesCoordinates.clear();
     }
 }

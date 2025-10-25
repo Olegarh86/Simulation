@@ -8,12 +8,12 @@ public class DefaultConfigFactory implements ConfigFactory {
     private final static int HERBIVORES_SPEED = 1;
     private final static int PREDATORS_SPEED = 1;
     private final static int PREDATORS_ATTACK_POWER = 5;
-    private final static int NUMBER_OF_ROCKS = 5;
+    private final static int NUMBER_OF_ROCKS = 10;
     private final static int NUMBER_OF_TREES = 10;
-    private final static int NUMBER_OF_GRASSES = 10;
+    private final static int NUMBER_OF_GRASSES = 15;
     private final static int NUMBER_OF_HERBIVORES = 10;
     private final static int NUMBER_OF_PREDATORS = 10;
-    private final static int DELAY_BETWEEN_MOVES_IN_MILLISECONDS = 500;
+    private final static int DELAY_BETWEEN_MOVES_IN_MILLISECONDS = 1000;
 
     @Override
     public Config get() {

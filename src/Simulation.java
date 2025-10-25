@@ -21,7 +21,6 @@ public class Simulation {
     private final ThreadKeyListener threadKeyListener;
     private final Output output;
     private final InitActions initActions;
-    private final TurnActions turnActions;
     private final List<Actions> actions;
 
     private Simulation() {
@@ -33,7 +32,7 @@ public class Simulation {
         threadKeyListener = new ThreadKeyListener(config);
         PathFinder pathFinder = new BFSPathFinder(config);
         this.initActions = new InitActions(map, config);
-        this.turnActions = new TurnActions(map, pathFinder);
+        TurnActions turnActions = new TurnActions(map, pathFinder);
         this.actions = List.of(turnActions, initActions);
         renderer = new BaseSimulationRenderer();
     }
@@ -78,29 +77,6 @@ public class Simulation {
             }
         } while (!threadKeyListener.stopSimulation);
     }
-
-    // просимулировать и отрендерить один ход
-//    private void nextTurn(PathFinder pathFinder) {
-//
-//        for (Map.Entry<Entity, Coordinate> entry : map.biMapOfCreatures.entrySet()) {
-//
-//            Creature creature = (Creature) entry.getKey();
-//            creature.makeMove(config, map, entry, pathFinder);
-//            countOfMoves++;
-//        }
-//
-//        map.biMapOfCreatures.clear();
-//        for (Map.Entry<Coordinate, Entity> entry : map.newBiMapOfCreatures.inverse().entrySet()) {
-//
-//            map.biMap.forcePut(entry.getKey(), entry.getValue());
-//            map.biMapOfCreatures.put(entry.getValue(), entry.getKey());
-//        }
-//
-//        addEntitiesIfTheyRunOut();
-//
-//        map.newBiMapOfCreatures.clear();
-//        countOfMoves++;
-//    }
 
     public static void incrementCountOfMoves() {
         countOfMoves++;

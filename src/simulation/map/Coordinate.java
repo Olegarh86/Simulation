@@ -44,14 +44,11 @@ public class Coordinate implements Comparable<Coordinate> {
         return Objects.hash(line, column);
     }
 
-
     @Override
     public int compareTo(Coordinate coordinate) {
-        if ((this.line * 10) + this.column > (coordinate.line * 10) + coordinate.column) {
-            return 1;
-        } else if ((this.line * 10) + this.column < (coordinate.line * 10) + coordinate.column) {
-            return -1;
+        if (this.line != coordinate.line) {
+            return Integer.compare(this.line, coordinate.line);
         }
-        return 0;
+        return Integer.compare(this.column, coordinate.column);
     }
 }

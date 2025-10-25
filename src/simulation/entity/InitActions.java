@@ -45,19 +45,19 @@ public class InitActions implements Actions{
         for (Entity entity : entities) {
             randomCoordinate = chooseEmptyRandomCoordinate(map, config);
             entity.setEntity(map, randomCoordinate);
+            EmptyCell.emptyCellsCount--;
         }
     }
 
     private static Coordinate chooseEmptyRandomCoordinate(MapOfWorld map, Config config) {
         Coordinate randomCoordinate = Coordinate.getRandomCoordinate(config);
-        int count = 0;
 
-        while (!(map.biMap.get(randomCoordinate).getName().equals("EmptyCell"))) {
+        while (!(map.coordinatesEntities.get(randomCoordinate).getName().equals("EmptyCell"))) {
             randomCoordinate = Coordinate.getRandomCoordinate(config);
-            count++;
 
-            if (count > (config.numberOfLines * config.numberOfColumns)) {
-                throw new RuntimeException("Empty cells is not available "); //TODO
+            if (EmptyCell.emptyCellsCount < Math.max(config.numberOfGrasses,
+                    Math.max(config.numberOfHerbivores, config.numberOfPredators))) {
+                throw new RuntimeException("Empty cells is not available ");
             }
         }
         return randomCoordinate;

@@ -22,7 +22,7 @@ public abstract class Entity implements Comparable<Entity> {
         return super.equals(obj);
     }
 
-    protected abstract void decrementCountOfCreature();
+    protected abstract void decrementCountOfEntity();
 
     @Override
     public int compareTo(Entity o) {
@@ -37,7 +37,7 @@ public abstract class Entity implements Comparable<Entity> {
     }
 
     public void setEntity(MapOfWorld map, Coordinate coordinate) {
-        map.biMap.put(coordinate, this);
+        map.coordinatesEntities.put(coordinate, this);
     }
 }
 

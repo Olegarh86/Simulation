@@ -21,6 +21,8 @@ public abstract class Creature extends Entity {
 
     protected abstract void attackTarget(MapOfWorld map, Creature creature, Coordinate startCoordinate, Coordinate newCoordinate);
 
+    protected abstract int getAttackPower();
+
     protected int getHp() {
         return hp;
     }
@@ -37,14 +39,18 @@ public abstract class Creature extends Entity {
         this.hp++;
     }
 
+    protected void incrementHp(int hp) {
+        this.hp += hp;
+    }
+
     protected int getSpeed() {
         return speed;
     }
 
     @Override
     public void setEntity(MapOfWorld map, Coordinate coordinate) {
-        map.biMap.put(coordinate, this);
-        map.biMapOfCreatures.put(this, coordinate);
+        map.coordinatesEntities.put(coordinate, this);
+        map.creaturesCoordinates.put(this, coordinate);
     }
 
     public void makeMove(MapOfWorld map, Map.Entry<Entity, Coordinate> entry, PathFinder pathFinder) {
@@ -66,10 +72,11 @@ public abstract class Creature extends Entity {
 
         Coordinate newCoordinate = selectNewCoordinateWithCreatureSpeed(currentCreature, wayToTarget);
 
-        if (map.biMap.get(newCoordinate).getName().equals(currentCreature.getTarget())) {
+        if (map.coordinatesEntities.get(newCoordinate).getName().equals(currentCreature.getTarget())) {
             currentCreature.attackTarget(map, currentCreature, startCoordinate, newCoordinate);
         } else {
-            map.biMap.put(startCoordinate, new EmptyCell());
+            Entity emptyCell = map.coordinatesEntities.replace(newCoordinate, currentCreature);
+            map.coordinatesEntities.put(startCoordinate, emptyCell);
             currentCreature.decrementHp();
 
             if (currentCreature.isAlive()) {
@@ -94,12 +101,11 @@ public abstract class Creature extends Entity {
     }
 
     public void creatureMakesMove(MapOfWorld map, Creature currentCreature, Coordinate coordinate) {
-        map.newBiMapOfCreatures.put(currentCreature, coordinate);
-        map.biMap.put(coordinate, currentCreature);
+        map.newCreaturesCoordinates.put(currentCreature, coordinate);
     }
 
     public void creatureDies(MapOfWorld map, Creature currentCreature, Coordinate coordinate) {
-        map.biMap.put(coordinate, new EmptyCell());
-        currentCreature.decrementCountOfCreature();
+        map.coordinatesEntities.put(coordinate, new EmptyCell());
+        currentCreature.decrementCountOfEntity();
     }
 }

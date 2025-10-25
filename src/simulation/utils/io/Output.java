@@ -4,6 +4,6 @@ public interface Output {
     void greetings();
     void messageControls();
     void output(String massage);
-    void output(int count);
+    void output(int countOfMoves);
     void messageChangeConfig();
 }

@@ -22,7 +22,7 @@ public class Tree extends Entity{
     }
 
     @Override
-    protected void decrementCountOfCreature() {
+    protected void decrementCountOfEntity() {
         treesCount--;
     }
 }

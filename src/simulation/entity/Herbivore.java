@@ -3,7 +3,6 @@ package simulation.entity;
 import simulation.map.Coordinate;
 import simulation.map.MapOfWorld;
 
-// тратит ход на движение в сторону травы, либо на её поглощение
 public class Herbivore extends Creature{
     private static final String NAME = "Herbivore";
     private static final String TARGET = "Grass";
@@ -20,17 +19,22 @@ public class Herbivore extends Creature{
     }
 
     @Override
-    public void attackTarget(MapOfWorld map, Creature creature, Coordinate startCoordinate, Coordinate newCoordinate) {
-        Grass grass = (Grass) map.biMap.get(newCoordinate);
-        map.biMap.put(startCoordinate, new EmptyCell());
-        grass.decrementCountOfCreature();
-        map.biMap.put(newCoordinate, creature);
-        creature.incrementHp();
-        map.newBiMapOfCreatures.put(creature, newCoordinate);
+    public void attackTarget(MapOfWorld map, Creature herbivore, Coordinate startCoordinate, Coordinate newCoordinate) {
+        Entity target = map.coordinatesEntities.get(newCoordinate);
+        map.coordinatesEntities.put(startCoordinate, new EmptyCell());
+        target.decrementCountOfEntity();
+        map.coordinatesEntities.put(newCoordinate, herbivore);
+        herbivore.incrementHp();
+        map.newCreaturesCoordinates.put(herbivore, newCoordinate);
     }
 
     @Override
-    protected void decrementCountOfCreature() {
+    protected int getAttackPower() {
+        return 0;
+    }
+
+    @Override
+    protected void decrementCountOfEntity() {
         herbivoresCount--;
     }
 
@@ -41,7 +45,7 @@ public class Herbivore extends Creature{
 
     @Override
     public boolean cellAvailableToMove(MapOfWorld map, Coordinate coordinate) {
-        String name = map.biMap.get(coordinate).getName();
+        String name = map.coordinatesEntities.get(coordinate).getName();
         return !name.equals("Rock") && !name.equals("Tree") && !name.equals("Predator") && !name.equals("Herbivore");
     }
 }

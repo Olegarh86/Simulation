@@ -22,7 +22,7 @@ public class Grass extends Entity {
     }
 
     @Override
-    protected void decrementCountOfCreature() {
+    protected void decrementCountOfEntity() {
         grassCount--;
     }
 }

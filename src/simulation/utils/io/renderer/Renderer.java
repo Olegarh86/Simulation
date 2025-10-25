@@ -14,7 +14,7 @@ public interface Renderer {
     default void draw(Config config, MapOfWorld map, Output output) {
         StringBuilder stringBuilder = new StringBuilder();
         int count = 0;
-        for (Map.Entry<Coordinate, Entity> entry : map.biMap.entrySet()) {
+        for (Map.Entry<Coordinate, Entity> entry : map.coordinatesEntities.entrySet()) {
             if (count < config.numberOfLines) {
                 stringBuilder.append(getSprite(entry.getValue())).append(interval);
                 count++;

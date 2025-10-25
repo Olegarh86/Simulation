@@ -8,8 +8,8 @@ public class ConsoleOutput implements Output{
     }
 
     @Override
-    public void output(int count) {
-        System.out.println("Number of turns made by creatures: " + String.valueOf(count));
+    public void output(int countOfMoves) {
+        System.out.println("Number of turns made by creatures: " + countOfMoves);
     }
 
     @Override

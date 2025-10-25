@@ -22,7 +22,7 @@ public class Rock extends Entity {
     }
 
     @Override
-    protected void decrementCountOfCreature() {
+    protected void decrementCountOfEntity() {
         rocksCount--;
     }
 }
