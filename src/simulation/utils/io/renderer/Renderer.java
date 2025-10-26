@@ -1,20 +1,19 @@
 package simulation.utils.io.renderer;
 
 import simulation.entity.Entity;
-import simulation.map.Coordinate;
-import simulation.map.MapOfWorld;
+import simulation.world.Coordinate;
+import simulation.world.MapOfWorld;
 import simulation.utils.config.Config;
-import simulation.utils.io.Output;
 
 import java.util.Map;
 
 public interface Renderer {
     String interval = " ";
 
-    default void draw(Config config, MapOfWorld map, Output output) {
+    default void draw(Config config, MapOfWorld world) {
         StringBuilder stringBuilder = new StringBuilder();
         int count = 0;
-        for (Map.Entry<Coordinate, Entity> entry : map.coordinatesEntities.entrySet()) {
+        for (Map.Entry<Coordinate, Entity> entry : world.coordinatesEntities.entrySet()) {
             if (count < config.numberOfLines) {
                 stringBuilder.append(getSprite(entry.getValue())).append(interval);
                 count++;

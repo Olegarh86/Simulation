@@ -1,14 +1,22 @@
 package simulation.entity;
 
-import simulation.map.Coordinate;
-import simulation.map.MapOfWorld;
+import simulation.world.Coordinate;
+import simulation.world.MapOfWorld;
 
 public class Grass extends Entity {
     private static final String NAME = "Grass";
-    static int grassCount = 0;
+    private static int grassCount = 0;
 
-    protected Grass() {
+    public Grass() {
         grassCount++;
+    }
+
+    public static int getGrassCount() {
+        return grassCount;
+    }
+
+    public static int getCount() {
+        return grassCount;
     }
 
     @Override
@@ -17,12 +25,12 @@ public class Grass extends Entity {
     }
 
     @Override
-    public boolean cellAvailableToMove(MapOfWorld map, Coordinate coordinate) {
+    public boolean cellAvailableToMove(MapOfWorld world, Coordinate coordinate) {
         return true;
     }
 
     @Override
-    protected void decrementCountOfEntity() {
+    public void decrementCountOfEntity() {
         grassCount--;
     }
 }

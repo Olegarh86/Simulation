@@ -1,14 +1,22 @@
 package simulation.entity;
 
-import simulation.map.Coordinate;
-import simulation.map.MapOfWorld;
+import simulation.world.Coordinate;
+import simulation.world.MapOfWorld;
 
 public class Rock extends Entity {
-    static int rocksCount = 0;
     private static final String NAME = "Rock";
+    private static int rocksCount = 0;
 
-    protected Rock() {
+    public Rock() {
         rocksCount++;
+    }
+
+    public static int getRocksCount() {
+        return rocksCount;
+    }
+
+    public static int getCount() {
+        return rocksCount;
     }
 
     @Override
@@ -17,12 +25,12 @@ public class Rock extends Entity {
     }
 
     @Override
-    public boolean cellAvailableToMove(MapOfWorld map, Coordinate coordinate) {
+    public boolean cellAvailableToMove(MapOfWorld world, Coordinate coordinate) {
         return false;
     }
 
     @Override
-    protected void decrementCountOfEntity() {
+    public void decrementCountOfEntity() {
         rocksCount--;
     }
 }

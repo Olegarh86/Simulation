@@ -1,7 +1,7 @@
 package simulation.entity;
 
-import simulation.map.Coordinate;
-import simulation.map.MapOfWorld;
+import simulation.world.Coordinate;
+import simulation.world.MapOfWorld;
 
 public class EmptyCell extends Entity {
     public static int emptyCellsCount = 0;
@@ -17,12 +17,12 @@ public class EmptyCell extends Entity {
     }
 
     @Override
-    public boolean cellAvailableToMove(MapOfWorld map, Coordinate coordinate) {
+    public boolean cellAvailableToMove(MapOfWorld world, Coordinate coordinate) {
         return true;
     }
 
     @Override
-    protected void decrementCountOfEntity() {
+    public void decrementCountOfEntity() {
         emptyCellsCount--;
     }
 }

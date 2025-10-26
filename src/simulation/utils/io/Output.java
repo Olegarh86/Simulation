@@ -1,9 +1,10 @@
 package simulation.utils.io;
 
 public interface Output {
-    void greetings();
-    void messageControls();
-    void output(String massage);
-    void output(int countOfMoves);
-    void messageChangeConfig();
+    void printGreetings();
+    void printMessageControls();
+    void printMessage(String massage);
+    void printCount(int countOfMoves);
+    void printMessageChangeConfig();
+    void printDefaultConfigWithDelay();
 }

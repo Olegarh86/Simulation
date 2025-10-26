@@ -1,18 +1,17 @@
 package simulation.utils.config;
 
+import simulation.utils.io.ConsoleInput;
 import simulation.utils.io.Output;
-
-import java.util.Scanner;
 
 public class UserConfigFactory implements ConfigFactory {
     private final static String ERROR = "Incorrect symbol, please, try again";
     private final static String HOW_MANY_COLUMNS = "How many columns will there be? From %d to %d ";
     private final static String HOW_MANY_LINES = "How many lines will there be? From %d to %d ";
+    private final static String HOW_MANY_ROCKS = "How many rocks will there be? From %d to %d ";
+    private final static String HOW_MANY_TREES = "How many trees will there be? From %d to %d ";
+    private final static String HOW_MUCH_GRASS = "How much grasses will there be? From %d to %d ";
     private final static String HOW_MANY_HERBIVORES = "How many herbivores will there be? From %d to %d ";
     private final static String HOW_MANY_PREDATORS = "How many predators will there be? From %d to %d ";
-    private final static String HOW_MUCH_GRASS = "How much grass will there be? From %d to %d ";
-    private final static String HOW_MANY_STONES = "How many stones will there be? From %d to %d ";
-    private final static String HOW_MANY_TREES = "How many trees will there be? From %d to %d ";
     private final static String HOW_MUCH_HERBIVORES_HP = "How much health will herbivores have? From %d to %d ";
     private final static String HOW_MUCH_HERBIVORES_SPEED = "How much speed will herbivores have? From %d to %d ";
     private final static String HOW_MUCH_PREDATORS_HP = "How much health will predators have? From %d to %d ";
@@ -25,23 +24,23 @@ public class UserConfigFactory implements ConfigFactory {
     private final static int maxColumnsAndLines = 68;
     private final static int minDelay = 1;
     private final static int maxDelay = Integer.MAX_VALUE;
-    Output consoleOutput;
+    private final Output consoleOutput;
 
-    public UserConfigFactory(Output consoleOutput) {
+    protected UserConfigFactory(Output consoleOutput) {
         this.consoleOutput = consoleOutput;
     }
 
     @Override
     public Config get() {
         Config config = new Config();
-        consoleOutput.messageChangeConfig();
+        consoleOutput.printMessageChangeConfig();
         config.numberOfLines = input(HOW_MANY_COLUMNS, minColumnsAndLines, maxColumnsAndLines);
         config.numberOfColumns = input(HOW_MANY_LINES, minColumnsAndLines, maxColumnsAndLines);
+        config.numberOfRocks = input(HOW_MANY_ROCKS, min, max);
+        config.numberOfTrees = input(HOW_MANY_TREES, min, max);
+        config.numberOfGrasses = input(HOW_MUCH_GRASS, min, max);
         config.numberOfHerbivores = input(HOW_MANY_HERBIVORES, min, max);
         config.numberOfPredators = input(HOW_MANY_PREDATORS, min, max);
-        config.numberOfGrasses = input(HOW_MUCH_GRASS, min, max);
-        config.numberOfRocks = input(HOW_MANY_STONES, min, max);
-        config.numberOfTrees = input(HOW_MANY_TREES, min, max);
         config.herbivoresHp = input(HOW_MUCH_HERBIVORES_HP, min, max);
         config.herbivoresSpeed = input(HOW_MUCH_HERBIVORES_SPEED, min, max);
         config.predatorsHp = input(HOW_MUCH_PREDATORS_HP, min, max);
@@ -52,11 +51,11 @@ public class UserConfigFactory implements ConfigFactory {
     }
 
     private int input(String message, int min, int max) {
-        Scanner scanner = new Scanner(System.in);
+        ConsoleInput input = new ConsoleInput();
+        String inputSymbol;
         while (true) {
             System.out.printf(message, min, max);
-            String inputSymbol = scanner.nextLine();
-
+            inputSymbol = input.readString();
             if (isInteger(inputSymbol)) {
                 int value = Integer.parseInt(inputSymbol);
 

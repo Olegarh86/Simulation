@@ -1,4 +1,4 @@
-package simulation.entity;
+package simulation.entity.actions;
 
 public interface Actions {
     void execute();

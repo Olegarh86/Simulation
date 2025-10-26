@@ -1,7 +1,7 @@
 package simulation.entity;
 
-import simulation.map.Coordinate;
-import simulation.map.MapOfWorld;
+import simulation.world.Coordinate;
+import simulation.world.MapOfWorld;
 
 public abstract class Entity implements Comparable<Entity> {
     protected static final String NAME = "";
@@ -10,7 +10,11 @@ public abstract class Entity implements Comparable<Entity> {
         return NAME;
     }
 
-    public abstract boolean cellAvailableToMove(MapOfWorld map, Coordinate coordinate);
+    public void setEntity(MapOfWorld world, Coordinate coordinate) {
+        world.coordinatesEntities.put(coordinate, this);
+    }
+
+    public abstract boolean cellAvailableToMove(MapOfWorld world, Coordinate coordinate);
 
     @Override
     public int hashCode() {
@@ -22,7 +26,7 @@ public abstract class Entity implements Comparable<Entity> {
         return super.equals(obj);
     }
 
-    protected abstract void decrementCountOfEntity();
+    public abstract void decrementCountOfEntity();
 
     @Override
     public int compareTo(Entity o) {
@@ -34,10 +38,6 @@ public abstract class Entity implements Comparable<Entity> {
         }
 
         return Integer.compare(this.hashCode(), o.hashCode());
-    }
-
-    public void setEntity(MapOfWorld map, Coordinate coordinate) {
-        map.coordinatesEntities.put(coordinate, this);
     }
 }
 

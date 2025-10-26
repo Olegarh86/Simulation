@@ -1,10 +1,11 @@
-package simulation.map;
+package simulation.world;
 import simulation.entity.*;
+import simulation.entity.Entity;
 import simulation.utils.config.Config;
 
 import java.util.*;
 
-import static simulation.map.Coordinate.getCoordinate;
+import static simulation.world.Coordinate.getCoordinate;
 
 public class MapOfWorld {
 

@@ -1,7 +1,9 @@
-import simulation.entity.*;
-import simulation.map.BFSPathFinder;
-import simulation.map.MapOfWorld;
-import simulation.map.PathFinder;
+import simulation.entity.actions.Actions;
+import simulation.entity.actions.InitActions;
+import simulation.entity.actions.TurnActions;
+import simulation.world.BFSPathFinder;
+import simulation.world.MapOfWorld;
+import simulation.world.PathFinder;
 import simulation.utils.config.Config;
 import simulation.utils.config.ConfigFactory;
 import simulation.utils.io.ConsoleInput;
@@ -15,12 +17,11 @@ import java.util.List;
 
 public class Simulation {
     private static int countOfMoves = 0;
-    private final MapOfWorld map;
+    private final MapOfWorld world;
     private final Renderer renderer;
     private final Config config;
     private final ThreadKeyListener threadKeyListener;
     private final Output output;
-    private final InitActions initActions;
     private final List<Actions> actions;
 
     private Simulation() {
@@ -28,13 +29,16 @@ public class Simulation {
         output = new ConsoleOutput();
         ConfigFactory configFactory = Config.changeConfigFactory(consoleInput, output);
         config = configFactory.get();
-        this.map = new MapOfWorld(config);
+        this.world = new MapOfWorld(config);
         threadKeyListener = new ThreadKeyListener(config);
         PathFinder pathFinder = new BFSPathFinder(config);
-        this.initActions = new InitActions(map, config);
-        TurnActions turnActions = new TurnActions(map, pathFinder);
+        Actions initActions = new InitActions(world, config);
+        Actions turnActions = new TurnActions(world, pathFinder);
         this.actions = List.of(turnActions, initActions);
         renderer = new BaseSimulationRenderer();
+        initActions.execute();
+        renderer.draw(config, world);
+        threadKeyListener.start();
     }
 
     public static void main(String[] args) {
@@ -48,11 +52,12 @@ public class Simulation {
     }
 
     private void startSimulation() throws InterruptedException {
-        initActions.execute();
-        renderer.draw(config, map, output);
-        threadKeyListener.start();
-
-        do {
+        while (!threadKeyListener.stopSimulation) {
+            try {
+                Thread.sleep(config.delayBetweenMovesInMilliseconds);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             synchronized (threadKeyListener.lock) {
                 while (threadKeyListener.pauseSimulation) {
                     try {
@@ -66,20 +71,10 @@ public class Simulation {
             for (Actions action : actions) {
                 action.execute();
             }
-            output.output(countOfMoves++);
-            output.messageControls();
-            renderer.draw(config, map, output);
-
-            try {
-                Thread.sleep(config.delayBetweenMovesInMilliseconds);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        } while (!threadKeyListener.stopSimulation);
-    }
-
-    public static void incrementCountOfMoves() {
-        countOfMoves++;
+            output.printCount(countOfMoves++);
+            output.printMessageControls();
+            renderer.draw(config, world);
+        }
     }
 
     static class ThreadKeyListener extends Thread {

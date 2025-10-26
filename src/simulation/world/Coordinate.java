@@ -1,5 +1,6 @@
-package simulation.map;
+package simulation.world;
 
+import simulation.entity.EmptyCell;
 import simulation.utils.config.Config;
 
 import java.util.*;
@@ -30,6 +31,20 @@ public class Coordinate implements Comparable<Coordinate> {
         int randomString = random.nextInt(config.numberOfColumns);
         int randomColumn = random.nextInt(config.numberOfLines);
         return new Coordinate(randomString, randomColumn);
+    }
+
+    public static Coordinate chooseEmptyRandomCoordinate(MapOfWorld world, Config config) {
+        Coordinate randomCoordinate = Coordinate.getRandomCoordinate(config);
+
+        while (!(world.coordinatesEntities.get(randomCoordinate).getName().equals("EmptyCell"))) {
+            randomCoordinate = Coordinate.getRandomCoordinate(config);
+
+            if (EmptyCell.emptyCellsCount < Math.max(config.numberOfGrasses,
+                    Math.max(config.numberOfHerbivores, config.numberOfPredators))) {
+                throw new RuntimeException("Empty cells is not available, too much entities in the simulation.");
+            }
+        }
+        return randomCoordinate;
     }
 
     @Override

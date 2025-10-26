@@ -1,14 +1,22 @@
 package simulation.entity;
 
-import simulation.map.Coordinate;
-import simulation.map.MapOfWorld;
+import simulation.world.Coordinate;
+import simulation.world.MapOfWorld;
 
-public class Tree extends Entity{
-    static int treesCount = 0;
+public class Tree extends Entity {
     private static final String NAME = "Tree";
+    private static int treesCount = 0;
 
-    protected Tree() {
+    public Tree() {
         treesCount++;
+    }
+
+    public static int getTreesCount() {
+        return treesCount;
+    }
+
+    public static int getCount() {
+        return treesCount;
     }
 
     @Override
@@ -17,12 +25,12 @@ public class Tree extends Entity{
     }
 
     @Override
-    public boolean cellAvailableToMove(MapOfWorld map, Coordinate coordinate) {
+    public boolean cellAvailableToMove(MapOfWorld world, Coordinate coordinate) {
         return false;
     }
 
     @Override
-    protected void decrementCountOfEntity() {
+    public void decrementCountOfEntity() {
         treesCount--;
     }
 }
