@@ -13,7 +13,7 @@ public class DefaultConfigFactory implements ConfigFactory {
     public final static int PREDATORS_HP = 10;
     public final static int PREDATORS_SPEED = 1;
     public final static int PREDATORS_ATTACK_POWER = 5;
-    public final static int DELAY_BETWEEN_MOVES_IN_MILLISECONDS = 1000;
+    public final static int DELAY_BETWEEN_MOVES_IN_MILLISECONDS = 100;
 
     @Override
     public Config get() {

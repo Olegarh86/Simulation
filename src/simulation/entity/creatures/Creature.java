@@ -62,7 +62,6 @@ public abstract class Creature extends Entity {
             }
             return;
         }
-
         Coordinate newCoordinate = selectNewCoordinateWithCreatureSpeed(currentCreature, wayToTarget);
 
         if (world.getEntity(newCoordinate).getName().equals(currentCreature.getTarget())) {

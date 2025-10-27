@@ -11,9 +11,7 @@ import java.util.*;
 import static simulation.world.Coordinate.getCoordinate;
 
 public class MapOfWorld {
-
     private final Map<Coordinate, Entity> coordinatesEntities = new TreeMap<>();
-    private Map<Entity, Coordinate> creaturesCoordinates = new TreeMap<>();
 
     public MapOfWorld(Config config) {
         for (int line = 0; line < config.numberOfColumns; line++) {
@@ -28,18 +26,9 @@ public class MapOfWorld {
         return coordinatesEntities;
     }
 
-    public Map<Entity, Coordinate> getCreaturesCoordinates() {
-        return creaturesCoordinates;
-    }
-
-    public void clearCreaturesCoordinates() {
-        creaturesCoordinates.clear();
-    }
-
     public void setEntity(Coordinate coordinate, Entity entity) {
         if (entity.isMovable()) {
             coordinatesEntities.put(coordinate, entity);
-            creaturesCoordinates.put(entity, coordinate);
         }
         coordinatesEntities.put(coordinate, entity);
     }
