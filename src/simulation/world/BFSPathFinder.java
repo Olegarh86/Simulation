@@ -54,30 +54,33 @@ public class BFSPathFinder implements PathFinder {
     }
 
     @Override
-    public List<Coordinate> findAllCellsAvailableForMovement(MapOfWorld map, Creature creature, Coordinate startCoordinate) {
+    public List<Coordinate> findAllCellsAvailableForMovement(MapOfWorld world, Creature creature, Coordinate startCoordinate) {
         List<Coordinate> allCellsAvailableForMove = new ArrayList<>();
         Coordinate tempCoordinate = getCoordinate(startCoordinate.getLine() - 1, startCoordinate.getColumn());
-        if (tempCoordinate.getLine() >= 0 && creature.cellAvailableToMove(map, tempCoordinate)) {
+        if (tempCoordinate.getLine() >= 0 && cellAvailableToMove(world, creature, tempCoordinate)) {
             allCellsAvailableForMove.add(tempCoordinate);
         }
 
         tempCoordinate = getCoordinate(startCoordinate.getLine() + 1, startCoordinate.getColumn());
-        if (tempCoordinate.getLine() < config.numberOfColumns && creature.cellAvailableToMove(map, tempCoordinate)) {
+        if (tempCoordinate.getLine() < config.numberOfColumns && cellAvailableToMove(world, creature, tempCoordinate)) {
             allCellsAvailableForMove.add(tempCoordinate);
         }
 
         tempCoordinate = getCoordinate(startCoordinate.getLine(), startCoordinate.getColumn() - 1);
-        if (tempCoordinate.getColumn() >= 0 && creature.cellAvailableToMove(map, tempCoordinate)) {
+        if (tempCoordinate.getColumn() >= 0 && cellAvailableToMove(world, creature, tempCoordinate)) {
             allCellsAvailableForMove.add(tempCoordinate);
         }
 
         tempCoordinate = getCoordinate(startCoordinate.getLine(), startCoordinate.getColumn() + 1);
-        if (tempCoordinate.getColumn() + 1 <= config.numberOfLines && creature.cellAvailableToMove(map, tempCoordinate)) {
+        if (tempCoordinate.getColumn() + 1 <= config.numberOfLines && cellAvailableToMove(world, creature, tempCoordinate)) {
             allCellsAvailableForMove.add(tempCoordinate);
         }
 
         return allCellsAvailableForMove;
     }
 
-
+    private boolean cellAvailableToMove(MapOfWorld world, Creature creature, Coordinate tempCoordinate) {
+        String cellForMove = world.coordinatesEntities.get(tempCoordinate).getName();
+        return !creature.GetObstacles().contains(cellForMove);
+    }
 }

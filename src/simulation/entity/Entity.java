@@ -1,5 +1,7 @@
 package simulation.entity;
 
+import simulation.entity.creatures.Herbivore;
+import simulation.entity.creatures.Predator;
 import simulation.world.Coordinate;
 import simulation.world.MapOfWorld;
 
@@ -13,8 +15,6 @@ public abstract class Entity implements Comparable<Entity> {
     public void setEntity(MapOfWorld world, Coordinate coordinate) {
         world.coordinatesEntities.put(coordinate, this);
     }
-
-    public abstract boolean cellAvailableToMove(MapOfWorld world, Coordinate coordinate);
 
     @Override
     public int hashCode() {
@@ -30,10 +30,10 @@ public abstract class Entity implements Comparable<Entity> {
 
     @Override
     public int compareTo(Entity o) {
-        if (this.getName().equals("Herbivore") && o.getName().equals("Predator")) {
+        if (this.getName().equals(Herbivore.NAME) && o.getName().equals(Predator.NAME)) {
             return -1;
         }
-        if (this.getName().equals("Predator") && o.getName().equals("Herbivore")) {
+        if (this.getName().equals(Predator.NAME) && o.getName().equals(Herbivore.NAME)) {
             return 1;
         }
 

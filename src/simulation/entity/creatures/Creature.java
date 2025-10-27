@@ -11,6 +11,7 @@ import java.util.List;
 public abstract class Creature extends Entity {
     private final int speed;
     private int hp;
+    private static final List<String> obstacles = List.of();
 
     public Creature(int speed, int hp) {
         this.speed = speed;
@@ -18,6 +19,8 @@ public abstract class Creature extends Entity {
     }
 
     public abstract String getTarget();
+
+    public abstract List<String> GetObstacles();
 
     protected abstract void attackTarget(MapOfWorld world, Creature creature, Coordinate startCoordinate, Coordinate newCoordinate);
 

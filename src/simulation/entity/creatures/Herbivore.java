@@ -5,9 +5,12 @@ import simulation.entity.Entity;
 import simulation.world.Coordinate;
 import simulation.world.MapOfWorld;
 
+import java.util.List;
+
 public class Herbivore extends Creature{
-    private static final String NAME = "Herbivore";
+    public static final String NAME = "Herbivore";
     private static final String TARGET = "Grass";
+    private static final List<String> obstacles = List.of("Rock", "Tree", "Herbivore", "Predator");
     private static int herbivoresCount = 0;
 
     public Herbivore(int speed, int hp) {
@@ -26,6 +29,11 @@ public class Herbivore extends Creature{
     @Override
     public String getTarget() {
         return TARGET;
+    }
+
+    @Override
+    public List<String> GetObstacles() {
+        return obstacles;
     }
 
     @Override
@@ -51,11 +59,5 @@ public class Herbivore extends Creature{
     @Override
     public String getName() {
         return NAME;
-    }
-
-    @Override
-    public boolean cellAvailableToMove(MapOfWorld world, Coordinate coordinate) {
-        String name = world.coordinatesEntities.get(coordinate).getName();
-        return !name.equals("Rock") && !name.equals("Tree") && !name.equals("Predator") && !name.equals("Herbivore");
     }
 }

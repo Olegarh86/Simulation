@@ -4,11 +4,14 @@ import simulation.entity.EmptyCell;
 import simulation.world.Coordinate;
 import simulation.world.MapOfWorld;
 
+import java.util.List;
+
 public class Predator extends Creature {
-    private static final String NAME = "Predator";
+    public static final String NAME = "Predator";
     private static final String TARGET = "Herbivore";
-    private final int attackPower;
     private static int predatorsCount = 0;
+    private static final List<String> obstacles = List.of("Rock", "Tree", "Grass", "Predator");
+    private final int attackPower;
 
     public Predator(int speed, int hp, int attackPower) {
         super(speed, hp);
@@ -30,14 +33,13 @@ public class Predator extends Creature {
     }
 
     @Override
-    public boolean cellAvailableToMove(MapOfWorld world, Coordinate coordinate) {
-        String name = world.coordinatesEntities.get(coordinate).getName();
-        return !name.equals("Rock") && !name.equals("Tree") && !name.equals("Predator") && !name.equals("Grass");
+    public String getTarget() {
+        return TARGET;
     }
 
     @Override
-    public String getTarget() {
-        return TARGET;
+    public List<String> GetObstacles() {
+        return obstacles;
     }
 
     @Override

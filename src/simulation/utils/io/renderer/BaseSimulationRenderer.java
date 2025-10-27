@@ -7,7 +7,7 @@ public class BaseSimulationRenderer implements Renderer {
     private static final String rockSprite = "\uD83D\uDC8E";
     private static final String treeSprite = "\uD83C\uDF31";
     private static final String grassSprite = "\uD83C\uDF40";
-    private static final String herbivoreSprite = "\u001B[41m\uD83D\uDC07\u001B[0m";
+    private static final String herbivoreSprite = "\u001B[43m\uD83D\uDC07\u001B[0m";
     private static final String wolfSprite = "\uD83D\uDC3A";
     private static final String treeName = "Tree";
     private static final String rockName = "Rock";

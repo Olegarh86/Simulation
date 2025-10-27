@@ -17,11 +17,6 @@ public class EmptyCell extends Entity {
     }
 
     @Override
-    public boolean cellAvailableToMove(MapOfWorld world, Coordinate coordinate) {
-        return true;
-    }
-
-    @Override
     public void decrementCountOfEntity() {
         emptyCellsCount--;
     }

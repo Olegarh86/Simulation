@@ -25,11 +25,6 @@ public class Rock extends Entity {
     }
 
     @Override
-    public boolean cellAvailableToMove(MapOfWorld world, Coordinate coordinate) {
-        return false;
-    }
-
-    @Override
     public void decrementCountOfEntity() {
         rocksCount--;
     }
