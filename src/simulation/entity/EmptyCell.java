@@ -1,11 +1,8 @@
 package simulation.entity;
 
-import simulation.world.Coordinate;
-import simulation.world.MapOfWorld;
-
 public class EmptyCell extends Entity {
-    public static int emptyCellsCount = 0;
     private static final String NAME = "EmptyCell";
+    public static int emptyCellsCount = 0;
 
     public EmptyCell() {
         emptyCellsCount++;
@@ -19,5 +16,10 @@ public class EmptyCell extends Entity {
     @Override
     public void decrementCountOfEntity() {
         emptyCellsCount--;
+    }
+
+    @Override
+    public boolean isMovable() {
+        return false;
     }
 }

@@ -1,11 +1,9 @@
 package simulation.entity;
 
-import simulation.world.Coordinate;
-import simulation.world.MapOfWorld;
-
 public class Tree extends Entity {
     private static final String NAME = "Tree";
     private static int treesCount = 0;
+    private static final boolean movable = false;
 
     public Tree() {
         treesCount++;
@@ -27,5 +25,10 @@ public class Tree extends Entity {
     @Override
     public void decrementCountOfEntity() {
         treesCount--;
+    }
+
+    @Override
+    public boolean isMovable() {
+        return movable;
     }
 }

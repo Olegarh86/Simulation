@@ -1,11 +1,9 @@
 package simulation.entity;
 
-import simulation.world.Coordinate;
-import simulation.world.MapOfWorld;
-
 public class Grass extends Entity {
     private static final String NAME = "Grass";
     private static int grassCount = 0;
+    private static final boolean movable = false;
 
     public Grass() {
         grassCount++;
@@ -27,5 +25,10 @@ public class Grass extends Entity {
     @Override
     public void decrementCountOfEntity() {
         grassCount--;
+    }
+
+    @Override
+    public boolean isMovable() {
+        return movable;
     }
 }

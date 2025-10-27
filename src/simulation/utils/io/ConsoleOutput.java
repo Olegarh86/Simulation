@@ -62,13 +62,13 @@ public class ConsoleOutput implements Output{
                 DefaultConfigFactory.PREDATORS_SPEED, DefaultConfigFactory.PREDATORS_ATTACK_POWER,
                 DefaultConfigFactory.DELAY_BETWEEN_MOVES_IN_MILLISECONDS));
 
-        for (int i = 0; i < configDefault.length(); i++) {
-            System.out.print(configDefault.charAt(i));
-            try {
-                Thread.sleep(20);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
+//        for (int i = 0; i < configDefault.length(); i++) {
+//            System.out.print(configDefault.charAt(i));
+//            try {
+//                Thread.sleep(20);
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
     }
 }

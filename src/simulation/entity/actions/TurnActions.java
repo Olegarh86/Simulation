@@ -7,6 +7,7 @@ import simulation.world.MapOfWorld;
 import simulation.world.PathFinder;
 
 import java.util.Map;
+import java.util.TreeMap;
 
 public class TurnActions implements Actions {
     private final MapOfWorld world;
@@ -20,25 +21,24 @@ public class TurnActions implements Actions {
 
     @Override
     public void execute() {
-        allCreaturesMove();
-        world.creaturesCoordinates.clear();
-        removeDeadCreatures();
-        world.newCreaturesCoordinates.clear();
+        Map<Entity, Coordinate> newCreaturesCoordinates = new TreeMap<>();
+        allCreaturesMove(newCreaturesCoordinates);
+        world.clearCreaturesCoordinates();
+        removeDeadCreatures(newCreaturesCoordinates);
     }
 
-    private void allCreaturesMove() {
-        for (Map.Entry<Entity, Coordinate> entry : world.creaturesCoordinates.entrySet()) {
+    private void allCreaturesMove(Map<Entity, Coordinate> newCreaturesCoordinates) {
+        for (Map.Entry<Entity, Coordinate> entry : world.getCreaturesCoordinates().entrySet()) {
             Coordinate startCoordinate = entry.getValue();
             Creature creature = (Creature) entry.getKey();
-            creature.makeMove(world, creature, startCoordinate, pathFinder);
+            creature.makeMove(world, creature, startCoordinate, pathFinder, newCreaturesCoordinates);
         }
     }
 
-    private void removeDeadCreatures() {
-        for (Map.Entry<Entity, Coordinate> entry : world.newCreaturesCoordinates.entrySet()) {
+    private void removeDeadCreatures(Map<Entity, Coordinate> newCreaturesCoordinates) {
+        for (Map.Entry<Entity, Coordinate> entry : newCreaturesCoordinates.entrySet()) {
 
-            world.coordinatesEntities.put(entry.getValue(), entry.getKey());
-            world.creaturesCoordinates.put(entry.getKey(), entry.getValue());
+            world.setEntity(entry.getValue(), entry.getKey());
         }
     }
 }

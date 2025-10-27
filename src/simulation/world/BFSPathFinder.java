@@ -28,7 +28,7 @@ public class BFSPathFinder implements PathFinder {
         while (!queue.isEmpty()) {
             Coordinate tempCoordinate = queue.poll();
 
-            if (!map.coordinatesEntities.get(tempCoordinate).getName().equals(creature.getTarget())) {
+            if (!map.getEntity(tempCoordinate).getName().equals(creature.getTarget())) {
                 List<Coordinate> cellsAvailableToMove = findAllCellsAvailableForMovement(map, creature, tempCoordinate);
 
                 for (Coordinate nextCoordinate : cellsAvailableToMove) {
@@ -80,7 +80,7 @@ public class BFSPathFinder implements PathFinder {
     }
 
     private boolean cellAvailableToMove(MapOfWorld world, Creature creature, Coordinate tempCoordinate) {
-        String cellForMove = world.coordinatesEntities.get(tempCoordinate).getName();
+        String cellForMove = world.getEntity(tempCoordinate).getName();
         return !creature.GetObstacles().contains(cellForMove);
     }
 }

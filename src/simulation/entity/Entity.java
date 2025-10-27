@@ -2,31 +2,24 @@ package simulation.entity;
 
 import simulation.entity.creatures.Herbivore;
 import simulation.entity.creatures.Predator;
-import simulation.world.Coordinate;
-import simulation.world.MapOfWorld;
 
 public abstract class Entity implements Comparable<Entity> {
-    protected static final String NAME = "";
 
-    public String getName() {
-        return NAME;
-    }
+    public abstract String getName();
 
-    public void setEntity(MapOfWorld world, Coordinate coordinate) {
-        world.coordinatesEntities.put(coordinate, this);
-    }
+    public abstract void decrementCountOfEntity();
 
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
+    public abstract boolean isMovable();
 
     @Override
     public boolean equals(Object obj) {
         return super.equals(obj);
     }
 
-    public abstract void decrementCountOfEntity();
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 
     @Override
     public int compareTo(Entity o) {

@@ -1,16 +1,17 @@
 package simulation.entity.creatures;
 
-import simulation.entity.EmptyCell;
 import simulation.entity.Entity;
 import simulation.world.Coordinate;
 import simulation.world.MapOfWorld;
 
 import java.util.List;
+import java.util.Map;
 
 public class Herbivore extends Creature{
     public static final String NAME = "Herbivore";
     private static final String TARGET = "Grass";
     private static final List<String> obstacles = List.of("Rock", "Tree", "Herbivore", "Predator");
+    private static final boolean movable = true;
     private static int herbivoresCount = 0;
 
     public Herbivore(int speed, int hp) {
@@ -37,13 +38,11 @@ public class Herbivore extends Creature{
     }
 
     @Override
-    protected void attackTarget(MapOfWorld world, Creature herbivore, Coordinate startCoordinate, Coordinate newCoordinate) {
-        Entity target = world.coordinatesEntities.get(newCoordinate);
-        world.coordinatesEntities.put(startCoordinate, new EmptyCell());
-        target.decrementCountOfEntity();
-        world.coordinatesEntities.put(newCoordinate, herbivore);
+    protected void attackTarget(MapOfWorld world, Creature herbivore, Coordinate startCoordinate, Coordinate newCoordinate, Map<Entity, Coordinate> newCreaturesCoordinates) {
+        world.deleteEntity(newCoordinate);
+        world.moveCreatureToEmptyCell(herbivore, startCoordinate, newCoordinate);
         herbivore.incrementHp();
-        world.newCreaturesCoordinates.put(herbivore, newCoordinate);
+        newCreaturesCoordinates.put(herbivore, newCoordinate);
     }
 
     @Override
@@ -54,6 +53,11 @@ public class Herbivore extends Creature{
     @Override
     public void decrementCountOfEntity() {
         herbivoresCount--;
+    }
+
+    @Override
+    public boolean isMovable() {
+        return movable;
     }
 
     @Override

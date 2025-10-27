@@ -1,6 +1,11 @@
 package simulation.utils.io.renderer;
 
 import simulation.entity.Entity;
+import simulation.utils.config.Config;
+import simulation.world.Coordinate;
+import simulation.world.MapOfWorld;
+
+import java.util.Map;
 
 public class BaseSimulationRenderer implements Renderer {
     private static final String emptyCellSprite = "\u2B1C";
@@ -16,8 +21,27 @@ public class BaseSimulationRenderer implements Renderer {
     private static final String predatorName = "Predator";
     private static final String emptyCellName = "EmptyCell";
     private static final String itIsNotEntity = "This entity haven`t sprite";
+    private static final String interval = " ";
+
 
     public BaseSimulationRenderer() {}
+
+    public void draw(Config config, MapOfWorld world) {
+        StringBuilder stringBuilder = new StringBuilder();
+        int count = 0;
+        for (Map.Entry<Coordinate, Entity> entry : world.getCoordinatesEntities().entrySet()) {
+            if (count < config.numberOfLines) {
+                stringBuilder.append(getSprite(entry.getValue())).append(interval);
+                count++;
+            } else {
+                System.out.println(stringBuilder);
+                count = 1;
+                stringBuilder = new StringBuilder();
+                stringBuilder.append(getSprite(entry.getValue())).append(interval);
+            }
+        }
+        System.out.println(stringBuilder + "\n");
+    }
 
     @Override
     public String getSprite (Entity entity) {

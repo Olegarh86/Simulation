@@ -1,16 +1,18 @@
 package simulation.entity.creatures;
 
-import simulation.entity.EmptyCell;
+import simulation.entity.Entity;
 import simulation.world.Coordinate;
 import simulation.world.MapOfWorld;
 
 import java.util.List;
+import java.util.Map;
 
 public class Predator extends Creature {
     public static final String NAME = "Predator";
     private static final String TARGET = "Herbivore";
     private static int predatorsCount = 0;
     private static final List<String> obstacles = List.of("Rock", "Tree", "Grass", "Predator");
+    private static final boolean movable = true;
     private final int attackPower;
 
     public Predator(int speed, int hp, int attackPower) {
@@ -43,25 +45,30 @@ public class Predator extends Creature {
     }
 
     @Override
-    protected void attackTarget(MapOfWorld world, Creature predator, Coordinate startCoordinate, Coordinate newCoordinate) {
-        Creature target = (Creature) world.coordinatesEntities.get(newCoordinate);
+    protected void attackTarget(MapOfWorld world, Creature predator, Coordinate startCoordinate, Coordinate newCoordinate, Map<Entity, Coordinate> newCreaturesCoordinates) {
+        Creature target = (Creature) world.getEntity(newCoordinate);
         predator.incrementHp(Math.min(target.getHp(), predator.getAttackPower()));
         target.decrementHp(predator.getAttackPower());
 
         if (target.isAlive()) {
-            world.newCreaturesCoordinates.put(predator, startCoordinate);
+            newCreaturesCoordinates.put(predator, startCoordinate);
+            newCreaturesCoordinates.put(target, newCoordinate);
         } else {
-            world.coordinatesEntities.put(startCoordinate, new EmptyCell());
-            world.coordinatesEntities.put(newCoordinate, predator);
-            target.decrementCountOfEntity();
-            world.newCreaturesCoordinates.remove(target);
-            world.newCreaturesCoordinates.put(predator, newCoordinate);
+            world.deleteEntity(newCoordinate);
+            world.moveCreatureToEmptyCell(predator, startCoordinate, newCoordinate);
+            newCreaturesCoordinates.remove(target);
+            newCreaturesCoordinates.put(predator, newCoordinate);
         }
     }
 
     @Override
     public void decrementCountOfEntity() {
         predatorsCount--;
+    }
+
+    @Override
+    public boolean isMovable() {
+        return movable;
     }
 
     protected int getAttackPower() {

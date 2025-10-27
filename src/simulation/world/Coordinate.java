@@ -34,10 +34,10 @@ public class Coordinate implements Comparable<Coordinate> {
     }
 
     public static Coordinate chooseEmptyRandomCoordinate(MapOfWorld world, Config config) {
-        Coordinate randomCoordinate = Coordinate.getRandomCoordinate(config);
+        Coordinate randomCoordinate = getRandomCoordinate(config);
 
-        while (!(world.coordinatesEntities.get(randomCoordinate).getName().equals("EmptyCell"))) {
-            randomCoordinate = Coordinate.getRandomCoordinate(config);
+        while (!(world.getEntity(randomCoordinate).getName().equals("EmptyCell"))) {
+            randomCoordinate = getRandomCoordinate(config);
 
             if (EmptyCell.emptyCellsCount < Math.max(config.numberOfGrasses,
                     Math.max(config.numberOfHerbivores, config.numberOfPredators))) {

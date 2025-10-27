@@ -1,11 +1,9 @@
 package simulation.entity;
 
-import simulation.world.Coordinate;
-import simulation.world.MapOfWorld;
-
 public class Rock extends Entity {
     private static final String NAME = "Rock";
     private static int rocksCount = 0;
+    private static final boolean movable = false;
 
     public Rock() {
         rocksCount++;
@@ -27,5 +25,10 @@ public class Rock extends Entity {
     @Override
     public void decrementCountOfEntity() {
         rocksCount--;
+    }
+
+    @Override
+    public boolean isMovable() {
+        return movable;
     }
 }
