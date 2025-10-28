@@ -6,7 +6,6 @@ import simulation.world.MapOfWorld;
 import simulation.world.PathFinder;
 
 import java.util.List;
-import java.util.Map;
 
 public abstract class Creature extends Entity {
     private final int speed;
@@ -21,7 +20,7 @@ public abstract class Creature extends Entity {
 
     public abstract List<String> GetObstacles();
 
-    protected abstract void attackTarget(MapOfWorld world, Creature creature, Coordinate startCoordinate, Coordinate newCoordinate, Map<Entity, Coordinate> newCreaturesCoordinates);
+    protected abstract void attackTarget(MapOfWorld world, Creature creature, Coordinate startCoordinate, Coordinate newCoordinate);
 
     protected abstract int getAttackPower();
 
@@ -45,53 +44,35 @@ public abstract class Creature extends Entity {
         this.hp += hp;
     }
 
-    protected int getSpeed() {
+    public int getSpeed() {
         return speed;
     }
 
-    public void makeMove(MapOfWorld world, Creature currentCreature, Coordinate startCoordinate, PathFinder pathFinder, Map<Entity, Coordinate> newCreaturesCoordinates) {
-        List<Coordinate> wayToTarget = pathFinder.findWayToTarget(world, currentCreature, startCoordinate);
+    public void makeMove(MapOfWorld world, Creature currentCreature, Coordinate startCoordinate, PathFinder pathFinder) {
+        Coordinate newCoordinate = pathFinder.findCellForMove(world, currentCreature, startCoordinate);
 
-        if (wayToTarget.isEmpty()) {
+        if (newCoordinate.equals(startCoordinate)) {
             currentCreature.decrementHp();
 
-            if (currentCreature.isAlive()) {
-                creatureRemainsAlive(currentCreature, startCoordinate, newCreaturesCoordinates);
-            } else {
+            if (currentCreature.isDied()) {
                 world.deleteEntity(startCoordinate);
             }
             return;
         }
-        Coordinate newCoordinate = selectNewCoordinateWithCreatureSpeed(currentCreature, wayToTarget);
 
-        if (world.getEntity(newCoordinate).getName().equals(currentCreature.getTarget())) {
-            currentCreature.attackTarget(world, currentCreature, startCoordinate, newCoordinate, newCreaturesCoordinates);
+        if (currentCreature.getTarget().equals(world.getEntity(newCoordinate).getName())) {
+            currentCreature.attackTarget(world, currentCreature, startCoordinate, newCoordinate);
         } else {
             world.moveCreatureToEmptyCell(currentCreature, startCoordinate, newCoordinate);
             currentCreature.decrementHp();
 
-            if (currentCreature.isAlive()) {
-                creatureRemainsAlive(currentCreature, newCoordinate, newCreaturesCoordinates);
-            } else {
+            if (currentCreature.isDied()) {
                 world.deleteEntity(newCoordinate);
             }
         }
     }
 
-    public Coordinate selectNewCoordinateWithCreatureSpeed(Creature currentCreature, List<Coordinate> wayToTarget) {
-
-        if (wayToTarget.size() > currentCreature.getSpeed()) {
-            return wayToTarget.get(currentCreature.getSpeed());
-        } else {
-            return wayToTarget.get(wayToTarget.size() - 1);
-        }
-    }
-
-    public boolean isAlive() {
-        return this.getHp() > 0;
-    }
-
-    public void creatureRemainsAlive(Creature currentCreature, Coordinate coordinate, Map<Entity, Coordinate> newCreaturesCoordinates) {
-        newCreaturesCoordinates.put(currentCreature, coordinate);
+    public boolean isDied() {
+        return this.getHp() < 1;
     }
 }

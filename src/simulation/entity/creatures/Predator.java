@@ -1,11 +1,9 @@
 package simulation.entity.creatures;
 
-import simulation.entity.Entity;
 import simulation.world.Coordinate;
 import simulation.world.MapOfWorld;
 
 import java.util.List;
-import java.util.Map;
 
 public class Predator extends Creature {
     public static final String NAME = "Predator";
@@ -45,19 +43,14 @@ public class Predator extends Creature {
     }
 
     @Override
-    protected void attackTarget(MapOfWorld world, Creature predator, Coordinate startCoordinate, Coordinate newCoordinate, Map<Entity, Coordinate> newCreaturesCoordinates) {
+    protected void attackTarget(MapOfWorld world, Creature predator, Coordinate startCoordinate, Coordinate newCoordinate) {
         Creature target = (Creature) world.getEntity(newCoordinate);
         predator.incrementHp(Math.min(target.getHp(), predator.getAttackPower()));
         target.decrementHp(predator.getAttackPower());
 
-        if (target.isAlive()) {
-            newCreaturesCoordinates.put(predator, startCoordinate);
-            newCreaturesCoordinates.put(target, newCoordinate);
-        } else {
+        if (target.isDied()) {
             world.deleteEntity(newCoordinate);
             world.moveCreatureToEmptyCell(predator, startCoordinate, newCoordinate);
-            newCreaturesCoordinates.remove(target);
-            newCreaturesCoordinates.put(predator, newCoordinate);
         }
     }
 

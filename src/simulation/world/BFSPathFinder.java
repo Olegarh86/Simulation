@@ -15,6 +15,13 @@ public class BFSPathFinder implements PathFinder {
     }
 
     @Override
+    public Coordinate findCellForMove(MapOfWorld map, Creature creature, Coordinate startCoordinate) {
+        List<Coordinate> wayToTarget = findWayToTarget(map, creature, startCoordinate);
+
+        return selectNewCoordinateWithCreatureSpeed(creature, wayToTarget, startCoordinate);
+    }
+
+    @Override
     public List<Coordinate> findWayToTarget(MapOfWorld map, Creature creature, Coordinate startCoordinate) {
         Queue<Coordinate> queue = new LinkedList<>();
         Map<Coordinate, Coordinate> path = new HashMap<>();
@@ -57,30 +64,41 @@ public class BFSPathFinder implements PathFinder {
     public List<Coordinate> findAllCellsAvailableForMovement(MapOfWorld world, Creature creature, Coordinate startCoordinate) {
         List<Coordinate> allCellsAvailableForMove = new ArrayList<>();
         Coordinate tempCoordinate = getCoordinate(startCoordinate.getLine() - 1, startCoordinate.getColumn());
-        if (tempCoordinate.getLine() >= 0 && cellAvailableToMove(world, creature, tempCoordinate)) {
+        if (tempCoordinate.getLine() >= 0 && cellAvailableForMove(world, creature, tempCoordinate)) {
             allCellsAvailableForMove.add(tempCoordinate);
         }
 
         tempCoordinate = getCoordinate(startCoordinate.getLine() + 1, startCoordinate.getColumn());
-        if (tempCoordinate.getLine() < config.numberOfColumns && cellAvailableToMove(world, creature, tempCoordinate)) {
+        if (tempCoordinate.getLine() < config.numberOfColumns && cellAvailableForMove(world, creature, tempCoordinate)) {
             allCellsAvailableForMove.add(tempCoordinate);
         }
 
         tempCoordinate = getCoordinate(startCoordinate.getLine(), startCoordinate.getColumn() - 1);
-        if (tempCoordinate.getColumn() >= 0 && cellAvailableToMove(world, creature, tempCoordinate)) {
+        if (tempCoordinate.getColumn() >= 0 && cellAvailableForMove(world, creature, tempCoordinate)) {
             allCellsAvailableForMove.add(tempCoordinate);
         }
 
         tempCoordinate = getCoordinate(startCoordinate.getLine(), startCoordinate.getColumn() + 1);
-        if (tempCoordinate.getColumn() + 1 <= config.numberOfLines && cellAvailableToMove(world, creature, tempCoordinate)) {
+        if (tempCoordinate.getColumn() + 1 <= config.numberOfLines && cellAvailableForMove(world, creature, tempCoordinate)) {
             allCellsAvailableForMove.add(tempCoordinate);
         }
 
         return allCellsAvailableForMove;
     }
 
-    private boolean cellAvailableToMove(MapOfWorld world, Creature creature, Coordinate tempCoordinate) {
+    private boolean cellAvailableForMove(MapOfWorld world, Creature creature, Coordinate tempCoordinate) {
         String cellForMove = world.getEntity(tempCoordinate).getName();
         return !creature.GetObstacles().contains(cellForMove);
+    }
+
+    public Coordinate selectNewCoordinateWithCreatureSpeed(Creature currentCreature, List<Coordinate> wayToTarget, Coordinate startCoordinate) {
+
+        if (wayToTarget.isEmpty()) {
+            return startCoordinate;
+        }
+        if (wayToTarget.size() > currentCreature.getSpeed()) {
+            return wayToTarget.get(currentCreature.getSpeed());
+        }
+        return wayToTarget.get(wayToTarget.size() - 1);
     }
 }

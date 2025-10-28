@@ -1,11 +1,9 @@
 package simulation.entity.creatures;
 
-import simulation.entity.Entity;
 import simulation.world.Coordinate;
 import simulation.world.MapOfWorld;
 
 import java.util.List;
-import java.util.Map;
 
 public class Herbivore extends Creature{
     public static final String NAME = "Herbivore";
@@ -38,11 +36,10 @@ public class Herbivore extends Creature{
     }
 
     @Override
-    protected void attackTarget(MapOfWorld world, Creature herbivore, Coordinate startCoordinate, Coordinate newCoordinate, Map<Entity, Coordinate> newCreaturesCoordinates) {
+    protected void attackTarget(MapOfWorld world, Creature herbivore, Coordinate startCoordinate, Coordinate newCoordinate) {
         world.deleteEntity(newCoordinate);
         world.moveCreatureToEmptyCell(herbivore, startCoordinate, newCoordinate);
         herbivore.incrementHp();
-        newCreaturesCoordinates.put(herbivore, newCoordinate);
     }
 
     @Override
