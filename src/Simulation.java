@@ -31,9 +31,8 @@ public class Simulation {
         config = configFactory.get();
         this.world = new MapOfWorld(config);
         threadKeyListener = new ThreadKeyListener(config);
-        PathFinder pathFinder = new BFSPathFinder(config);
         Actions initActions = new InitActions(world, config);
-        Actions turnActions = new TurnActions(world, pathFinder);
+        Actions turnActions = new TurnActions(world, config);
         this.actions = List.of(turnActions, initActions);
         renderer = new BaseSimulationRenderer();
         initActions.execute();

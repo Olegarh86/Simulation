@@ -1,6 +1,8 @@
 package simulation.entity.creatures;
 
 import simulation.entity.Entity;
+import simulation.utils.config.Config;
+import simulation.world.BFSPathFinder;
 import simulation.world.Coordinate;
 import simulation.world.MapOfWorld;
 import simulation.world.PathFinder;
@@ -48,7 +50,8 @@ public abstract class Creature extends Entity {
         return speed;
     }
 
-    public void makeMove(MapOfWorld world, Creature currentCreature, Coordinate startCoordinate, PathFinder pathFinder) {
+    public void makeMove(MapOfWorld world, Config config, Creature currentCreature, Coordinate startCoordinate) {
+        PathFinder pathFinder = new BFSPathFinder(config);
         Coordinate newCoordinate = pathFinder.findCellForMove(world, currentCreature, startCoordinate);
 
         if (newCoordinate.equals(startCoordinate)) {
