@@ -3,7 +3,6 @@ package simulation.world;
 import simulation.entity.*;
 import simulation.entity.Entity;
 import simulation.entity.creatures.Creature;
-import simulation.entity.factories.EntityFactory;
 import simulation.utils.config.Config;
 
 import java.util.*;
@@ -23,13 +22,10 @@ public class MapOfWorld {
     }
 
     public Map<Coordinate, Entity> getCoordinatesEntities() {
-        return coordinatesEntities;
+        return new TreeMap<>(coordinatesEntities);
     }
 
     public void setEntity(Coordinate coordinate, Entity entity) {
-        if (entity.isMovable()) {
-            coordinatesEntities.put(coordinate, entity);
-        }
         coordinatesEntities.put(coordinate, entity);
     }
 
@@ -47,16 +43,6 @@ public class MapOfWorld {
         Entity emptyCell = coordinatesEntities.replace(newCoordinate, currentCreature);
         if (emptyCell != null) {
             setEntity(startCoordinate, emptyCell);
-        }
-    }
-
-    public static void setEntitiesToRandomCoordinate(MapOfWorld world, Config config, EntityFactory entityFactory) {
-        Set<Entity> entities = entityFactory.createMultipleEntities(world, config);
-        Coordinate randomCoordinate;
-        for (Entity entity : entities) {
-            randomCoordinate = Coordinate.chooseEmptyRandomCoordinate(world, config);
-            world.setEntity(randomCoordinate, entity);
-            EmptyCell.emptyCellsCount--;
         }
     }
 }

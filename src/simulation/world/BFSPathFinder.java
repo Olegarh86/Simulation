@@ -27,14 +27,17 @@ public class BFSPathFinder implements PathFinder {
         Map<Coordinate, Coordinate> path = new HashMap<>();
         Set<Coordinate> visited = new HashSet<>();
         List<Coordinate> wayToTarget = new ArrayList<>();
+        List<Coordinate> wayToTargetAlt = new ArrayList<>();
 
         queue.add(startCoordinate);
         path.put(startCoordinate, null);
         visited.add(startCoordinate);
+        List<Nodes> arr = new ArrayList<>();
 
         while (!queue.isEmpty()) {
             Coordinate tempCoordinate = queue.poll();
-
+            Nodes temp = new Nodes();
+            temp.add(tempCoordinate);
             if (!map.getEntity(tempCoordinate).getName().equals(creature.getTarget())) {
                 List<Coordinate> cellsAvailableToMove = findAllCellsAvailableForMovement(map, creature, tempCoordinate);
 
@@ -43,21 +46,39 @@ public class BFSPathFinder implements PathFinder {
                     if (!visited.contains(nextCoordinate)) {
                         queue.add(nextCoordinate);
                         path.put(nextCoordinate, tempCoordinate);
+                        temp.add(nextCoordinate);
+//                        start.add(nextCoordinate);
                         visited.add(nextCoordinate);
                     }
                 }
+                arr.add(temp);
             } else {
-                while (tempCoordinate != null) {
+                wayToTargetAlt.add(tempCoordinate);
+                while (tempCoordinate != startCoordinate) {
+//                    wayToTarget.add(tempCoordinate);
+                    for (Nodes node : arr) {
+                        Nodes.Node temp1 = node.head;
 
-                    wayToTarget.add(tempCoordinate);
-                    tempCoordinate = path.remove(tempCoordinate);
+                        while (temp1.coordinate != null) {
+                            if (temp1.coordinate.equals(tempCoordinate)) {
+                                wayToTargetAlt.add(node.head.coordinate);
+                                tempCoordinate = node.head.coordinate;
+                                break;
+                            }
+                            if (temp1.next == null) {
+                                break;
+                            }
+                            temp1 = temp1.next;
+                        }
+                    }
+//                    tempCoordinate = path.remove(tempCoordinate);
                 }
-                Collections.reverse(wayToTarget);
-                return wayToTarget;
+                Collections.reverse(wayToTargetAlt);
+                return wayToTargetAlt;
             }
         }
-        Collections.reverse(wayToTarget);
-        return wayToTarget;
+        Collections.reverse(wayToTargetAlt);
+        return wayToTargetAlt;
     }
 
     @Override
@@ -100,5 +121,42 @@ public class BFSPathFinder implements PathFinder {
             return wayToTarget.get(currentCreature.getSpeed());
         }
         return wayToTarget.get(wayToTarget.size() - 1);
+    }
+}
+
+class Nodes {
+    public Node head;
+    public Node end;
+
+    class Node {
+        public Coordinate coordinate;
+        public Node prev;
+        public Node next;
+
+        public Node(Coordinate coordinate, Node prev, Node next) {
+            this.coordinate = coordinate;
+            this.prev = prev;
+            this.next = next;
+        }
+
+        public Node getNode(Coordinate coordinate) {
+            return null;
+        }
+
+        public Coordinate getCoordinate(Node node) {
+            return node.coordinate;
+        }
+    }
+
+    public void add(Coordinate coordinate) {
+        if (head == null) {
+            head = new Node(coordinate, null, null);
+            return;
+        }
+        Node temp = head;
+        while (temp.next != null) {
+            temp = temp.next;
+        }
+        temp.next = new Node(coordinate, temp, null);
     }
 }

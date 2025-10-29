@@ -1,6 +1,7 @@
 package simulation.utils.config;
 
 import simulation.utils.io.ConsoleInput;
+import simulation.utils.io.Input;
 import simulation.utils.io.Output;
 
 public class UserConfigFactory implements ConfigFactory {
@@ -25,13 +26,15 @@ public class UserConfigFactory implements ConfigFactory {
     private final static int minDelay = 1;
     private final static int maxDelay = Integer.MAX_VALUE;
     private final Output consoleOutput;
+    private final Input consoleInput;
 
-    protected UserConfigFactory(Output consoleOutput) {
+    protected UserConfigFactory(Input consoleInput, Output consoleOutput) {
         this.consoleOutput = consoleOutput;
+        this.consoleInput = consoleInput;
     }
 
     @Override
-    public Config get() {
+    public Config getConfig() {
         Config config = new Config();
         consoleOutput.printMessageChangeConfig();
         config.numberOfLines = input(HOW_MANY_COLUMNS, minColumnsAndLines, maxColumnsAndLines);
@@ -51,13 +54,13 @@ public class UserConfigFactory implements ConfigFactory {
     }
 
     private int input(String message, int min, int max) {
-        ConsoleInput input = new ConsoleInput();
         String inputSymbol;
+        int value;
         while (true) {
             System.out.printf(message, min, max);
-            inputSymbol = input.readString();
+            inputSymbol = consoleInput.readString();
             if (isInteger(inputSymbol)) {
-                int value = Integer.parseInt(inputSymbol);
+                value = Integer.parseInt(inputSymbol);
 
                 if (isValid(value, min, max)) {
                     return value;

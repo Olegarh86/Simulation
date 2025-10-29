@@ -16,7 +16,7 @@ public class DefaultConfigFactory implements ConfigFactory {
     public final static int DELAY_BETWEEN_MOVES_IN_MILLISECONDS = 100;
 
     @Override
-    public Config get() {
+    public Config getConfig() {
         Config config = new Config();
         config.numberOfColumns = NUMBER_OF_COLUMNS;
         config.numberOfLines = NUMBER_OF_LINES;

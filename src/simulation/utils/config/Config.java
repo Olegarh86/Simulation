@@ -22,7 +22,7 @@ public class Config {
     public int predatorsAttackPower;
     public int delayBetweenMovesInMilliseconds;
 
-    public static ConfigFactory changeConfigFactory(Input consoleInput, Output consoleOutput) {
+    public static ConfigFactory chooseConfigFactory(Input consoleInput, Output consoleOutput) {
         ConfigFactory configFactory = null;
         consoleOutput.printGreetings();
 
@@ -32,7 +32,7 @@ public class Config {
                 configFactory = new DefaultConfigFactory();
                 consoleOutput.printDefaultConfigWithDelay();
             } else if (typeOfConfig.equals(userConfig)) {
-                configFactory = new UserConfigFactory(consoleOutput);
+                configFactory = new UserConfigFactory(consoleInput, consoleOutput);
             } else {
             consoleOutput.printMessage(ERROR_CHANGE_CONFIG_FACTORY);
             }

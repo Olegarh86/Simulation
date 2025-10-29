@@ -8,7 +8,7 @@ import java.util.List;
 public class Predator extends Creature {
     public static final String NAME = "Predator";
     private static final String TARGET = "Herbivore";
-    private static int predatorsCount = 0;
+    private static int predatorsCount;
     private static final List<String> obstacles = List.of("Rock", "Tree", "Grass", "Predator");
     private static final boolean movable = true;
     private final int attackPower;

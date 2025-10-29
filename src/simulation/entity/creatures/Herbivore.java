@@ -10,7 +10,7 @@ public class Herbivore extends Creature{
     private static final String TARGET = "Grass";
     private static final List<String> obstacles = List.of("Rock", "Tree", "Herbivore", "Predator");
     private static final boolean movable = true;
-    private static int herbivoresCount = 0;
+    private static int herbivoresCount;
 
     public Herbivore(int speed, int hp) {
         super(speed, hp);

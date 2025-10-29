@@ -2,7 +2,7 @@ package simulation.entity;
 
 public class EmptyCell extends Entity {
     private static final String NAME = "EmptyCell";
-    public static int emptyCellsCount = 0;
+    public static int emptyCellsCount;
 
     public EmptyCell() {
         emptyCellsCount++;

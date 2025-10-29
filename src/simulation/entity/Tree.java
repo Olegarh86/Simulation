@@ -2,7 +2,7 @@ package simulation.entity;
 
 public class Tree extends Entity {
     private static final String NAME = "Tree";
-    private static int treesCount = 0;
+    private static int treesCount;
     private static final boolean movable = false;
 
     public Tree() {

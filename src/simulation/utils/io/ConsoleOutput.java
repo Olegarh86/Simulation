@@ -71,4 +71,14 @@ public class ConsoleOutput implements Output{
 //            }
 //        }
     }
+
+    @Override
+    public void incorrectKey() {
+        System.out.println("""
+                                Incorrect key. Please, enter key:
+                                1 - to pause the simulation
+                                2 - to start endless simulation
+                                Enter - to the next turn
+                                Space + Enter - to stop the simulation""");
+    }
 }

@@ -1,14 +1,12 @@
 import simulation.entity.actions.Actions;
 import simulation.entity.actions.InitActions;
 import simulation.entity.actions.TurnActions;
-import simulation.world.BFSPathFinder;
+import simulation.utils.io.Input;
 import simulation.world.MapOfWorld;
-import simulation.world.PathFinder;
 import simulation.utils.config.Config;
 import simulation.utils.config.ConfigFactory;
 import simulation.utils.io.ConsoleInput;
 import simulation.utils.io.ConsoleOutput;
-import simulation.utils.io.Input;
 import simulation.utils.io.Output;
 import simulation.utils.io.renderer.BaseSimulationRenderer;
 import simulation.utils.io.renderer.Renderer;
@@ -16,28 +14,20 @@ import simulation.utils.io.renderer.Renderer;
 import java.util.List;
 
 public class Simulation {
-    private static int countOfMoves = 0;
+    private static int countOfMoves;
     private final MapOfWorld world;
-    private final Renderer renderer;
     private final Config config;
-    private final ThreadKeyListener threadKeyListener;
     private final Output output;
+    private final Input input;
     private final List<Actions> actions;
 
     private Simulation() {
-        Input consoleInput = new ConsoleInput();
-        output = new ConsoleOutput();
-        ConfigFactory configFactory = Config.changeConfigFactory(consoleInput, output);
-        config = configFactory.get();
+        this.output = new ConsoleOutput();
+        this.input = new ConsoleInput();
+        ConfigFactory configFactory = Config.chooseConfigFactory(input, output);
+        this.config = configFactory.getConfig();
         this.world = new MapOfWorld(config);
-        threadKeyListener = new ThreadKeyListener(config);
-        Actions initActions = new InitActions(world, config);
-        Actions turnActions = new TurnActions(world, config);
-        this.actions = List.of(turnActions, initActions);
-        renderer = new BaseSimulationRenderer();
-        initActions.execute();
-        renderer.draw(config, world);
-        threadKeyListener.start();
+        this.actions = List.of(new InitActions(world, config), new TurnActions(world, config));
     }
 
     public static void main(String[] args) {
@@ -51,6 +41,9 @@ public class Simulation {
     }
 
     private void startSimulation() throws InterruptedException {
+        ThreadKeyListener threadKeyListener = new ThreadKeyListener(config, input, output);
+        threadKeyListener.start();
+        Renderer renderer = new BaseSimulationRenderer();
         while (!threadKeyListener.stopSimulation) {
             try {
                 Thread.sleep(config.delayBetweenMovesInMilliseconds);
@@ -80,18 +73,20 @@ public class Simulation {
         volatile boolean pauseSimulation = false;
         volatile boolean stopSimulation = false;
         final Object lock = new Object();
-        Config config;
+        private final Config config;
+        private final Input input;
+        private final Output output;
 
-        public ThreadKeyListener(Config config) {
+        public ThreadKeyListener(Config config, Input input, Output output) {
             this.config = config;
+            this.output = output;
+            this.input = input;
         }
 
         @Override
         public void run() {
-            ConsoleInput consoleScanner = new ConsoleInput();
-
             while (!stopSimulation) {
-                String answerFromUser = consoleScanner.readString();
+                String answerFromUser = input.readString();
 
                 switch (answerFromUser) {
                     case "1" -> pauseSimulation();
@@ -100,12 +95,7 @@ public class Simulation {
                     case " " -> stopSimulation();
                     default -> {
                         pauseSimulation();
-                        System.out.println("""
-                                Incorrect key. Please, enter key:
-                                1 - to pause the simulation
-                                2 - to start endless simulation
-                                Enter - to the next turn
-                                Space + Enter - to stop the simulation""");
+                        output.incorrectKey();
                     }
                 }
             }

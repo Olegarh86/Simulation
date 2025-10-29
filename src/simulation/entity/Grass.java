@@ -2,7 +2,7 @@ package simulation.entity;
 
 public class Grass extends Entity {
     private static final String NAME = "Grass";
-    private static int grassCount = 0;
+    private static int grassCount;
     private static final boolean movable = false;
 
     public Grass() {
