@@ -66,7 +66,7 @@ public class UserConfigFactory implements ConfigFactory {
                     return value;
                 }
             }
-            System.out.println(ERROR);
+            consoleOutput.printMessage(ERROR);
         }
     }
 

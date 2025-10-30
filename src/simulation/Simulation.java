@@ -1,12 +1,9 @@
+package simulation;
+
 import simulation.entity.actions.Actions;
-import simulation.entity.actions.InitActions;
-import simulation.entity.actions.TurnActions;
 import simulation.utils.io.Input;
 import simulation.world.MapOfWorld;
 import simulation.utils.config.Config;
-import simulation.utils.config.ConfigFactory;
-import simulation.utils.io.ConsoleInput;
-import simulation.utils.io.ConsoleOutput;
 import simulation.utils.io.Output;
 import simulation.utils.io.renderer.BaseSimulationRenderer;
 import simulation.utils.io.renderer.Renderer;
@@ -21,29 +18,18 @@ public class Simulation {
     private final Input input;
     private final List<Actions> actions;
 
-    private Simulation() {
-        this.output = new ConsoleOutput();
-        this.input = new ConsoleInput();
-        ConfigFactory configFactory = Config.chooseConfigFactory(input, output);
-        this.config = configFactory.getConfig();
-        this.world = new MapOfWorld(config);
-        this.actions = List.of(new InitActions(world, config), new TurnActions(world, config));
+    public Simulation(Output output, Input input, Config config, MapOfWorld world, List<Actions> actions) {
+        this.output = output;
+        this.input = input;
+        this.config = config;
+        this.world = world;
+        this.actions = actions;
     }
 
-    public static void main(String[] args) {
-
-        Simulation simulation = new Simulation();
-        try {
-            simulation.startSimulation();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void startSimulation() throws InterruptedException {
+    public void startSimulation() throws InterruptedException {
         ThreadKeyListener threadKeyListener = new ThreadKeyListener(config, input, output);
         threadKeyListener.start();
-        Renderer renderer = new BaseSimulationRenderer();
+        Renderer renderer = new BaseSimulationRenderer(output);
         while (!threadKeyListener.stopSimulation) {
             try {
                 Thread.sleep(config.delayBetweenMovesInMilliseconds);

@@ -66,26 +66,11 @@ public class BFSPathFinder implements PathFinder {
     @Override
     public List<Coordinate> findAllCellsAvailableForMovement(MapOfWorld world, Creature creature, Coordinate startCoordinate) {
         List<Coordinate> allCellsAvailableForMove = new ArrayList<>();
-        Coordinate tempCoordinate = getCoordinate(startCoordinate.getLine() - 1, startCoordinate.getColumn());
-        if (tempCoordinate.getLine() >= 0 && cellIsAvailableForMove(world, creature, tempCoordinate)) {
-            allCellsAvailableForMove.add(tempCoordinate);
+        for (Coordinate coordinate : findAllShifts(startCoordinate)) {
+            if (isValid(coordinate) && cellIsAvailableForMove(world, creature, coordinate)) {
+                allCellsAvailableForMove.add(coordinate);
+            }
         }
-
-        tempCoordinate = getCoordinate(startCoordinate.getLine() + 1, startCoordinate.getColumn());
-        if (tempCoordinate.getLine() < config.numberOfColumns && cellIsAvailableForMove(world, creature, tempCoordinate)) {
-            allCellsAvailableForMove.add(tempCoordinate);
-        }
-
-        tempCoordinate = getCoordinate(startCoordinate.getLine(), startCoordinate.getColumn() - 1);
-        if (tempCoordinate.getColumn() >= 0 && cellIsAvailableForMove(world, creature, tempCoordinate)) {
-            allCellsAvailableForMove.add(tempCoordinate);
-        }
-
-        tempCoordinate = getCoordinate(startCoordinate.getLine(), startCoordinate.getColumn() + 1);
-        if (tempCoordinate.getColumn() + 1 <= config.numberOfLines && cellIsAvailableForMove(world, creature, tempCoordinate)) {
-            allCellsAvailableForMove.add(tempCoordinate);
-        }
-
         return allCellsAvailableForMove;
     }
 
@@ -93,6 +78,22 @@ public class BFSPathFinder implements PathFinder {
     public boolean cellIsAvailableForMove(MapOfWorld world, Creature creature, Coordinate tempCoordinate) {
         String cellForMove = world.getEntity(tempCoordinate).getName();
         return !creature.GetObstacles().contains(cellForMove);
+    }
+
+    @Override
+    public boolean isValid(Coordinate tempCoordinate) {
+        return tempCoordinate.getLine() >= 0 && tempCoordinate.getLine() < config.numberOfColumns &&
+                tempCoordinate.getColumn() >= 0 && tempCoordinate.getColumn() + 1 <= config.numberOfLines;
+    }
+
+    @Override
+    public List<Coordinate> findAllShifts(Coordinate startCoordinate) {
+        List<Coordinate> allShifts = new ArrayList<>();
+        allShifts.add(getCoordinate(startCoordinate.getLine() - 1, startCoordinate.getColumn()));
+        allShifts.add(getCoordinate(startCoordinate.getLine() + 1, startCoordinate.getColumn()));
+        allShifts.add(getCoordinate(startCoordinate.getLine(), startCoordinate.getColumn() - 1));
+        allShifts.add(getCoordinate(startCoordinate.getLine(), startCoordinate.getColumn() + 1));
+        return allShifts;
     }
 
     @Override

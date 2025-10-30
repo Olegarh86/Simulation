@@ -9,8 +9,10 @@ public interface PathFinder {
     List<Coordinate> findWayToTarget(MapOfWorld map, Creature creature, Coordinate startCoordinate);
     List<Coordinate> findAllCellsAvailableForMovement(MapOfWorld map, Creature creature, Coordinate startCoordinate);
     Coordinate findTarget(MapOfWorld map, Creature creature, Coordinate startCoordinate, List<Nodes> allNodes);
-    List<Coordinate> routeConstruction(Coordinate startCoordinate, Coordinate targetCoordinate, List<Nodes> allNodes);
     boolean targetIsAvailable(Coordinate startCoordinate, Coordinate targetCoordinate);
+    List<Coordinate> routeConstruction(Coordinate startCoordinate, Coordinate targetCoordinate, List<Nodes> allNodes);
     Coordinate selectCoordinateForMoveWithCreatureSpeed(Creature currentCreature, List<Coordinate> wayToTarget, Coordinate startCoordinate);
     boolean cellIsAvailableForMove(MapOfWorld world, Creature creature, Coordinate tempCoordinate);
+    boolean isValid(Coordinate coordinate);
+    List<Coordinate> findAllShifts(Coordinate startCoordinate);
 }
