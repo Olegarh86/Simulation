@@ -22,22 +22,69 @@ public class BFSPathFinder implements PathFinder {
     }
 
     @Override
+    public Coordinate findTarget(MapOfWorld map, Creature creature, Coordinate startCoordinate) {
+//        Set<Coordinate> visited = new HashSet<>();
+//        visited.add(startCoordinate);
+//
+//        if (!map.getEntity(startCoordinate).getName().equals(creature.getTarget())) {
+//            List<Coordinate> cellsAvailableToMove = findAllCellsAvailableForMovement(map, creature, startCoordinate);
+//
+//            for (Coordinate nextCoordinate : cellsAvailableToMove) {
+//
+//                if (!visited.contains(nextCoordinate)) {
+//                    queue.add(nextCoordinate);
+//                    nodes.addNode(nextCoordinate);
+//                    visited.add(nextCoordinate);
+//                }
+//            }
+//        }
+        return null;
+    }
+
+    @Override
+    public List<Coordinate> routeConstruction(Coordinate startCoordinate, Coordinate tempCoordinate, List<Nodes> allNodes) {
+        List<Coordinate> wayToTarget = new ArrayList<>();
+        wayToTarget.add(tempCoordinate);
+
+        while (tempCoordinate != startCoordinate) {
+
+            for(Nodes currentNodes : allNodes) {
+                Nodes.Node node = currentNodes.getHead();
+
+                while (node.getCoordinate() != null) {
+
+                    if (node.getCoordinate().equals(tempCoordinate)) {
+                        wayToTarget.add(currentNodes.getHead().getCoordinate());
+                        tempCoordinate = currentNodes.getHead().getCoordinate();
+                        break;
+                    }
+                    node = node.getNextNode();
+
+                    if (node == null) {
+                        break;
+                    }
+                }
+            }
+        }
+        Collections.reverse(wayToTarget);
+        return wayToTarget;
+    }
+
+    @Override
     public List<Coordinate> findWayToTarget(MapOfWorld map, Creature creature, Coordinate startCoordinate) {
         Queue<Coordinate> queue = new LinkedList<>();
-        Map<Coordinate, Coordinate> path = new HashMap<>();
-        Set<Coordinate> visited = new HashSet<>();
-        List<Coordinate> wayToTarget = new ArrayList<>();
-        List<Coordinate> wayToTargetAlt = new ArrayList<>();
 
-        queue.add(startCoordinate);
-        path.put(startCoordinate, null);
+        List<Nodes> allNodes = new ArrayList<>();
+        Set<Coordinate> visited = new HashSet<>();
         visited.add(startCoordinate);
-        List<Nodes> arr = new ArrayList<>();
+        queue.add(startCoordinate);
 
         while (!queue.isEmpty()) {
             Coordinate tempCoordinate = queue.poll();
-            Nodes temp = new Nodes();
-            temp.add(tempCoordinate);
+            Nodes nodes = new Nodes();
+            allNodes.add(nodes);
+            nodes.addNode(tempCoordinate);
+
             if (!map.getEntity(tempCoordinate).getName().equals(creature.getTarget())) {
                 List<Coordinate> cellsAvailableToMove = findAllCellsAvailableForMovement(map, creature, tempCoordinate);
 
@@ -45,40 +92,15 @@ public class BFSPathFinder implements PathFinder {
 
                     if (!visited.contains(nextCoordinate)) {
                         queue.add(nextCoordinate);
-                        path.put(nextCoordinate, tempCoordinate);
-                        temp.add(nextCoordinate);
-//                        start.add(nextCoordinate);
+                        nodes.addNode(nextCoordinate);
                         visited.add(nextCoordinate);
                     }
                 }
-                arr.add(temp);
             } else {
-                wayToTargetAlt.add(tempCoordinate);
-                while (tempCoordinate != startCoordinate) {
-//                    wayToTarget.add(tempCoordinate);
-                    for (Nodes node : arr) {
-                        Nodes.Node temp1 = node.head;
-
-                        while (temp1.coordinate != null) {
-                            if (temp1.coordinate.equals(tempCoordinate)) {
-                                wayToTargetAlt.add(node.head.coordinate);
-                                tempCoordinate = node.head.coordinate;
-                                break;
-                            }
-                            if (temp1.next == null) {
-                                break;
-                            }
-                            temp1 = temp1.next;
-                        }
-                    }
-//                    tempCoordinate = path.remove(tempCoordinate);
-                }
-                Collections.reverse(wayToTargetAlt);
-                return wayToTargetAlt;
+                return routeConstruction(startCoordinate, tempCoordinate, allNodes);
             }
         }
-        Collections.reverse(wayToTargetAlt);
-        return wayToTargetAlt;
+        return List.of();
     }
 
     @Override
@@ -125,30 +147,31 @@ public class BFSPathFinder implements PathFinder {
 }
 
 class Nodes {
-    public Node head;
-    public Node end;
+    private Node head;
 
-    class Node {
-        public Coordinate coordinate;
-        public Node prev;
-        public Node next;
+    static class Node {
+        private final Coordinate coordinate;
+        private Node next;
 
         public Node(Coordinate coordinate, Node prev, Node next) {
             this.coordinate = coordinate;
-            this.prev = prev;
             this.next = next;
         }
 
-        public Node getNode(Coordinate coordinate) {
-            return null;
+        public Node getNextNode() {
+            return this.next;
         }
 
-        public Coordinate getCoordinate(Node node) {
-            return node.coordinate;
+        public Coordinate getCoordinate() {
+            return this.coordinate;
         }
     }
 
-    public void add(Coordinate coordinate) {
+    public Node getHead() {
+        return this.head;
+    }
+
+    public void addNode(Coordinate coordinate) {
         if (head == null) {
             head = new Node(coordinate, null, null);
             return;
