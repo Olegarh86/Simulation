@@ -11,7 +11,7 @@ public class ConsoleOutput implements Output{
 
     @Override
     public void printCount(int countOfMoves) {
-        System.out.println("Number of turns made by creatures: " + countOfMoves);
+        System.out.println("Move number: " + countOfMoves);
     }
 
     @Override
