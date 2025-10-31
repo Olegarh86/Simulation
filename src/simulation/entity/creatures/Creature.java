@@ -1,5 +1,6 @@
 package simulation.entity.creatures;
 
+import simulation.entity.EmptyCell;
 import simulation.entity.Entity;
 import simulation.utils.config.Config;
 import simulation.world.BFSPathFinder;
@@ -18,9 +19,9 @@ public abstract class Creature extends Entity {
         this.hp = hp;
     }
 
-    public abstract String getTarget();
+    public abstract Class<? extends Entity> getTarget();
 
-    public abstract List<String> GetObstacles();
+    public abstract List<Class<? extends Entity>> GetObstacles();
 
     protected abstract void attackTarget(MapOfWorld world, Creature creature, Coordinate startCoordinate, Coordinate newCoordinate);
 
@@ -63,7 +64,7 @@ public abstract class Creature extends Entity {
             return;
         }
 
-        if (currentCreature.getTarget().equals(world.getEntity(newCoordinate).getName())) {
+        if (world.getEntity(newCoordinate).isPresent() && currentCreature.getTarget().equals(world.getEntity(newCoordinate).get().getClass())) {
             currentCreature.attackTarget(world, currentCreature, startCoordinate, newCoordinate);
         } else {
             world.moveCreatureToEmptyCell(currentCreature, startCoordinate, newCoordinate);

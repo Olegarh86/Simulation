@@ -1,5 +1,6 @@
 package simulation.utils.io.renderer;
 
+import simulation.entity.EmptyCell;
 import simulation.entity.Entity;
 import simulation.utils.config.Config;
 import simulation.utils.io.Output;
@@ -35,7 +36,7 @@ public class BaseSimulationRenderer implements Renderer {
 //        int count = 0;
         for (int i = 0; i < config.numberOfLines; i++) {
             for (int j = 0; j < config.numberOfColumns; j++) {
-                stringBuilder.append(getSprite(world.getEntity(Coordinate.getCoordinate(i, j)))).append(INTERVAL);
+                stringBuilder.append(getSprite(world.getEntity(Coordinate.getCoordinate(i, j)).orElse(new EmptyCell()))).append(INTERVAL);
 
             }
             stringBuilder.append("\n");

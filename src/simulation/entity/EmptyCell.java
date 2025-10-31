@@ -2,10 +2,10 @@ package simulation.entity;
 
 public class EmptyCell extends Entity {
     private static final String NAME = "EmptyCell";
-    public static int emptyCellsCount;
+//    public static int emptyCellsCount;
 
     public EmptyCell() {
-        emptyCellsCount++;
+//        emptyCellsCount++;
     }
 
     @Override
@@ -15,7 +15,7 @@ public class EmptyCell extends Entity {
 
     @Override
     public void decrementCountOfEntity() {
-        emptyCellsCount--;
+//        emptyCellsCount--;
     }
 
     @Override

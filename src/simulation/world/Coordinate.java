@@ -21,13 +21,13 @@ public record Coordinate(int line, int column) implements Comparable<Coordinate>
     public static Coordinate chooseEmptyRandomCoordinate(MapOfWorld world, Config config) {
         Coordinate randomCoordinate = getRandomCoordinate(config);
 
-        while (!(world.getEntity(randomCoordinate).getName().equals("EmptyCell"))) {
+        while (world.getEntity(randomCoordinate).isPresent()) {
             randomCoordinate = getRandomCoordinate(config);
 
-            if (EmptyCell.emptyCellsCount < Math.max(config.numberOfGrasses,
-                    Math.max(config.numberOfHerbivores, config.numberOfPredators))) {
-                throw new RuntimeException("Empty cells is not available, too much entities in the simulation.");
-            }
+//            if (EmptyCell.emptyCellsCount < Math.max(config.numberOfGrasses,
+//                    Math.max(config.numberOfHerbivores, config.numberOfPredators))) {
+//                throw new RuntimeException("Empty cells is not available, too much entities in the simulation.");
+//            }
         }
         return randomCoordinate;
     }

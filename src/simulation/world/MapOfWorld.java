@@ -15,12 +15,12 @@ public class MapOfWorld {
 
     public MapOfWorld(Config config) {
         this.config = config;
-        for (int line = 0; line < config.numberOfColumns; line++) {
-            for (int column = 0; column < config.numberOfLines; column++) {
-                Coordinate tempCoordinate = getCoordinate(line, column);
-                setEntity(tempCoordinate, new EmptyCell());
-            }
-        }
+//        for (int line = 0; line < config.numberOfColumns; line++) {
+//            for (int column = 0; column < config.numberOfLines; column++) {
+//                Coordinate tempCoordinate = getCoordinate(line, column);
+//                setEntity(tempCoordinate, new EmptyCell());
+//            }
+//        }
     }
 
     public Map<Coordinate, Entity> getCoordinatesEntities() {
@@ -39,24 +39,22 @@ public class MapOfWorld {
         coordinatesEntities.put(coordinate, entity);
     }
 
-    public Entity getEntity(Coordinate coordinate) {
+    public Optional<Entity> getEntity(Coordinate coordinate) {
         coordinateValidation(coordinate);
-        return coordinatesEntities.get(coordinate);
+        return Optional.ofNullable(coordinatesEntities.get(coordinate));
     }
 
     public void deleteEntity(Coordinate coordinate) {
         coordinateValidation(coordinate);
-        Entity entity = getEntity(coordinate);
-        entity.decrementCountOfEntity();
-        coordinatesEntities.put(coordinate, new EmptyCell());
+        Optional<Entity> entity = getEntity(coordinate);
+        entity.ifPresent(Entity::decrementCountOfEntity);
+        coordinatesEntities.remove(coordinate);
     }
 
     public void moveCreatureToEmptyCell(Creature currentCreature, Coordinate startCoordinate, Coordinate newCoordinate) {
         coordinateValidation(startCoordinate);
         coordinateValidation(newCoordinate);
-        Entity emptyCell = coordinatesEntities.replace(newCoordinate, currentCreature);
-        if (emptyCell != null) {
-            setEntity(startCoordinate, emptyCell);
-        }
+        coordinatesEntities.put(newCoordinate, currentCreature);
+        coordinatesEntities.remove(startCoordinate);
     }
 }

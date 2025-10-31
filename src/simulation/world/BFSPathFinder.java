@@ -1,5 +1,7 @@
 package simulation.world;
 
+import simulation.entity.EmptyCell;
+import simulation.entity.Entity;
 import simulation.entity.creatures.Creature;
 import simulation.utils.config.Config;
 
@@ -14,6 +16,13 @@ public class BFSPathFinder implements PathFinder {
         this.config = config;
     }
 
+
+    @Override
+    public Coordinate findCellForMove(MapOfWorld map, Creature creature, Coordinate startCoordinate) {
+        List<Coordinate> wayToTarget = findWayToTarget(map, creature, startCoordinate);
+
+        return selectCoordinateForMoveWithCreatureSpeed(creature, wayToTarget, startCoordinate);
+    }
 
     private List<Coordinate> findWayToTarget(MapOfWorld map, Creature creature, Coordinate startCoordinate) {
         List<Nodes> allNodes = new ArrayList<>();
@@ -37,7 +46,8 @@ public class BFSPathFinder implements PathFinder {
             allNodes.add(nodes);
             nodes.addNode(tempCoordinate);
 
-            if (!map.getEntity(tempCoordinate).getName().equals(creature.getTarget())) {
+            Class<? extends Entity> name = map.getEntity(tempCoordinate).orElse(new EmptyCell()).getClass();
+            if (map.getEntity(tempCoordinate).isEmpty() || !creature.getTarget().equals(map.getEntity(tempCoordinate).get().getClass())) {
                 List<Coordinate> cellsAvailableToMove = findAllCellsAvailableForMovement(map, creature, tempCoordinate);
 
                 for (Coordinate nextCoordinate : cellsAvailableToMove) {
@@ -55,13 +65,6 @@ public class BFSPathFinder implements PathFinder {
         return tempCoordinate;
     }
 
-    @Override
-    public Coordinate findCellForMove(MapOfWorld map, Creature creature, Coordinate startCoordinate) {
-        List<Coordinate> wayToTarget = findWayToTarget(map, creature, startCoordinate);
-
-        return selectCoordinateForMoveWithCreatureSpeed(creature, wayToTarget, startCoordinate);
-    }
-
     private List<Coordinate> findAllCellsAvailableForMovement(MapOfWorld world, Creature creature, Coordinate startCoordinate) {
         List<Coordinate> allCellsAvailableForMove = new ArrayList<>();
         for (Coordinate coordinate : findAllShifts(startCoordinate)) {
@@ -73,8 +76,8 @@ public class BFSPathFinder implements PathFinder {
     }
 
     private boolean cellIsAvailableForMove(MapOfWorld world, Creature creature, Coordinate tempCoordinate) {
-        String cellForMove = world.getEntity(tempCoordinate).getName();
-        return !creature.GetObstacles().contains(cellForMove);
+        Optional<Entity> cellForMove = world.getEntity(tempCoordinate);
+        return cellForMove.map(entity -> !creature.GetObstacles().contains(entity.getClass())).orElse(true);
     }
 
     private boolean isValidCoordinate(Coordinate tempCoordinate) {

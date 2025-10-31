@@ -1,5 +1,9 @@
 package simulation.entity.creatures;
 
+import simulation.entity.Entity;
+import simulation.entity.Grass;
+import simulation.entity.Rock;
+import simulation.entity.Tree;
 import simulation.world.Coordinate;
 import simulation.world.MapOfWorld;
 
@@ -7,8 +11,8 @@ import java.util.List;
 
 public class Herbivore extends Creature{
     public static final String NAME = "Herbivore";
-    private static final String TARGET = "Grass";
-    private static final List<String> obstacles = List.of("Rock", "Tree", "Herbivore", "Predator");
+    Class<? extends Entity>  TARGET = Grass.class;
+    private static final List<Class<? extends Entity>> obstacles = List.of(Rock.class, Tree.class, Herbivore.class, Predator.class);
     private static final boolean movable = true;
     private static int herbivoresCount;
 
@@ -26,12 +30,12 @@ public class Herbivore extends Creature{
     }
 
     @Override
-    public String getTarget() {
+    public Class<? extends Entity> getTarget() {
         return TARGET;
     }
 
     @Override
-    public List<String> GetObstacles() {
+    public List<Class<? extends Entity>> GetObstacles() {
         return obstacles;
     }
 

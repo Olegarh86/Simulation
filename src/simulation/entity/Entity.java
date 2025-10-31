@@ -23,10 +23,10 @@ public abstract class Entity implements Comparable<Entity> {
 
     @Override
     public int compareTo(Entity o) {
-        if (this.getName().equals(Herbivore.NAME) && o.getName().equals(Predator.NAME)) {
+        if (this.getClass().equals(Herbivore.class) && o.getClass().equals(Predator.class)) {
             return -1;
         }
-        if (this.getName().equals(Predator.NAME) && o.getName().equals(Herbivore.NAME)) {
+        if (this.getClass().equals(Predator.class) && o.getClass().equals(Herbivore.class)) {
             return 1;
         }
 

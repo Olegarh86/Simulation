@@ -1,5 +1,9 @@
 package simulation.entity.creatures;
 
+import simulation.entity.Entity;
+import simulation.entity.Grass;
+import simulation.entity.Rock;
+import simulation.entity.Tree;
 import simulation.world.Coordinate;
 import simulation.world.MapOfWorld;
 
@@ -7,9 +11,9 @@ import java.util.List;
 
 public class Predator extends Creature {
     public static final String NAME = "Predator";
-    private static final String TARGET = "Herbivore";
+    Class<? extends Entity>  TARGET = Herbivore.class;
     private static int predatorsCount;
-    private static final List<String> obstacles = List.of("Rock", "Tree", "Grass", "Predator");
+    private static final List<Class<? extends Entity>> obstacles = List.of(Rock.class, Tree.class, Grass.class, Predator.class);
     private static final boolean movable = true;
     private final int attackPower;
 
@@ -33,18 +37,18 @@ public class Predator extends Creature {
     }
 
     @Override
-    public String getTarget() {
+    public Class<? extends Entity> getTarget() {
         return TARGET;
     }
 
     @Override
-    public List<String> GetObstacles() {
+    public List<Class<? extends Entity>> GetObstacles() {
         return obstacles;
     }
 
     @Override
     protected void attackTarget(MapOfWorld world, Creature predator, Coordinate startCoordinate, Coordinate newCoordinate) {
-        Creature target = (Creature) world.getEntity(newCoordinate);
+        Creature target = (Creature) world.getEntity(newCoordinate).get();
         predator.incrementHp(Math.min(target.getHp(), predator.getAttackPower()));
         target.decrementHp(predator.getAttackPower());
 
