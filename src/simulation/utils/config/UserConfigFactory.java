@@ -1,6 +1,5 @@
 package simulation.utils.config;
 
-import simulation.utils.io.ConsoleInput;
 import simulation.utils.io.Input;
 import simulation.utils.io.Output;
 
@@ -19,12 +18,12 @@ public class UserConfigFactory implements ConfigFactory {
     private final static String HOW_MUCH_PREDATORS_SPEED = "How much speed will predators have? From %d to %d ";
     private final static String HOW_MUCH_PREDATORS_ATTACK_POWER = "How much attack power will predators have? From %d to %d ";
     private final static String DELAY = "What is the delay between moves? From %d to %d ";
-    private final static int min = 0;
-    private final static int max = 30;
-    private final static int minColumnsAndLines = 1;
-    private final static int maxColumnsAndLines = 68;
-    private final static int minDelay = 1;
-    private final static int maxDelay = Integer.MAX_VALUE;
+    private final static int MIN = 0;
+    private final static int MAX = 30;
+    private final static int MIN_COLUMNS_AND_LINES = 1;
+    private final static int MAX_COLUMNS_AND_LINES = 68;
+    private final static int MIN_DELAY = 1;
+    private final static int MAX_VALUE = Integer.MAX_VALUE;
     private final Output consoleOutput;
     private final Input consoleInput;
 
@@ -37,19 +36,19 @@ public class UserConfigFactory implements ConfigFactory {
     public Config getConfig() {
         Config config = new Config();
         consoleOutput.printMessageChangeConfig();
-        config.numberOfLines = input(HOW_MANY_COLUMNS, minColumnsAndLines, maxColumnsAndLines);
-        config.numberOfColumns = input(HOW_MANY_LINES, minColumnsAndLines, maxColumnsAndLines);
-        config.numberOfRocks = input(HOW_MANY_ROCKS, min, max);
-        config.numberOfTrees = input(HOW_MANY_TREES, min, max);
-        config.numberOfGrasses = input(HOW_MUCH_GRASS, min, max);
-        config.numberOfHerbivores = input(HOW_MANY_HERBIVORES, min, max);
-        config.numberOfPredators = input(HOW_MANY_PREDATORS, min, max);
-        config.herbivoresHp = input(HOW_MUCH_HERBIVORES_HP, min, max);
-        config.herbivoresSpeed = input(HOW_MUCH_HERBIVORES_SPEED, min, max);
-        config.predatorsHp = input(HOW_MUCH_PREDATORS_HP, min, max);
-        config.predatorsSpeed = input(HOW_MUCH_PREDATORS_SPEED, min, max);
-        config.predatorsAttackPower = input(HOW_MUCH_PREDATORS_ATTACK_POWER, min, max);
-        config.delayBetweenMovesInMilliseconds = input(DELAY, minDelay, maxDelay);
+        config.numberOfLines = input(HOW_MANY_COLUMNS, MIN_COLUMNS_AND_LINES, MAX_COLUMNS_AND_LINES);
+        config.numberOfColumns = input(HOW_MANY_LINES, MIN_COLUMNS_AND_LINES, MAX_COLUMNS_AND_LINES);
+        config.numberOfRocks = input(HOW_MANY_ROCKS, MIN, MAX);
+        config.numberOfTrees = input(HOW_MANY_TREES, MIN, MAX);
+        config.numberOfGrasses = input(HOW_MUCH_GRASS, MIN, MAX);
+        config.numberOfHerbivores = input(HOW_MANY_HERBIVORES, MIN, MAX);
+        config.numberOfPredators = input(HOW_MANY_PREDATORS, MIN, MAX);
+        config.herbivoresHp = input(HOW_MUCH_HERBIVORES_HP, MIN, MAX);
+        config.herbivoresSpeed = input(HOW_MUCH_HERBIVORES_SPEED, MIN, MAX);
+        config.predatorsHp = input(HOW_MUCH_PREDATORS_HP, MIN, MAX);
+        config.predatorsSpeed = input(HOW_MUCH_PREDATORS_SPEED, MIN, MAX);
+        config.predatorsAttackPower = input(HOW_MUCH_PREDATORS_ATTACK_POWER, MIN, MAX);
+        config.delayBetweenMovesInMilliseconds = input(DELAY, MIN_DELAY, MAX_VALUE);
         return config;
     }
 

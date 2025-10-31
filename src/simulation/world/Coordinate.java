@@ -5,28 +5,13 @@ import simulation.utils.config.Config;
 
 import java.util.*;
 
-public class Coordinate implements Comparable<Coordinate> {
-    private final int line;
-    private final int column;
-
-    private Coordinate(int line, int column) {
-        this.line = line;
-        this.column = column;
-    }
+public record Coordinate(int line, int column) implements Comparable<Coordinate> {
 
     public static Coordinate getCoordinate(int line, int column) {
         return new Coordinate(line, column);
     }
 
-    public int getLine() {
-        return line;
-    }
-
-    public int getColumn() {
-        return column;
-    }
-
-    public static Coordinate getRandomCoordinate(Config config) {
+    private static Coordinate getRandomCoordinate(Config config) {
         Random random = new Random();
         int randomString = random.nextInt(config.numberOfColumns);
         int randomColumn = random.nextInt(config.numberOfLines);
@@ -45,18 +30,6 @@ public class Coordinate implements Comparable<Coordinate> {
             }
         }
         return randomCoordinate;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Coordinate that = (Coordinate) o;
-        return line == that.line && column == that.column;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(line, column);
     }
 
     @Override

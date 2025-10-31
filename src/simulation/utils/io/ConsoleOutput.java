@@ -23,8 +23,8 @@ public class ConsoleOutput implements Output{
 
     @Override
     public void printMessageControls() {
-        System.out.println("Press key: 1 - for pause the simulation, 2 - for resume the infinite simulation, " +
-                "Enter - all creatures make 1 turn, Enter + Space - for end the simulation.\n");
+        System.out.println("Press key: '1' - for pause the simulation, '2' - for resume the infinite simulation, " +
+                "'Enter' - all creatures make 1 turn, 'Enter + Space' - for end the simulation.\n");
     }
 
     @Override
@@ -54,12 +54,12 @@ public class ConsoleOutput implements Output{
                 2
                 1
                 START!
-                %n""".formatted(DefaultConfigFactory.NUMBER_OF_COLUMNS, DefaultConfigFactory.NUMBER_OF_LINES,
-                DefaultConfigFactory.NUMBER_OF_ROCKS, DefaultConfigFactory.NUMBER_OF_TREES,
-                DefaultConfigFactory.NUMBER_OF_GRASSES, DefaultConfigFactory.NUMBER_OF_HERBIVORES,
-                DefaultConfigFactory.NUMBER_OF_PREDATORS, DefaultConfigFactory.HERBIVORES_HP,
-                DefaultConfigFactory.HERBIVORES_SPEED, DefaultConfigFactory.PREDATORS_HP,
-                DefaultConfigFactory.PREDATORS_SPEED, DefaultConfigFactory.PREDATORS_ATTACK_POWER,
+                %n""".formatted(DefaultConfigFactory.numberOfColumns, DefaultConfigFactory.numberOfLines,
+                DefaultConfigFactory.numberOfRocks, DefaultConfigFactory.numberOfTrees,
+                DefaultConfigFactory.numberOfGrasses, DefaultConfigFactory.numberOfHerbivores,
+                DefaultConfigFactory.numberOfPredators, DefaultConfigFactory.herbivoresHp,
+                DefaultConfigFactory.herbivoresSpeed, DefaultConfigFactory.predatorsHp,
+                DefaultConfigFactory.predatorsSpeed, DefaultConfigFactory.predatorsAttackPower,
                 DefaultConfigFactory.DELAY_BETWEEN_MOVES_IN_MILLISECONDS));
 
 //        for (int i = 0; i < configDefault.length(); i++) {
@@ -76,9 +76,9 @@ public class ConsoleOutput implements Output{
     public void incorrectKey() {
         System.out.println("""
                                 Incorrect key. Please, enter key:
-                                1 - to pause the simulation
-                                2 - to start endless simulation
-                                Enter - to the next turn
-                                Space + Enter - to stop the simulation""");
+                                '1' - to pause the simulation
+                                '2' - to start endless simulation
+                                'Enter' - to the next turn
+                                'Space + Enter' - to stop the simulation""");
     }
 }

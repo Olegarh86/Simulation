@@ -14,8 +14,8 @@ public class BFSPathFinder implements PathFinder {
         this.config = config;
     }
 
-    @Override
-    public List<Coordinate> findWayToTarget(MapOfWorld map, Creature creature, Coordinate startCoordinate) {
+
+    private List<Coordinate> findWayToTarget(MapOfWorld map, Creature creature, Coordinate startCoordinate) {
         List<Nodes> allNodes = new ArrayList<>();
         Coordinate targetCoordinate = findTarget(map, creature, startCoordinate, allNodes);
         if (targetIsAvailable(startCoordinate, targetCoordinate)) {
@@ -24,8 +24,7 @@ public class BFSPathFinder implements PathFinder {
         return List.of();
     }
 
-    @Override
-    public Coordinate findTarget(MapOfWorld map, Creature creature, Coordinate startCoordinate, List<Nodes> allNodes) {
+    private Coordinate findTarget(MapOfWorld map, Creature creature, Coordinate startCoordinate, List<Nodes> allNodes) {
         Queue<Coordinate> queue = new LinkedList<>();
         Set<Coordinate> visited = new HashSet<>();
         Coordinate tempCoordinate = startCoordinate;
@@ -63,41 +62,36 @@ public class BFSPathFinder implements PathFinder {
         return selectCoordinateForMoveWithCreatureSpeed(creature, wayToTarget, startCoordinate);
     }
 
-    @Override
-    public List<Coordinate> findAllCellsAvailableForMovement(MapOfWorld world, Creature creature, Coordinate startCoordinate) {
+    private List<Coordinate> findAllCellsAvailableForMovement(MapOfWorld world, Creature creature, Coordinate startCoordinate) {
         List<Coordinate> allCellsAvailableForMove = new ArrayList<>();
         for (Coordinate coordinate : findAllShifts(startCoordinate)) {
-            if (isValid(coordinate) && cellIsAvailableForMove(world, creature, coordinate)) {
+            if (isValidCoordinate(coordinate) && cellIsAvailableForMove(world, creature, coordinate)) {
                 allCellsAvailableForMove.add(coordinate);
             }
         }
         return allCellsAvailableForMove;
     }
 
-    @Override
-    public boolean cellIsAvailableForMove(MapOfWorld world, Creature creature, Coordinate tempCoordinate) {
+    private boolean cellIsAvailableForMove(MapOfWorld world, Creature creature, Coordinate tempCoordinate) {
         String cellForMove = world.getEntity(tempCoordinate).getName();
         return !creature.GetObstacles().contains(cellForMove);
     }
 
-    @Override
-    public boolean isValid(Coordinate tempCoordinate) {
-        return tempCoordinate.getLine() >= 0 && tempCoordinate.getLine() < config.numberOfColumns &&
-                tempCoordinate.getColumn() >= 0 && tempCoordinate.getColumn() + 1 <= config.numberOfLines;
+    private boolean isValidCoordinate(Coordinate tempCoordinate) {
+        return tempCoordinate.line() >= 0 && tempCoordinate.line() < config.numberOfColumns &&
+                tempCoordinate.column() >= 0 && tempCoordinate.column() + 1 <= config.numberOfLines;
     }
 
-    @Override
-    public List<Coordinate> findAllShifts(Coordinate startCoordinate) {
+    private List<Coordinate> findAllShifts(Coordinate startCoordinate) {
         List<Coordinate> allShifts = new ArrayList<>();
-        allShifts.add(getCoordinate(startCoordinate.getLine() - 1, startCoordinate.getColumn()));
-        allShifts.add(getCoordinate(startCoordinate.getLine() + 1, startCoordinate.getColumn()));
-        allShifts.add(getCoordinate(startCoordinate.getLine(), startCoordinate.getColumn() - 1));
-        allShifts.add(getCoordinate(startCoordinate.getLine(), startCoordinate.getColumn() + 1));
+        allShifts.add(getCoordinate(startCoordinate.line() - 1, startCoordinate.column()));
+        allShifts.add(getCoordinate(startCoordinate.line() + 1, startCoordinate.column()));
+        allShifts.add(getCoordinate(startCoordinate.line(), startCoordinate.column() - 1));
+        allShifts.add(getCoordinate(startCoordinate.line(), startCoordinate.column() + 1));
         return allShifts;
     }
 
-    @Override
-    public List<Coordinate> routeConstruction(Coordinate startCoordinate, Coordinate tempCoordinate, List<Nodes> allNodes) {
+    private List<Coordinate> routeConstruction(Coordinate startCoordinate, Coordinate tempCoordinate, List<Nodes> allNodes) {
         List<Coordinate> wayToTarget = new ArrayList<>();
         wayToTarget.add(tempCoordinate);
         while (tempCoordinate != startCoordinate) {
@@ -124,13 +118,11 @@ public class BFSPathFinder implements PathFinder {
         return wayToTarget;
     }
 
-    @Override
-    public boolean targetIsAvailable(Coordinate startCoordinate, Coordinate targetCoordinate) {
+    private boolean targetIsAvailable(Coordinate startCoordinate, Coordinate targetCoordinate) {
         return !targetCoordinate.equals(startCoordinate);
     }
 
-    @Override
-    public Coordinate selectCoordinateForMoveWithCreatureSpeed(Creature currentCreature, List<Coordinate> wayToTarget, Coordinate startCoordinate) {
+    private Coordinate selectCoordinateForMoveWithCreatureSpeed(Creature currentCreature, List<Coordinate> wayToTarget, Coordinate startCoordinate) {
         if (wayToTarget.isEmpty()) {
             return startCoordinate;
         }

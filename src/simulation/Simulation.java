@@ -56,6 +56,10 @@ public class Simulation {
     }
 
     static class ThreadKeyListener extends Thread {
+        private static final String pause = "1";
+        private static final String resume = "2";
+        private static final String oneTurn = "";
+        private static final String stop = " ";
         volatile boolean pauseSimulation = false;
         volatile boolean stopSimulation = false;
         final Object lock = new Object();
@@ -75,10 +79,10 @@ public class Simulation {
                 String answerFromUser = input.readString();
 
                 switch (answerFromUser) {
-                    case "1" -> pauseSimulation();
-                    case "2" -> resumeEndlessSimulation();
-                    case "" -> oneTurn();
-                    case " " -> stopSimulation();
+                    case pause -> pauseSimulation();
+                    case resume -> resumeEndlessSimulation();
+                    case oneTurn -> oneTurn();
+                    case stop -> stopSimulation();
                     default -> {
                         pauseSimulation();
                         output.incorrectKey();
