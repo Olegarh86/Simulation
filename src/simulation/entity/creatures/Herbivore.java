@@ -10,8 +10,7 @@ import simulation.world.MapOfWorld;
 import java.util.List;
 
 public class Herbivore extends Creature{
-    public static final String NAME = "Herbivore";
-    Class<? extends Entity>  TARGET = Grass.class;
+    private static final Class<? extends Entity>  TARGET = Grass.class;
     private static final List<Class<? extends Entity>> obstacles = List.of(Rock.class, Tree.class, Herbivore.class, Predator.class);
     private static final boolean movable = true;
     private static int herbivoresCount;
@@ -22,10 +21,6 @@ public class Herbivore extends Creature{
     }
 
     public static int getHerbivoresCount() {
-        return herbivoresCount;
-    }
-
-    public static int getCount() {
         return herbivoresCount;
     }
 
@@ -59,10 +54,5 @@ public class Herbivore extends Creature{
     @Override
     public boolean isMovable() {
         return movable;
-    }
-
-    @Override
-    public String getName() {
-        return NAME;
     }
 }

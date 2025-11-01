@@ -1,6 +1,5 @@
 package simulation.world;
 
-import simulation.entity.*;
 import simulation.entity.Entity;
 import simulation.entity.creatures.Creature;
 import simulation.utils.config.Config;
@@ -15,12 +14,6 @@ public class MapOfWorld {
 
     public MapOfWorld(Config config) {
         this.config = config;
-//        for (int line = 0; line < config.numberOfColumns; line++) {
-//            for (int column = 0; column < config.numberOfLines; column++) {
-//                Coordinate tempCoordinate = getCoordinate(line, column);
-//                setEntity(tempCoordinate, new EmptyCell());
-//            }
-//        }
     }
 
     public Map<Coordinate, Entity> getCoordinatesEntities() {

@@ -1,6 +1,5 @@
 package simulation.world;
 
-import simulation.entity.EmptyCell;
 import simulation.utils.config.Config;
 
 import java.util.*;
@@ -23,11 +22,6 @@ public record Coordinate(int line, int column) implements Comparable<Coordinate>
 
         while (world.getEntity(randomCoordinate).isPresent()) {
             randomCoordinate = getRandomCoordinate(config);
-
-//            if (EmptyCell.emptyCellsCount < Math.max(config.numberOfGrasses,
-//                    Math.max(config.numberOfHerbivores, config.numberOfPredators))) {
-//                throw new RuntimeException("Empty cells is not available, too much entities in the simulation.");
-//            }
         }
         return randomCoordinate;
     }

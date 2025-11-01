@@ -1,7 +1,7 @@
 package simulation.entity;
 
 public class Grass extends Entity {
-    private static final String NAME = "Grass";
+//    private static final String NAME = "Grass";
     private static int grassCount;
     private static final boolean movable = false;
 
@@ -17,10 +17,10 @@ public class Grass extends Entity {
         return grassCount;
     }
 
-    @Override
-    public String getName() {
-        return NAME;
-    }
+//    @Override
+//    public String getName() {
+//        return NAME;
+//    }
 
     @Override
     public void decrementCountOfEntity() {

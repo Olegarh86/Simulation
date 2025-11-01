@@ -10,8 +10,7 @@ import simulation.world.MapOfWorld;
 import java.util.List;
 
 public class Predator extends Creature {
-    public static final String NAME = "Predator";
-    Class<? extends Entity>  TARGET = Herbivore.class;
+    private static final Class<? extends Entity>  TARGET = Herbivore.class;
     private static int predatorsCount;
     private static final List<Class<? extends Entity>> obstacles = List.of(Rock.class, Tree.class, Grass.class, Predator.class);
     private static final boolean movable = true;
@@ -25,15 +24,6 @@ public class Predator extends Creature {
 
     public static int getPredatorsCount() {
         return predatorsCount;
-    }
-
-    public static int getCount() {
-        return predatorsCount;
-    }
-
-    @Override
-    public String getName() {
-        return NAME;
     }
 
     @Override

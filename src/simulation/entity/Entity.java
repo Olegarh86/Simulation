@@ -5,8 +5,6 @@ import simulation.entity.creatures.Predator;
 
 public abstract class Entity implements Comparable<Entity> {
 
-    public abstract String getName();
-
     public abstract void decrementCountOfEntity();
 
     public abstract boolean isMovable();
@@ -29,7 +27,6 @@ public abstract class Entity implements Comparable<Entity> {
         if (this.getClass().equals(Predator.class) && o.getClass().equals(Herbivore.class)) {
             return 1;
         }
-
         return Integer.compare(this.hashCode(), o.hashCode());
     }
 }

@@ -1,7 +1,7 @@
 package simulation.entity;
 
 public class Tree extends Entity {
-    private static final String NAME = "Tree";
+//    private static final String NAME = "Tree";
     private static int treesCount;
     private static final boolean movable = false;
 
@@ -17,10 +17,10 @@ public class Tree extends Entity {
         return treesCount;
     }
 
-    @Override
-    public String getName() {
-        return NAME;
-    }
+//    @Override
+//    public String getName() {
+//        return NAME;
+//    }
 
     @Override
     public void decrementCountOfEntity() {

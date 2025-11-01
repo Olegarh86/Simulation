@@ -6,5 +6,5 @@ import simulation.utils.config.Config;
 
 public interface Renderer {
     void draw(Config config, MapOfWorld world);
-    String getSprite (Entity entity);
+    String getSprite (Object entity);
 }

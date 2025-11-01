@@ -58,7 +58,6 @@ public class InitActions implements Actions {
         for (Entity entity : entities) {
             randomCoordinate = Coordinate.chooseEmptyRandomCoordinate(world, config);
             world.setEntity(randomCoordinate, entity);
-//            EmptyCell.emptyCellsCount--;
         }
     }
 }

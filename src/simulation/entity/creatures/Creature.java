@@ -1,6 +1,5 @@
 package simulation.entity.creatures;
 
-import simulation.entity.EmptyCell;
 import simulation.entity.Entity;
 import simulation.utils.config.Config;
 import simulation.world.BFSPathFinder;

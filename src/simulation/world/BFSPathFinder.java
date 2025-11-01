@@ -46,7 +46,6 @@ public class BFSPathFinder implements PathFinder {
             allNodes.add(nodes);
             nodes.addNode(tempCoordinate);
 
-            Class<? extends Entity> name = map.getEntity(tempCoordinate).orElse(new EmptyCell()).getClass();
             if (map.getEntity(tempCoordinate).isEmpty() || !creature.getTarget().equals(map.getEntity(tempCoordinate).get().getClass())) {
                 List<Coordinate> cellsAvailableToMove = findAllCellsAvailableForMovement(map, creature, tempCoordinate);
 
