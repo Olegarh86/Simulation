@@ -23,8 +23,8 @@ public class ConsoleOutput implements Output{
 
     @Override
     public void printMessageControls() {
-        System.out.println("Press key: '1' - for pause the simulation, '2' - for resume the infinite simulation, " +
-                "'Enter' - all creatures make 1 turn, 'Enter + Space' - for end the simulation.\n");
+        System.out.println("Press any key for pause simulation, key '1' - for resume the infinite simulation,  " +
+                "key 'Enter' - all creatures make 1 turn, 'Enter + Space' - for end the simulation.\n");
     }
 
     @Override
@@ -70,15 +70,5 @@ public class ConsoleOutput implements Output{
 //                throw new RuntimeException(e);
 //            }
 //        }
-    }
-
-    @Override
-    public void incorrectKey() {
-        System.out.println("""
-                                Incorrect key. Please, enter key:
-                                '1' - to pause the simulation
-                                '2' - to start endless simulation
-                                'Enter' - to the next turn
-                                'Space + Enter' - to stop the simulation""");
     }
 }

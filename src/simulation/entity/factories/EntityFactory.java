@@ -7,6 +7,7 @@ import simulation.utils.config.Config;
 import java.util.Set;
 
 public interface EntityFactory {
-    Set<Entity> createMultipleEntities(MapOfWorld world, Config config);
+    Entity create(MapOfWorld map, Config config);
 }
+
 

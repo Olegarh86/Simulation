@@ -4,7 +4,7 @@ import simulation.utils.config.Config;
 
 import java.util.*;
 
-public record Coordinate(int line, int column) implements Comparable<Coordinate> {
+public record Coordinate(int line, int column) {
 
     public static Coordinate getCoordinate(int line, int column) {
         return new Coordinate(line, column);
@@ -24,13 +24,5 @@ public record Coordinate(int line, int column) implements Comparable<Coordinate>
             randomCoordinate = getRandomCoordinate(config);
         }
         return randomCoordinate;
-    }
-
-    @Override
-    public int compareTo(Coordinate coordinate) {
-        if (this.line != coordinate.line) {
-            return Integer.compare(this.line, coordinate.line);
-        }
-        return Integer.compare(this.column, coordinate.column);
     }
 }

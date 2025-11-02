@@ -4,32 +4,34 @@ import simulation.entity.actions.Actions;
 import simulation.utils.io.Input;
 import simulation.world.MapOfWorld;
 import simulation.utils.config.Config;
-import simulation.utils.io.Output;
-import simulation.utils.io.renderer.BaseSimulationRenderer;
-import simulation.utils.io.renderer.Renderer;
 
 import java.util.List;
 
 public class Simulation {
-    private static int countOfMoves;
+    public static int countOfMoves;
     private final MapOfWorld world;
     private final Config config;
-    private final Output output;
+//    private final Output output;
     private final Input input;
-    private final List<Actions> actions;
+    private final List<Actions> initActions;
+    private final List<Actions> turnActions;
 
-    public Simulation(Output output, Input input, Config config, MapOfWorld world, List<Actions> actions) {
-        this.output = output;
+    public Simulation(Input input, Config config, MapOfWorld world, List<Actions> initActions, List<Actions> turnActions) {
+//        this.output = output;
         this.input = input;
         this.config = config;
         this.world = world;
-        this.actions = actions;
+        this.initActions = initActions;
+        this.turnActions = turnActions;
     }
 
     public void startSimulation() throws InterruptedException {
-        ThreadKeyListener threadKeyListener = new ThreadKeyListener(config, input, output);
+        ThreadKeyListener threadKeyListener = new ThreadKeyListener(config, input);
         threadKeyListener.start();
-        Renderer renderer = new BaseSimulationRenderer(output);
+//        Renderer renderer = new BaseSimulationRenderer(output);
+        for(Actions action : initActions) {
+            action.execute(world, config);
+        }
         while (!threadKeyListener.stopSimulation) {
             try {
                 Thread.sleep(config.delayBetweenMovesInMilliseconds);
@@ -46,18 +48,17 @@ public class Simulation {
                 }
             }
 
-            for (Actions action : actions) {
-                action.execute();
+            for (Actions action : turnActions) {
+                action.execute(world, config);
             }
-            output.printCount(countOfMoves++);
-            output.printMessageControls();
-            renderer.draw(config, world);
+//            output.printCount(countOfMoves++);
+//            output.printMessageControls();
+//            renderer.draw(config, world);
         }
     }
 
     static class ThreadKeyListener extends Thread {
-        private static final String pause = "1";
-        private static final String resume = "2";
+        private static final String resume = "1";
         private static final String oneTurn = "";
         private static final String stop = " ";
         volatile boolean pauseSimulation = false;
@@ -65,11 +66,9 @@ public class Simulation {
         final Object lock = new Object();
         private final Config config;
         private final Input input;
-        private final Output output;
 
-        public ThreadKeyListener(Config config, Input input, Output output) {
+        public ThreadKeyListener(Config config, Input input) {
             this.config = config;
-            this.output = output;
             this.input = input;
         }
 
@@ -79,14 +78,10 @@ public class Simulation {
                 String answerFromUser = input.readString();
 
                 switch (answerFromUser) {
-                    case pause -> pauseSimulation();
                     case resume -> resumeEndlessSimulation();
                     case oneTurn -> oneTurn();
                     case stop -> stopSimulation();
-                    default -> {
-                        pauseSimulation();
-                        output.incorrectKey();
-                    }
+                    default -> pauseSimulation();
                 }
             }
         }

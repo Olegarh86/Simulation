@@ -7,5 +7,4 @@ public interface Output {
     void printCount(int countOfMoves);
     void printMessageChangeConfig();
     void printDefaultConfigWithDelay();
-    void incorrectKey();
 }

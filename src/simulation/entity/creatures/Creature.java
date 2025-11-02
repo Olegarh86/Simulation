@@ -9,7 +9,7 @@ import simulation.world.PathFinder;
 
 import java.util.List;
 
-public abstract class Creature extends Entity {
+public abstract class Creature extends Entity implements Comparable<Creature> {
     private final int speed;
     private int hp;
 
@@ -52,7 +52,7 @@ public abstract class Creature extends Entity {
 
     public void makeMove(MapOfWorld world, Config config, Creature currentCreature, Coordinate startCoordinate) {
         PathFinder pathFinder = new BFSPathFinder(config);
-        Coordinate newCoordinate = pathFinder.findCellForMove(world, currentCreature, startCoordinate);
+        Coordinate newCoordinate = pathFinder.findCellForMove(world, currentCreature, currentCreature.getTarget(), currentCreature.GetObstacles(), startCoordinate);
 
         if (newCoordinate.equals(startCoordinate)) {
             currentCreature.decrementHp();
@@ -77,5 +77,16 @@ public abstract class Creature extends Entity {
 
     public boolean isDied() {
         return this.getHp() < 1;
+    }
+
+    @Override
+    public int compareTo(Creature o) {
+        if (this.getClass().equals(Herbivore.class) && o.getClass().equals(Predator.class)) {
+            return -1;
+        }
+        if (this.getClass().equals(Predator.class) && o.getClass().equals(Herbivore.class)) {
+            return 1;
+        }
+        return Integer.compare(this.hashCode(), o.hashCode());
     }
 }

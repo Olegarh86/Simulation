@@ -5,16 +5,13 @@ import simulation.entity.Grass;
 import simulation.world.MapOfWorld;
 import simulation.utils.config.Config;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GrassFactory implements EntityFactory {
 
     @Override
-    public Set<Entity> createMultipleEntities(MapOfWorld world, Config config) {
-        Set<Entity> entities = new HashSet<>();
-        for (int i = 0; i < config.numberOfGrasses; i++) {
-            entities.add(new Grass());
-        }
-        return entities;
+    public Entity create(MapOfWorld map, Config config) {
+        return new Grass();
     }
 }

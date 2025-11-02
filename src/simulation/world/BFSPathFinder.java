@@ -1,6 +1,5 @@
 package simulation.world;
 
-import simulation.entity.EmptyCell;
 import simulation.entity.Entity;
 import simulation.entity.creatures.Creature;
 import simulation.utils.config.Config;
@@ -16,24 +15,23 @@ public class BFSPathFinder implements PathFinder {
         this.config = config;
     }
 
-
     @Override
-    public Coordinate findCellForMove(MapOfWorld map, Creature creature, Coordinate startCoordinate) {
-        List<Coordinate> wayToTarget = findWayToTarget(map, creature, startCoordinate);
+    public Coordinate findCellForMove(MapOfWorld map, Creature creature, Class<? extends Entity> target, List<Class<? extends Entity>> obstacles,  Coordinate startCoordinate) {
+        List<Coordinate> wayToTarget = findWayToTarget(map, target, obstacles, startCoordinate);
 
         return selectCoordinateForMoveWithCreatureSpeed(creature, wayToTarget, startCoordinate);
     }
 
-    private List<Coordinate> findWayToTarget(MapOfWorld map, Creature creature, Coordinate startCoordinate) {
+    private List<Coordinate> findWayToTarget(MapOfWorld map, Class<? extends Entity> target, List<Class<? extends Entity>> obstacles, Coordinate startCoordinate) {
         List<Nodes> allNodes = new ArrayList<>();
-        Coordinate targetCoordinate = findTarget(map, creature, startCoordinate, allNodes);
+        Coordinate targetCoordinate = findTarget(map, target, obstacles, startCoordinate, allNodes);
         if (targetIsAvailable(startCoordinate, targetCoordinate)) {
             return routeConstruction(startCoordinate, targetCoordinate, allNodes);
         }
         return List.of();
     }
 
-    private Coordinate findTarget(MapOfWorld map, Creature creature, Coordinate startCoordinate, List<Nodes> allNodes) {
+    private Coordinate findTarget(MapOfWorld map, Class<? extends Entity> target, List<Class<? extends Entity>> obstacles, Coordinate startCoordinate, List<Nodes> allNodes) {
         Queue<Coordinate> queue = new LinkedList<>();
         Set<Coordinate> visited = new HashSet<>();
         Coordinate tempCoordinate = startCoordinate;
@@ -46,8 +44,8 @@ public class BFSPathFinder implements PathFinder {
             allNodes.add(nodes);
             nodes.addNode(tempCoordinate);
 
-            if (map.getEntity(tempCoordinate).isEmpty() || !creature.getTarget().equals(map.getEntity(tempCoordinate).get().getClass())) {
-                List<Coordinate> cellsAvailableToMove = findAllCellsAvailableForMovement(map, creature, tempCoordinate);
+            if (map.getEntity(tempCoordinate).isEmpty() || !target.equals(map.getEntity(tempCoordinate).get().getClass())) {
+                List<Coordinate> cellsAvailableToMove = findAllCellsAvailableForMovement(map, obstacles, tempCoordinate);
 
                 for (Coordinate nextCoordinate : cellsAvailableToMove) {
 
@@ -64,19 +62,19 @@ public class BFSPathFinder implements PathFinder {
         return tempCoordinate;
     }
 
-    private List<Coordinate> findAllCellsAvailableForMovement(MapOfWorld world, Creature creature, Coordinate startCoordinate) {
+    private List<Coordinate> findAllCellsAvailableForMovement(MapOfWorld world, List<Class<? extends Entity>> obstacles, Coordinate startCoordinate) {
         List<Coordinate> allCellsAvailableForMove = new ArrayList<>();
         for (Coordinate coordinate : findAllShifts(startCoordinate)) {
-            if (isValidCoordinate(coordinate) && cellIsAvailableForMove(world, creature, coordinate)) {
+            if (isValidCoordinate(coordinate) && cellIsAvailableForMove(world, obstacles, coordinate)) {
                 allCellsAvailableForMove.add(coordinate);
             }
         }
         return allCellsAvailableForMove;
     }
 
-    private boolean cellIsAvailableForMove(MapOfWorld world, Creature creature, Coordinate tempCoordinate) {
+    private boolean cellIsAvailableForMove(MapOfWorld world, List<Class<? extends Entity>> obstacles, Coordinate tempCoordinate) {
         Optional<Entity> cellForMove = world.getEntity(tempCoordinate);
-        return cellForMove.map(entity -> !creature.GetObstacles().contains(entity.getClass())).orElse(true);
+        return cellForMove.map(entity -> !obstacles.contains(entity.getClass())).orElse(true);
     }
 
     private boolean isValidCoordinate(Coordinate tempCoordinate) {
@@ -131,6 +129,6 @@ public class BFSPathFinder implements PathFinder {
         if (wayToTarget.size() > currentCreature.getSpeed()) {
             return wayToTarget.get(currentCreature.getSpeed());
         }
-        return wayToTarget.get(wayToTarget.size() - 1);
+        return wayToTarget.getLast();
     }
 }

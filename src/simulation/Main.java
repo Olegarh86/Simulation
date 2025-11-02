@@ -1,8 +1,6 @@
 package simulation;
 
-import simulation.entity.actions.Actions;
-import simulation.entity.actions.InitActions;
-import simulation.entity.actions.TurnActions;
+import simulation.entity.actions.*;
 import simulation.utils.config.Config;
 import simulation.utils.config.ConfigFactory;
 import simulation.utils.io.ConsoleInput;
@@ -20,9 +18,10 @@ public class Main {
         ConfigFactory configFactory = Config.chooseConfigFactory(input, output);
         Config config = configFactory.getConfig();
         MapOfWorld world = new MapOfWorld(config);
-        List<Actions> actions = List.of(new InitActions(world, config), new TurnActions(world, config));
+        List<Actions> initActions = List.of(new InitActions(), new OutputActions());
+        List<Actions> turnActions = List.of(new TurnActions(), new ReSpawnActions(), new OutputActions());
 
-        Simulation simulation = new Simulation(output, input, config, world, actions);
+        Simulation simulation = new Simulation(input, config, world, initActions, turnActions);
         try {
             simulation.startSimulation();
         } catch (InterruptedException e) {

@@ -11,19 +11,13 @@ import java.util.List;
 
 public class Predator extends Creature {
     private static final Class<? extends Entity>  TARGET = Herbivore.class;
-    private static int predatorsCount;
-    private static final List<Class<? extends Entity>> obstacles = List.of(Rock.class, Tree.class, Grass.class, Predator.class);
+    private static final List<Class<? extends Entity>> OBSTACLES = List.of(Rock.class, Tree.class, Grass.class, Predator.class);
     private static final boolean movable = true;
     private final int attackPower;
 
     public Predator(int speed, int hp, int attackPower) {
         super(speed, hp);
         this.attackPower = attackPower;
-        predatorsCount++;
-    }
-
-    public static int getPredatorsCount() {
-        return predatorsCount;
     }
 
     @Override
@@ -33,7 +27,7 @@ public class Predator extends Creature {
 
     @Override
     public List<Class<? extends Entity>> GetObstacles() {
-        return obstacles;
+        return OBSTACLES;
     }
 
     @Override
@@ -46,11 +40,6 @@ public class Predator extends Creature {
             world.deleteEntity(newCoordinate);
             world.moveCreatureToEmptyCell(predator, startCoordinate, newCoordinate);
         }
-    }
-
-    @Override
-    public void decrementCountOfEntity() {
-        predatorsCount--;
     }
 
     @Override

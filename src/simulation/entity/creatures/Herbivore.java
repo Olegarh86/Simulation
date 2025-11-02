@@ -11,17 +11,11 @@ import java.util.List;
 
 public class Herbivore extends Creature{
     private static final Class<? extends Entity>  TARGET = Grass.class;
-    private static final List<Class<? extends Entity>> obstacles = List.of(Rock.class, Tree.class, Herbivore.class, Predator.class);
+    private static final List<Class<? extends Entity>> OBSTACLES = List.of(Rock.class, Tree.class, Herbivore.class, Predator.class);
     private static final boolean movable = true;
-    private static int herbivoresCount;
 
     public Herbivore(int speed, int hp) {
         super(speed, hp);
-        herbivoresCount++;
-    }
-
-    public static int getHerbivoresCount() {
-        return herbivoresCount;
     }
 
     @Override
@@ -31,7 +25,7 @@ public class Herbivore extends Creature{
 
     @Override
     public List<Class<? extends Entity>> GetObstacles() {
-        return obstacles;
+        return OBSTACLES;
     }
 
     @Override
@@ -44,11 +38,6 @@ public class Herbivore extends Creature{
     @Override
     protected int getAttackPower() {
         return 0;
-    }
-
-    @Override
-    public void decrementCountOfEntity() {
-        herbivoresCount--;
     }
 
     @Override

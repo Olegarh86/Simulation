@@ -10,21 +10,21 @@ import static simulation.world.Coordinate.getCoordinate;
 
 public class MapOfWorld {
     private final Config config;
-    private final Map<Coordinate, Entity> coordinatesEntities = new TreeMap<>();
+    private final Map<Coordinate, Entity> coordinatesEntities = new HashMap<>();
 
     public MapOfWorld(Config config) {
         this.config = config;
     }
 
     public Map<Coordinate, Entity> getCoordinatesEntities() {
-        return new TreeMap<>(coordinatesEntities);
+        return new HashMap<>(coordinatesEntities);
     }
 
     public void coordinateValidation(Coordinate coordinate) {
         if (coordinate.line() < config.numberOfColumns && coordinate.column() < config.numberOfLines) {
             return;
         }
-        throw new RuntimeException("Coordinate is not valid");
+        throw new RuntimeException("This coordinate is off the world");
     }
 
     public void setEntity(Coordinate coordinate, Entity entity) {
@@ -40,7 +40,7 @@ public class MapOfWorld {
     public void deleteEntity(Coordinate coordinate) {
         coordinateValidation(coordinate);
         Optional<Entity> entity = getEntity(coordinate);
-        entity.ifPresent(Entity::decrementCountOfEntity);
+//        entity.ifPresent(Entity::decrementCountOfEntity);
         coordinatesEntities.remove(coordinate);
     }
 

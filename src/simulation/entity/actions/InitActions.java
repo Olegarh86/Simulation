@@ -1,63 +1,32 @@
 package simulation.entity.actions;
 
-import simulation.entity.*;
-import simulation.entity.creatures.Herbivore;
-import simulation.entity.creatures.Predator;
 import simulation.entity.factories.*;
-import simulation.world.Coordinate;
 import simulation.world.MapOfWorld;
 import simulation.utils.config.Config;
 
-import java.util.Set;
+import java.util.List;
 
 public class InitActions implements Actions {
-    private final MapOfWorld world;
-    private final Config config;
-//    List<Class<? extends Entity>> classes;
-
-    public InitActions(MapOfWorld world, Config config) {
-        this.world = world;
-        this.config = config;
-//        classes = List.of(Rock.class, Tree.class, Grass.class, Herbivore.class, Predator.class);
-    }
 
     @Override
-    public void execute() {
-//        for (Class<? extends Entity> currentClass : classes) {
-//            try {
-//                Method method = currentClass.getDeclaredMethod("getCount");
-//                method.
-//                int count = (int) method.invoke(null);
-//                if (count < 1) {
-//                    setEntitiesToRandomCoordinate(world, config, creatorOfRocks);
-//                }
-//            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-        if (Rock.getRocksCount() < 1) {
-            setEntitiesToRandomCoordinate(world, config, new RockFactory());
-        }
-        if (Tree.getTreesCount() < 1) {
-            setEntitiesToRandomCoordinate(world, config, new TreeFactory());
-        }
-        if (Herbivore.getHerbivoresCount() < 1) {
-            setEntitiesToRandomCoordinate(world, config, new HerbivoreFactory());
-        }
-        if (Predator.getPredatorsCount() < 1) {
-            setEntitiesToRandomCoordinate(world, config, new PredatorFactory());
-        }
-        if (Grass.getGrassCount() < 1) {
-            setEntitiesToRandomCoordinate(world, config, new GrassFactory());
+    public void execute(MapOfWorld world, Config config) {
+        List<Actions> actions = getActions(world, config);
+        for(Actions action :  actions) {
+            action.execute(world, config);
         }
     }
 
-    public static void setEntitiesToRandomCoordinate(MapOfWorld world, Config config, EntityFactory entityFactory) {
-        Set<Entity> entities = entityFactory.createMultipleEntities(world, config);
-        Coordinate randomCoordinate;
-        for (Entity entity : entities) {
-            randomCoordinate = Coordinate.chooseEmptyRandomCoordinate(world, config);
-            world.setEntity(randomCoordinate, entity);
-        }
+    private static List<Actions> getActions(MapOfWorld world, Config config) {
+        SpawnAction rockSpawnAction = new SpawnAction(() -> new RockFactory().create(world, config),
+                config.numberOfRocks);
+        SpawnAction treeSpawnAction = new SpawnAction(() -> new TreeFactory().create(world, config),
+                config.numberOfTrees);
+        SpawnAction herbivoreSpawnAction = new SpawnAction(() -> new HerbivoreFactory().create(world, config),
+                config.numberOfHerbivores);
+        SpawnAction predatorSpawnAction = new SpawnAction(() -> new PredatorFactory().create(world, config),
+                config.numberOfPredators);
+        SpawnAction grassSpawnAction = new SpawnAction(() -> new GrassFactory().create(world, config),
+                config.numberOfGrasses);
+        return List.of(rockSpawnAction, treeSpawnAction, grassSpawnAction, herbivoreSpawnAction, predatorSpawnAction);
     }
 }
