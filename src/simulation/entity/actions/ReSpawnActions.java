@@ -28,9 +28,9 @@ public class ReSpawnActions implements Actions {
                 }
             }
             if (count < 1) {
-                FactoryController factoryController = new FactoryController(classEntity);
+                FactoryController factoryController = new FactoryController(classEntity, config);
                 SpawnAction spawnAction = new SpawnAction(() -> factoryController.entityFactory.create(world, config),
-                        config.numberOfRocks);
+                        factoryController.amount);
                 spawnAction.execute(world, config);
             }
         }
