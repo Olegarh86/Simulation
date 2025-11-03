@@ -1,7 +1,7 @@
 package simulation;
 
 import simulation.actions.Actions;
-import simulation.io.Input;
+import simulation.view.input.Input;
 import simulation.world.MapOfWorld;
 import simulation.config.Config;
 

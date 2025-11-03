@@ -1,4 +1,4 @@
-package simulation.io;
+package simulation.view.output;
 
 public interface Output {
     void printGreetings();

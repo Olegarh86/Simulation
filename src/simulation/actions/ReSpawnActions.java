@@ -6,7 +6,7 @@ import simulation.entity.Rock;
 import simulation.entity.Tree;
 import simulation.entity.creatures.Herbivore;
 import simulation.entity.creatures.Predator;
-import simulation.entity.factories.FactoryEntityFactories;
+import simulation.entity.entityFactories.FactoryEntityFactories;
 import simulation.config.Config;
 import simulation.world.MapOfWorld;
 

@@ -1,4 +1,6 @@
-package simulation.world;
+package simulation.world.pathFinder;
+
+import simulation.world.Coordinate;
 
 public class Nodes {
     private Node head;

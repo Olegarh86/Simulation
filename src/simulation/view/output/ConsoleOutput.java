@@ -1,6 +1,6 @@
-package simulation.io;
+package simulation.view.output;
 
-import simulation.config.DefaultConfigFactory;
+import simulation.config.configFactories.DefaultConfigFactory;
 
 public class ConsoleOutput implements Output{
 
@@ -23,8 +23,8 @@ public class ConsoleOutput implements Output{
 
     @Override
     public void printMessageControls() {
-        System.out.println("Press any key for pause simulation, key '1' - for resume the infinite simulation,  " +
-                "key 'Enter' - all creatures make 1 turn, 'Enter + Space' - for end the simulation.\n");
+        System.out.println("Press 'Enter + Space' - for end the simulation, press any key for pause simulation, press key '1' - for resume the infinite simulation," +
+                " press key 'Enter' - all creatures make 1 turn");
     }
 
     @Override

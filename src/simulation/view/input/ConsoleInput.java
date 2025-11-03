@@ -1,4 +1,4 @@
-package simulation.io;
+package simulation.view.input;
 
 import java.util.Scanner;
 

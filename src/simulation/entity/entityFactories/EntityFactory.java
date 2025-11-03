@@ -1,4 +1,4 @@
-package simulation.entity.factories;
+package simulation.entity.entityFactories;
 
 import simulation.entity.Entity;
 import simulation.world.MapOfWorld;

@@ -1,7 +1,8 @@
-package simulation.config;
+package simulation.config.configFactories;
 
-import simulation.io.Input;
-import simulation.io.Output;
+import simulation.config.Config;
+import simulation.view.input.Input;
+import simulation.view.output.Output;
 
 public class UserConfigFactory implements ConfigFactory {
     private final static String ERROR = "Incorrect symbol, please, try again";

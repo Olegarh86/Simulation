@@ -1,4 +1,4 @@
-package simulation.io.renderer;
+package simulation.view.renderer;
 
 import simulation.world.MapOfWorld;
 import simulation.config.Config;

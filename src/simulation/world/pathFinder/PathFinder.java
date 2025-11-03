@@ -1,6 +1,8 @@
-package simulation.world;
+package simulation.world.pathFinder;
 
 import simulation.entity.Entity;
+import simulation.world.Coordinate;
+import simulation.world.MapOfWorld;
 
 import java.util.List;
 

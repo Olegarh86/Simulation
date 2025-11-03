@@ -2,10 +2,10 @@ package simulation.entity.creatures;
 
 import simulation.entity.Entity;
 import simulation.config.Config;
-import simulation.world.BFSPathFinder;
+import simulation.world.pathFinder.BFSPathFinder;
 import simulation.world.Coordinate;
 import simulation.world.MapOfWorld;
-import simulation.world.PathFinder;
+import simulation.world.pathFinder.PathFinder;
 
 import java.util.List;
 

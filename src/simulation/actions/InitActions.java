@@ -1,6 +1,6 @@
 package simulation.actions;
 
-import simulation.entity.factories.*;
+import simulation.entity.entityFactories.*;
 import simulation.world.MapOfWorld;
 import simulation.config.Config;
 

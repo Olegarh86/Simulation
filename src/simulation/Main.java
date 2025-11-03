@@ -2,12 +2,12 @@ package simulation;
 
 import simulation.actions.*;
 import simulation.config.Config;
-import simulation.config.ConfigFactory;
-import simulation.config.FactoryConfigFactories;
-import simulation.io.ConsoleInput;
-import simulation.io.ConsoleOutput;
-import simulation.io.Input;
-import simulation.io.Output;
+import simulation.config.configFactories.ConfigFactory;
+import simulation.config.configFactories.FactoryConfigFactories;
+import simulation.view.input.ConsoleInput;
+import simulation.view.output.ConsoleOutput;
+import simulation.view.input.Input;
+import simulation.view.output.Output;
 import simulation.world.MapOfWorld;
 
 import java.util.List;

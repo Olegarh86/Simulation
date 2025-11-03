@@ -1,7 +1,7 @@
-package simulation.config;
+package simulation.config.configFactories;
 
-import simulation.io.Input;
-import simulation.io.Output;
+import simulation.view.input.Input;
+import simulation.view.output.Output;
 
 public class FactoryConfigFactories {
     public ConfigFactory configFactory;

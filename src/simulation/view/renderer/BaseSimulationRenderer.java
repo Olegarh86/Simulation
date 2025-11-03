@@ -1,10 +1,10 @@
-package simulation.io.renderer;
+package simulation.view.renderer;
 
 import simulation.entity.*;
 import simulation.entity.creatures.Herbivore;
 import simulation.entity.creatures.Predator;
 import simulation.config.Config;
-import simulation.io.Output;
+import simulation.view.output.Output;
 import simulation.world.Coordinate;
 import simulation.world.MapOfWorld;
 
