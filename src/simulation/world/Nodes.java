@@ -7,25 +7,25 @@ public class Nodes {
         private final Coordinate coordinate;
         private Node next;
 
-        public Node(Coordinate coordinate, Node prev, Node next) {
+        protected Node(Coordinate coordinate, Node prev, Node next) {
             this.coordinate = coordinate;
             this.next = next;
         }
 
-        public Node getNextNode() {
+        protected Node getNextNode() {
             return this.next;
         }
 
-        public Coordinate getCoordinate() {
+        protected Coordinate getCoordinate() {
             return this.coordinate;
         }
-    }
 
-    public Node getHead() {
+    }
+    protected Node getHead() {
         return this.head;
     }
 
-    public void addNode(Coordinate coordinate) {
+    protected void addNode(Coordinate coordinate) {
         if (head == null) {
             head = new Node(coordinate, null, null);
             return;

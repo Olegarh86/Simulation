@@ -1,7 +1,6 @@
 package simulation.world;
 
 import simulation.entity.Entity;
-import simulation.entity.creatures.Creature;
 import simulation.utils.config.Config;
 
 import java.util.*;
@@ -16,13 +15,7 @@ public class BFSPathFinder implements PathFinder {
     }
 
     @Override
-    public Coordinate findCellForMove(MapOfWorld map, Creature creature, Class<? extends Entity> target, List<Class<? extends Entity>> obstacles,  Coordinate startCoordinate) {
-        List<Coordinate> wayToTarget = findWayToTarget(map, target, obstacles, startCoordinate);
-
-        return selectCoordinateForMoveWithCreatureSpeed(creature, wayToTarget, startCoordinate);
-    }
-
-    private List<Coordinate> findWayToTarget(MapOfWorld map, Class<? extends Entity> target, List<Class<? extends Entity>> obstacles, Coordinate startCoordinate) {
+    public List<Coordinate> findWayToTarget(MapOfWorld map, Class<? extends Entity> target, List<Class<? extends Entity>> obstacles, Coordinate startCoordinate) {
         List<Nodes> allNodes = new ArrayList<>();
         Coordinate targetCoordinate = findTarget(map, target, obstacles, startCoordinate, allNodes);
         if (targetIsAvailable(startCoordinate, targetCoordinate)) {
@@ -45,9 +38,9 @@ public class BFSPathFinder implements PathFinder {
             nodes.addNode(tempCoordinate);
 
             if (map.getEntity(tempCoordinate).isEmpty() || !target.equals(map.getEntity(tempCoordinate).get().getClass())) {
-                List<Coordinate> cellsAvailableToMove = findAllCellsAvailableForMovement(map, obstacles, tempCoordinate);
+                List<Coordinate> cellsAvailableForMove = findAllCellsAvailableForMovement(map, obstacles, tempCoordinate);
 
-                for (Coordinate nextCoordinate : cellsAvailableToMove) {
+                for (Coordinate nextCoordinate : cellsAvailableForMove) {
 
                     if (!visited.contains(nextCoordinate)) {
                         queue.add(nextCoordinate);
@@ -77,11 +70,6 @@ public class BFSPathFinder implements PathFinder {
         return cellForMove.map(entity -> !obstacles.contains(entity.getClass())).orElse(true);
     }
 
-    private boolean isValidCoordinate(Coordinate tempCoordinate) {
-        return tempCoordinate.line() >= 0 && tempCoordinate.line() < config.numberOfColumns &&
-                tempCoordinate.column() >= 0 && tempCoordinate.column() + 1 <= config.numberOfLines;
-    }
-
     private List<Coordinate> findAllShifts(Coordinate startCoordinate) {
         List<Coordinate> allShifts = new ArrayList<>();
         allShifts.add(getCoordinate(startCoordinate.line() - 1, startCoordinate.column()));
@@ -89,6 +77,15 @@ public class BFSPathFinder implements PathFinder {
         allShifts.add(getCoordinate(startCoordinate.line(), startCoordinate.column() - 1));
         allShifts.add(getCoordinate(startCoordinate.line(), startCoordinate.column() + 1));
         return allShifts;
+    }
+
+    private boolean isValidCoordinate(Coordinate tempCoordinate) {
+        return tempCoordinate.line() >= 0 && tempCoordinate.line() < config.numberOfColumns &&
+                tempCoordinate.column() >= 0 && tempCoordinate.column() + 1 <= config.numberOfLines;
+    }
+
+    private boolean targetIsAvailable(Coordinate startCoordinate, Coordinate targetCoordinate) {
+        return !targetCoordinate.equals(startCoordinate);
     }
 
     private List<Coordinate> routeConstruction(Coordinate startCoordinate, Coordinate tempCoordinate, List<Nodes> allNodes) {
@@ -116,19 +113,5 @@ public class BFSPathFinder implements PathFinder {
         }
         Collections.reverse(wayToTarget);
         return wayToTarget;
-    }
-
-    private boolean targetIsAvailable(Coordinate startCoordinate, Coordinate targetCoordinate) {
-        return !targetCoordinate.equals(startCoordinate);
-    }
-
-    private Coordinate selectCoordinateForMoveWithCreatureSpeed(Creature currentCreature, List<Coordinate> wayToTarget, Coordinate startCoordinate) {
-        if (wayToTarget.isEmpty()) {
-            return startCoordinate;
-        }
-        if (wayToTarget.size() > currentCreature.getSpeed()) {
-            return wayToTarget.get(currentCreature.getSpeed());
-        }
-        return wayToTarget.getLast();
     }
 }

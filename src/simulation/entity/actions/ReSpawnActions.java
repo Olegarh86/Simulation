@@ -6,7 +6,7 @@ import simulation.entity.Rock;
 import simulation.entity.Tree;
 import simulation.entity.creatures.Herbivore;
 import simulation.entity.creatures.Predator;
-import simulation.entity.factories.FactoryController;
+import simulation.entity.factories.FactoryEntityFactories;
 import simulation.utils.config.Config;
 import simulation.world.MapOfWorld;
 
@@ -28,7 +28,7 @@ public class ReSpawnActions implements Actions {
                 }
             }
             if (count < 1) {
-                FactoryController factoryController = new FactoryController(classEntity, config);
+                FactoryEntityFactories factoryController = new FactoryEntityFactories(classEntity, config);
                 SpawnAction spawnAction = new SpawnAction(() -> factoryController.entityFactory.create(world, config),
                         factoryController.amount);
                 spawnAction.execute(world, config);

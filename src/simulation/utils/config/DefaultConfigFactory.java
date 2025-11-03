@@ -15,6 +15,9 @@ public class DefaultConfigFactory implements ConfigFactory {
     public final static int predatorsAttackPower = 5;
     public final static int DELAY_BETWEEN_MOVES_IN_MILLISECONDS = 100;
 
+    protected DefaultConfigFactory() {
+    }
+
     @Override
     public Config getConfig() {
         Config config = new Config();

@@ -16,8 +16,8 @@ public class ConsoleOutput implements Output{
 
     @Override
     public void printGreetings() {
-        System.out.println("In this program you can create a simulation of the real world, where predators eat " +
-                "herbivores and herbivores eat grass.\nThe simulation can be started with default settings by " +
+        System.out.println("In this program you can create a simulation of the real world, where predators \uD83D\uDC3A eat " +
+                "herbivores \uD83D\uDC07 and herbivores eat grass \uD83C\uDF40.\nThe simulation can be started with default settings by " +
                 "pressing 1 + enter, or you can set all simulation parameters manually by pressing 2 + enter");
     }
 
@@ -35,40 +35,40 @@ public class ConsoleOutput implements Output{
     @Override
     public void printDefaultConfigWithDelay() {
         String configDefault = ("""
-                Ok! default configuration:
-                number of columns: %d
-                number of lines: %d
-                number of rocks: %d
-                number of trees: %d
-                number of grasses: %d
-                number of herbivores: %d
-                number of predators: %d
-                herbivores hp: %d
-                herbivores speed: %d
-                predators hp: %d
-                predators speed: %d
-                predators attack power: %d
-                delay between moves: %d milliseconds
-                start simulation after:
-                3
-                2
-                1
-                START!
-                %n""".formatted(DefaultConfigFactory.numberOfColumns, DefaultConfigFactory.numberOfLines,
-                DefaultConfigFactory.numberOfRocks, DefaultConfigFactory.numberOfTrees,
-                DefaultConfigFactory.numberOfGrasses, DefaultConfigFactory.numberOfHerbivores,
-                DefaultConfigFactory.numberOfPredators, DefaultConfigFactory.herbivoresHp,
-                DefaultConfigFactory.herbivoresSpeed, DefaultConfigFactory.predatorsHp,
-                DefaultConfigFactory.predatorsSpeed, DefaultConfigFactory.predatorsAttackPower,
-                DefaultConfigFactory.DELAY_BETWEEN_MOVES_IN_MILLISECONDS));
+                        Ok! default configuration:
+                        number of columns: %d
+                        number of lines: %d
+                        number of rocks: %d
+                        number of trees: %d
+                        number of grasses: %d
+                        number of herbivores: %d
+                        number of predators: %d
+                        herbivores hp: %d
+                        herbivores speed: %d
+                        predators hp: %d
+                        predators speed: %d
+                        predators attack power: %d
+                        delay between moves: %d milliseconds
+                        start simulation after:
+                        3
+                        2
+                        1
+                        START!
+                        %n%n""".formatted(DefaultConfigFactory.numberOfColumns, DefaultConfigFactory.numberOfLines,
+        DefaultConfigFactory.numberOfRocks, DefaultConfigFactory.numberOfTrees,
+        DefaultConfigFactory.numberOfGrasses, DefaultConfigFactory.numberOfHerbivores,
+        DefaultConfigFactory.numberOfPredators, DefaultConfigFactory.herbivoresHp,
+        DefaultConfigFactory.herbivoresSpeed, DefaultConfigFactory.predatorsHp,
+        DefaultConfigFactory.predatorsSpeed, DefaultConfigFactory.predatorsAttackPower,
+        DefaultConfigFactory.DELAY_BETWEEN_MOVES_IN_MILLISECONDS));
 
-//        for (int i = 0; i < configDefault.length(); i++) {
-//            System.out.print(configDefault.charAt(i));
-//            try {
-//                Thread.sleep(20);
-//            } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
+        for (int i = 0; i < configDefault.length(); i++) {
+            System.out.print(configDefault.charAt(i));
+            try {
+                Thread.sleep(2);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

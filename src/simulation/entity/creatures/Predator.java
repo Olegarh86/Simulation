@@ -21,24 +21,23 @@ public class Predator extends Creature {
     }
 
     @Override
-    public Class<? extends Entity> getTarget() {
+    protected Class<? extends Entity> getTarget() {
         return TARGET;
     }
 
     @Override
-    public List<Class<? extends Entity>> GetObstacles() {
+    protected List<Class<? extends Entity>> getObstacles() {
         return OBSTACLES;
     }
 
     @Override
     protected void attackTarget(MapOfWorld world, Creature predator, Coordinate startCoordinate, Coordinate newCoordinate) {
-        Creature target = (Creature) world.getEntity(newCoordinate).get();
+        Creature target = (Creature) world.getEntity(newCoordinate).orElseThrow();
         predator.incrementHp(Math.min(target.getHp(), predator.getAttackPower()));
         target.decrementHp(predator.getAttackPower());
 
         if (target.isDied()) {
-            world.deleteEntity(newCoordinate);
-            world.moveCreatureToEmptyCell(predator, startCoordinate, newCoordinate);
+            world.moveCreature(predator, startCoordinate, newCoordinate);
         }
     }
 

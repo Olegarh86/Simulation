@@ -6,9 +6,8 @@ import simulation.utils.config.Config;
 
 import java.util.*;
 
-import static simulation.world.Coordinate.getCoordinate;
-
 public class MapOfWorld {
+    private final static String ERROR_COORDINATE_NOT_VALID = "This coordinate is off the world";
     private final Config config;
     private final Map<Coordinate, Entity> coordinatesEntities = new HashMap<>();
 
@@ -20,11 +19,11 @@ public class MapOfWorld {
         return new HashMap<>(coordinatesEntities);
     }
 
-    public void coordinateValidation(Coordinate coordinate) {
+    public void coordinateValidation(Coordinate coordinate) { //TODO new class and delete config from this class
         if (coordinate.line() < config.numberOfColumns && coordinate.column() < config.numberOfLines) {
             return;
         }
-        throw new RuntimeException("This coordinate is off the world");
+        throw new RuntimeException(ERROR_COORDINATE_NOT_VALID);
     }
 
     public void setEntity(Coordinate coordinate, Entity entity) {
@@ -39,12 +38,10 @@ public class MapOfWorld {
 
     public void deleteEntity(Coordinate coordinate) {
         coordinateValidation(coordinate);
-        Optional<Entity> entity = getEntity(coordinate);
-//        entity.ifPresent(Entity::decrementCountOfEntity);
         coordinatesEntities.remove(coordinate);
     }
 
-    public void moveCreatureToEmptyCell(Creature currentCreature, Coordinate startCoordinate, Coordinate newCoordinate) {
+    public void moveCreature(Creature currentCreature, Coordinate startCoordinate, Coordinate newCoordinate) {
         coordinateValidation(startCoordinate);
         coordinateValidation(newCoordinate);
         coordinatesEntities.put(newCoordinate, currentCreature);

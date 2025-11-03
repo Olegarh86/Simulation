@@ -5,7 +5,6 @@ import simulation.entity.Rock;
 import simulation.world.MapOfWorld;
 import simulation.utils.config.Config;
 
-
 public class RockFactory implements EntityFactory {
 
     @Override

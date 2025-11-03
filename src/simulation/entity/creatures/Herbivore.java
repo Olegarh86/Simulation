@@ -19,19 +19,18 @@ public class Herbivore extends Creature{
     }
 
     @Override
-    public Class<? extends Entity> getTarget() {
+    protected Class<? extends Entity> getTarget() {
         return TARGET;
     }
 
     @Override
-    public List<Class<? extends Entity>> GetObstacles() {
+    protected List<Class<? extends Entity>> getObstacles() {
         return OBSTACLES;
     }
 
     @Override
     protected void attackTarget(MapOfWorld world, Creature herbivore, Coordinate startCoordinate, Coordinate newCoordinate) {
-        world.deleteEntity(newCoordinate);
-        world.moveCreatureToEmptyCell(herbivore, startCoordinate, newCoordinate);
+        world.moveCreature(herbivore, startCoordinate, newCoordinate);
         herbivore.incrementHp();
     }
 

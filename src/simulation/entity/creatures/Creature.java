@@ -18,9 +18,9 @@ public abstract class Creature extends Entity implements Comparable<Creature> {
         this.hp = hp;
     }
 
-    public abstract Class<? extends Entity> getTarget();
+    protected abstract Class<? extends Entity> getTarget();
 
-    public abstract List<Class<? extends Entity>> GetObstacles();
+    protected abstract List<Class<? extends Entity>> getObstacles();
 
     protected abstract void attackTarget(MapOfWorld world, Creature creature, Coordinate startCoordinate, Coordinate newCoordinate);
 
@@ -34,7 +34,7 @@ public abstract class Creature extends Entity implements Comparable<Creature> {
          this.hp -= hp ;
     }
 
-    public void decrementHp() {
+    protected void decrementHp() {
         this.hp--;
     }
 
@@ -46,13 +46,14 @@ public abstract class Creature extends Entity implements Comparable<Creature> {
         this.hp += hp;
     }
 
-    public int getSpeed() {
+    private int getSpeed() {
         return speed;
     }
 
     public void makeMove(MapOfWorld world, Config config, Creature currentCreature, Coordinate startCoordinate) {
         PathFinder pathFinder = new BFSPathFinder(config);
-        Coordinate newCoordinate = pathFinder.findCellForMove(world, currentCreature, currentCreature.getTarget(), currentCreature.GetObstacles(), startCoordinate);
+        List<Coordinate> wayToTarget = pathFinder.findWayToTarget(world, currentCreature.getTarget(), currentCreature.getObstacles(), startCoordinate);
+        Coordinate newCoordinate = selectCoordinateForMoveWithCreatureSpeed(currentCreature, wayToTarget, startCoordinate);
 
         if (newCoordinate.equals(startCoordinate)) {
             currentCreature.decrementHp();
@@ -66,7 +67,7 @@ public abstract class Creature extends Entity implements Comparable<Creature> {
         if (world.getEntity(newCoordinate).isPresent() && currentCreature.getTarget().equals(world.getEntity(newCoordinate).get().getClass())) {
             currentCreature.attackTarget(world, currentCreature, startCoordinate, newCoordinate);
         } else {
-            world.moveCreatureToEmptyCell(currentCreature, startCoordinate, newCoordinate);
+            world.moveCreature(currentCreature, startCoordinate, newCoordinate);
             currentCreature.decrementHp();
 
             if (currentCreature.isDied()) {
@@ -75,7 +76,17 @@ public abstract class Creature extends Entity implements Comparable<Creature> {
         }
     }
 
-    public boolean isDied() {
+    private Coordinate selectCoordinateForMoveWithCreatureSpeed(Creature currentCreature, List<Coordinate> wayToTarget, Coordinate startCoordinate) {
+        if (wayToTarget.isEmpty()) {
+            return startCoordinate;
+        }
+        if (wayToTarget.size() > currentCreature.getSpeed()) {
+            return wayToTarget.get(currentCreature.getSpeed());
+        }
+        return wayToTarget.getLast();
+    }
+
+    protected boolean isDied() {
         return this.getHp() < 1;
     }
 

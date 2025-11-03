@@ -56,8 +56,8 @@ public class UserConfigFactory implements ConfigFactory {
         String inputSymbol;
         int value;
         while (true) {
-            System.out.printf(message, min, max);
-            inputSymbol = consoleInput.readString();
+            consoleOutput.printMessage(message.formatted(min, max));
+            inputSymbol = consoleInput.readInput();
             if (isInteger(inputSymbol)) {
                 value = Integer.parseInt(inputSymbol);
 

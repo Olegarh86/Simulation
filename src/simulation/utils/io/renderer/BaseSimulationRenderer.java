@@ -14,7 +14,7 @@ public class BaseSimulationRenderer implements Renderer {
     private static final String TREE_SPRITE = "\uD83C\uDF31";
     private static final String GRASS_SPRITE = "\uD83C\uDF40";
     private static final String HERBIVORE_SPRITE = "\u001B[43m\uD83D\uDC07\u001B[0m";
-    private static final String WOLF_SPRITE = "\uD83D\uDC3A";
+    private static final String PREDATOR_SPRITE = "\uD83D\uDC3A";
     private static final String THIS_ENTITY_HAVEN_T_SPRITE = "This entity haven`t sprite";
     private static final String INTERVAL = " ";
     private final Output output;
@@ -24,6 +24,7 @@ public class BaseSimulationRenderer implements Renderer {
         this.output = output;
     }
 
+    @Override
     public void draw(Config config, MapOfWorld world) {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < config.numberOfLines; i++) {
@@ -43,7 +44,7 @@ public class BaseSimulationRenderer implements Renderer {
             case Rock r -> ROCK_SPRITE;
             case Grass g -> GRASS_SPRITE;
             case Herbivore h -> HERBIVORE_SPRITE;
-            case Predator p -> WOLF_SPRITE;
+            case Predator p -> PREDATOR_SPRITE;
             case null -> EMPTY_CELL_SPRITE;
             default -> throw new RuntimeException(THIS_ENTITY_HAVEN_T_SPRITE);
         };

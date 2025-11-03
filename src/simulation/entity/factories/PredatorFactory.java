@@ -5,7 +5,6 @@ import simulation.entity.creatures.Predator;
 import simulation.world.MapOfWorld;
 import simulation.utils.config.Config;
 
-
 public class PredatorFactory implements EntityFactory {
 
     @Override

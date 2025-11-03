@@ -11,13 +11,11 @@ public class Simulation {
     public static int countOfMoves;
     private final MapOfWorld world;
     private final Config config;
-//    private final Output output;
     private final Input input;
     private final List<Actions> initActions;
     private final List<Actions> turnActions;
 
     public Simulation(Input input, Config config, MapOfWorld world, List<Actions> initActions, List<Actions> turnActions) {
-//        this.output = output;
         this.input = input;
         this.config = config;
         this.world = world;
@@ -28,8 +26,8 @@ public class Simulation {
     public void startSimulation() throws InterruptedException {
         ThreadKeyListener threadKeyListener = new ThreadKeyListener(config, input);
         threadKeyListener.start();
-//        Renderer renderer = new BaseSimulationRenderer(output);
-        for(Actions action : initActions) {
+
+        for (Actions action : initActions) {
             action.execute(world, config);
         }
         while (!threadKeyListener.stopSimulation) {
@@ -51,9 +49,6 @@ public class Simulation {
             for (Actions action : turnActions) {
                 action.execute(world, config);
             }
-//            output.printCount(countOfMoves++);
-//            output.printMessageControls();
-//            renderer.draw(config, world);
         }
     }
 
@@ -75,7 +70,7 @@ public class Simulation {
         @Override
         public void run() {
             while (!stopSimulation) {
-                String answerFromUser = input.readString();
+                String answerFromUser = input.readInput();
 
                 switch (answerFromUser) {
                     case resume -> resumeEndlessSimulation();

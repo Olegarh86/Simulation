@@ -20,8 +20,17 @@ public class SpawnAction implements Actions{
     public void execute(MapOfWorld world, Config config) {
         for (int i = 0; i < amount; i++) {
             Entity entity = entitySupplier.get();
-            Coordinate randomCoordinate = Coordinate.chooseEmptyRandomCoordinate(world, config);
+            Coordinate randomCoordinate = chooseEmptyRandomCoordinate(world, config);
             world.setEntity(randomCoordinate, entity);
         }
+    }
+
+    public Coordinate chooseEmptyRandomCoordinate(MapOfWorld world, Config config) {
+        Coordinate randomCoordinate = Coordinate.getRandomCoordinate(config);
+
+        while (world.getEntity(randomCoordinate).isPresent()) {
+            randomCoordinate = Coordinate.getRandomCoordinate(config);
+        }
+        return randomCoordinate;
     }
 }

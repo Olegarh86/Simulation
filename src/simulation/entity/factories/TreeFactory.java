@@ -5,7 +5,6 @@ import simulation.entity.Tree;
 import simulation.world.MapOfWorld;
 import simulation.utils.config.Config;
 
-
 public class TreeFactory implements EntityFactory {
 
     @Override

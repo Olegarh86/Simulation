@@ -3,6 +3,7 @@ package simulation;
 import simulation.entity.actions.*;
 import simulation.utils.config.Config;
 import simulation.utils.config.ConfigFactory;
+import simulation.utils.config.FactoryConfigFactories;
 import simulation.utils.io.ConsoleInput;
 import simulation.utils.io.ConsoleOutput;
 import simulation.utils.io.Input;
@@ -15,7 +16,8 @@ public class Main {
     public static void main(String[] args) {
         Output output = new ConsoleOutput();
         Input input = new ConsoleInput();
-        ConfigFactory configFactory = Config.chooseConfigFactory(input, output);
+        FactoryConfigFactories factoryConfigFactory = new FactoryConfigFactories();
+        ConfigFactory configFactory = factoryConfigFactory.getConfigFactory(input, output);
         Config config = configFactory.getConfig();
         MapOfWorld world = new MapOfWorld(config);
         List<Actions> initActions = List.of(new InitActions(), new OutputActions());

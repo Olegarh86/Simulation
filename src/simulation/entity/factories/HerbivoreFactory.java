@@ -5,7 +5,6 @@ import simulation.entity.creatures.Herbivore;
 import simulation.world.MapOfWorld;
 import simulation.utils.config.Config;
 
-
 public class HerbivoreFactory implements EntityFactory {
 
     @Override
