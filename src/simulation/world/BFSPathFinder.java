@@ -1,7 +1,7 @@
 package simulation.world;
 
 import simulation.entity.Entity;
-import simulation.utils.config.Config;
+import simulation.config.Config;
 
 import java.util.*;
 

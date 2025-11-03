@@ -1,6 +1,6 @@
-package simulation.utils.io;
+package simulation.io;
 
-import simulation.utils.config.DefaultConfigFactory;
+import simulation.config.DefaultConfigFactory;
 
 public class ConsoleOutput implements Output{
 

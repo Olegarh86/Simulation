@@ -12,7 +12,6 @@ import java.util.List;
 public class Herbivore extends Creature{
     private static final Class<? extends Entity>  TARGET = Grass.class;
     private static final List<Class<? extends Entity>> OBSTACLES = List.of(Rock.class, Tree.class, Herbivore.class, Predator.class);
-    private static final boolean movable = true;
 
     public Herbivore(int speed, int hp) {
         super(speed, hp);
@@ -37,10 +36,5 @@ public class Herbivore extends Creature{
     @Override
     protected int getAttackPower() {
         return 0;
-    }
-
-    @Override
-    public boolean isMovable() {
-        return movable;
     }
 }

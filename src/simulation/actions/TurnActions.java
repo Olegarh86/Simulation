@@ -1,8 +1,8 @@
-package simulation.entity.actions;
+package simulation.actions;
 
 import simulation.entity.creatures.Creature;
 import simulation.entity.Entity;
-import simulation.utils.config.Config;
+import simulation.config.Config;
 import simulation.world.Coordinate;
 import simulation.world.MapOfWorld;
 
@@ -15,7 +15,7 @@ public class TurnActions implements Actions {
     public void execute(MapOfWorld world, Config config) {
         Map<Creature, Coordinate> creaturesCoordinates = new TreeMap<>();
         for (Map.Entry<Coordinate, Entity> entry : world.getCoordinatesEntities().entrySet()) {
-            if (entry.getValue().isMovable()) {
+            if (entry.getValue() instanceof Creature) {
                 creaturesCoordinates.put((Creature) entry.getValue(), entry.getKey());
             }
         }

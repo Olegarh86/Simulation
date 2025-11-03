@@ -1,13 +1,13 @@
 package simulation;
 
-import simulation.entity.actions.*;
-import simulation.utils.config.Config;
-import simulation.utils.config.ConfigFactory;
-import simulation.utils.config.FactoryConfigFactories;
-import simulation.utils.io.ConsoleInput;
-import simulation.utils.io.ConsoleOutput;
-import simulation.utils.io.Input;
-import simulation.utils.io.Output;
+import simulation.actions.*;
+import simulation.config.Config;
+import simulation.config.ConfigFactory;
+import simulation.config.FactoryConfigFactories;
+import simulation.io.ConsoleInput;
+import simulation.io.ConsoleOutput;
+import simulation.io.Input;
+import simulation.io.Output;
 import simulation.world.MapOfWorld;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package simulation.entity.creatures;
 
 import simulation.entity.Entity;
-import simulation.utils.config.Config;
+import simulation.config.Config;
 import simulation.world.BFSPathFinder;
 import simulation.world.Coordinate;
 import simulation.world.MapOfWorld;

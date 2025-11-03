@@ -3,10 +3,7 @@ package simulation.entity.factories;
 import simulation.entity.Entity;
 import simulation.entity.Grass;
 import simulation.world.MapOfWorld;
-import simulation.utils.config.Config;
-
-import java.util.HashSet;
-import java.util.Set;
+import simulation.config.Config;
 
 public class GrassFactory implements EntityFactory {
 

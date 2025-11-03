@@ -12,7 +12,6 @@ import java.util.List;
 public class Predator extends Creature {
     private static final Class<? extends Entity>  TARGET = Herbivore.class;
     private static final List<Class<? extends Entity>> OBSTACLES = List.of(Rock.class, Tree.class, Grass.class, Predator.class);
-    private static final boolean movable = true;
     private final int attackPower;
 
     public Predator(int speed, int hp, int attackPower) {
@@ -39,11 +38,6 @@ public class Predator extends Creature {
         if (target.isDied()) {
             world.moveCreature(predator, startCoordinate, newCoordinate);
         }
-    }
-
-    @Override
-    public boolean isMovable() {
-        return movable;
     }
 
     protected int getAttackPower() {

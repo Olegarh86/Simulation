@@ -1,4 +1,4 @@
-package simulation.entity.actions;
+package simulation.actions;
 
 import simulation.entity.Entity;
 import simulation.entity.Grass;
@@ -7,7 +7,7 @@ import simulation.entity.Tree;
 import simulation.entity.creatures.Herbivore;
 import simulation.entity.creatures.Predator;
 import simulation.entity.factories.FactoryEntityFactories;
-import simulation.utils.config.Config;
+import simulation.config.Config;
 import simulation.world.MapOfWorld;
 
 import java.util.List;

@@ -1,7 +1,7 @@
-package simulation.entity.actions;
+package simulation.actions;
 
 import simulation.entity.Entity;
-import simulation.utils.config.Config;
+import simulation.config.Config;
 import simulation.world.Coordinate;
 import simulation.world.MapOfWorld;
 

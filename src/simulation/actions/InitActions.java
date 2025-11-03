@@ -1,8 +1,8 @@
-package simulation.entity.actions;
+package simulation.actions;
 
 import simulation.entity.factories.*;
 import simulation.world.MapOfWorld;
-import simulation.utils.config.Config;
+import simulation.config.Config;
 
 import java.util.List;
 

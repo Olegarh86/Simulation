@@ -1,9 +1,9 @@
 package simulation;
 
-import simulation.entity.actions.Actions;
-import simulation.utils.io.Input;
+import simulation.actions.Actions;
+import simulation.io.Input;
 import simulation.world.MapOfWorld;
-import simulation.utils.config.Config;
+import simulation.config.Config;
 
 import java.util.List;
 

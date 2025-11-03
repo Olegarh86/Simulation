@@ -1,4 +1,4 @@
-package simulation.utils.config;
+package simulation.config;
 
 public class DefaultConfigFactory implements ConfigFactory {
     public final static int numberOfColumns = 10;

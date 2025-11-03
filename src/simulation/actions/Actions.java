@@ -1,6 +1,6 @@
-package simulation.entity.actions;
+package simulation.actions;
 
-import simulation.utils.config.Config;
+import simulation.config.Config;
 import simulation.world.MapOfWorld;
 
 public interface Actions {

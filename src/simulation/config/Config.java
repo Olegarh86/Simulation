@@ -1,4 +1,4 @@
-package simulation.utils.config;
+package simulation.config;
 
 public class Config {
     public int numberOfColumns;

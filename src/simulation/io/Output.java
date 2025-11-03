@@ -1,4 +1,4 @@
-package simulation.utils.io;
+package simulation.io;
 
 public interface Output {
     void printGreetings();

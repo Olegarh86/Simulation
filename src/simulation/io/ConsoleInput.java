@@ -1,4 +1,4 @@
-package simulation.utils.io;
+package simulation.io;
 
 import java.util.Scanner;
 

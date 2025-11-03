@@ -1,8 +1,7 @@
-package simulation.utils.io.renderer;
+package simulation.io.renderer;
 
-import simulation.entity.Entity;
 import simulation.world.MapOfWorld;
-import simulation.utils.config.Config;
+import simulation.config.Config;
 
 public interface Renderer {
     void draw(Config config, MapOfWorld world);
