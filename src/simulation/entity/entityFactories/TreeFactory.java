@@ -2,7 +2,6 @@ package simulation.entity.entityFactories;
 
 import simulation.entity.Entity;
 import simulation.entity.Tree;
-import simulation.world.MapOfWorld;
 import simulation.config.Config;
 
 public class TreeFactory implements EntityFactory {

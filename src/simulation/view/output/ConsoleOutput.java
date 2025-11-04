@@ -23,7 +23,7 @@ public class ConsoleOutput implements Output{
 
     @Override
     public void printMessageControls() {
-        System.out.println("Press 'Enter + Space' - to stop the simulation, press any key to pause simulation, press key '1' - for resume the infinite simulation," +
+        System.out.println("Press 'Enter + Space' - to stop this simulation, press any key to pause simulation, press key '1' - for resume the infinite simulation," +
                 " press key 'Enter' - so that everyone makes one move");
     }
 
@@ -65,7 +65,7 @@ public class ConsoleOutput implements Output{
         for (int i = 0; i < configDefault.length(); i++) {
             System.out.print(configDefault.charAt(i));
             try {
-                Thread.sleep(2);
+                Thread.sleep(40);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

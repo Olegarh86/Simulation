@@ -1,8 +1,6 @@
 package simulation.entity.creatures;
 
 import simulation.entity.Entity;
-import simulation.config.Config;
-import simulation.entity.Grass;
 import simulation.world.pathFinder.BFSPathFinder;
 import simulation.world.Coordinate;
 import simulation.world.MapOfWorld;
@@ -10,7 +8,7 @@ import simulation.world.pathFinder.PathFinder;
 
 import java.util.List;
 
-public abstract class Creature extends Entity implements Comparable<Creature> {
+public abstract class Creature extends Entity {
     private final int speed;
     private int hp;
 
@@ -87,16 +85,5 @@ public abstract class Creature extends Entity implements Comparable<Creature> {
             return wayToTarget.get(this.getSpeed());
         }
         return wayToTarget.getLast();
-    }
-
-    @Override
-    public int compareTo(Creature o) {
-        if (this.getClass().equals(Herbivore.class) && o.getClass().equals(Predator.class)) {
-            return -1;
-        }
-        if (this.getClass().equals(Predator.class) && o.getClass().equals(Herbivore.class)) {
-            return 1;
-        }
-        return Integer.compare(this.hashCode(), o.hashCode());
     }
 }

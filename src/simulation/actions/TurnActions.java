@@ -6,14 +6,14 @@ import simulation.config.Config;
 import simulation.world.Coordinate;
 import simulation.world.MapOfWorld;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class TurnActions implements Actions {
 
     @Override
     public void execute(MapOfWorld world, Config config) {
-        Map<Creature, Coordinate> creaturesCoordinates = new TreeMap<>();
+        Map<Creature, Coordinate> creaturesCoordinates = new HashMap<>();
         for (Map.Entry<Coordinate, Entity> entry : world.getCoordinatesEntities().entrySet()) {
             if (entry.getValue() instanceof Creature) {
                 creaturesCoordinates.put((Creature) entry.getValue(), entry.getKey());

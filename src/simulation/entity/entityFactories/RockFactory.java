@@ -2,7 +2,6 @@ package simulation.entity.entityFactories;
 
 import simulation.entity.Entity;
 import simulation.entity.Rock;
-import simulation.world.MapOfWorld;
 import simulation.config.Config;
 
 public class RockFactory implements EntityFactory {
