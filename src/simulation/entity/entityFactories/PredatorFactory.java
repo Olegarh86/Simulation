@@ -8,7 +8,7 @@ import simulation.config.Config;
 public class PredatorFactory implements EntityFactory {
 
     @Override
-    public Entity create(MapOfWorld map, Config config) {
+    public Entity create(Config config) {
         return new Predator(config.predatorsSpeed, config.predatorsHp, config.predatorsAttackPower);
     }
 }

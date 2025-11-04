@@ -10,7 +10,7 @@ import simulation.world.MapOfWorld;
 import java.util.List;
 
 public class Predator extends Creature {
-    private static final Class<? extends Entity>  TARGET = Herbivore.class;
+    private static final Class<? extends Entity> TARGET = Herbivore.class;
     private static final List<Class<? extends Entity>> OBSTACLES = List.of(Rock.class, Tree.class, Grass.class, Predator.class);
     private final int attackPower;
 
@@ -30,13 +30,13 @@ public class Predator extends Creature {
     }
 
     @Override
-    protected void attackTarget(MapOfWorld world, Creature predator, Coordinate startCoordinate, Coordinate newCoordinate) {
+    protected void attackTarget(MapOfWorld world, Coordinate startCoordinate, Coordinate newCoordinate) {
         Creature target = (Creature) world.getEntity(newCoordinate).orElseThrow();
-        predator.incrementHp(Math.min(target.getHp(), predator.getAttackPower()));
-        target.decrementHp(predator.getAttackPower());
+        this.incrementHp(Math.min(target.getHp(), this.getAttackPower()));
+        target.decrementHp(this.getAttackPower());
 
         if (target.isDied()) {
-            world.moveCreature(predator, startCoordinate, newCoordinate);
+            world.moveCreature(this, startCoordinate, newCoordinate);
         }
     }
 

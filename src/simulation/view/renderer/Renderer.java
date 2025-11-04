@@ -4,6 +4,6 @@ import simulation.world.MapOfWorld;
 import simulation.config.Config;
 
 public interface Renderer {
-    void draw(Config config, MapOfWorld world);
+    void draw(MapOfWorld world, Config config);
     String getSprite (Object entity);
 }

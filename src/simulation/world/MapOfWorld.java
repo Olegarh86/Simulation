@@ -19,32 +19,41 @@ public class MapOfWorld {
         return new HashMap<>(coordinatesEntities);
     }
 
-    public void coordinateValidation(Coordinate coordinate) { //TODO new class and delete config from this class
-        if (coordinate.line() < config.numberOfColumns && coordinate.column() < config.numberOfLines) {
-            return;
-        }
-        throw new RuntimeException(ERROR_COORDINATE_NOT_VALID);
+    public boolean coordinateIsValid(Coordinate coordinate) {
+        return coordinate.line() >= 0 && coordinate.line() < config.numberOfColumns &&
+                coordinate.column() >= 0 && coordinate.column() + 1 <= config.numberOfLines;
     }
 
     public void setEntity(Coordinate coordinate, Entity entity) {
-        coordinateValidation(coordinate);
-        coordinatesEntities.put(coordinate, entity);
+        if(coordinateIsValid(coordinate)) {
+            coordinatesEntities.put(coordinate, entity);
+        } else {
+            throw new RuntimeException(ERROR_COORDINATE_NOT_VALID);
+        }
     }
 
     public Optional<Entity> getEntity(Coordinate coordinate) {
-        coordinateValidation(coordinate);
-        return Optional.ofNullable(coordinatesEntities.get(coordinate));
+        if(coordinateIsValid(coordinate)) {
+            return Optional.ofNullable(coordinatesEntities.get(coordinate));
+        } else {
+            throw new RuntimeException(ERROR_COORDINATE_NOT_VALID);
+        }
     }
 
     public void deleteEntity(Coordinate coordinate) {
-        coordinateValidation(coordinate);
-        coordinatesEntities.remove(coordinate);
+        if(coordinateIsValid(coordinate)) {
+            coordinatesEntities.remove(coordinate);
+        } else {
+            throw new RuntimeException(ERROR_COORDINATE_NOT_VALID);
+        }
     }
 
     public void moveCreature(Creature currentCreature, Coordinate startCoordinate, Coordinate newCoordinate) {
-        coordinateValidation(startCoordinate);
-        coordinateValidation(newCoordinate);
-        coordinatesEntities.put(newCoordinate, currentCreature);
-        coordinatesEntities.remove(startCoordinate);
+        if(coordinateIsValid(startCoordinate) && coordinateIsValid(newCoordinate)) {
+            coordinatesEntities.put(newCoordinate, currentCreature);
+            coordinatesEntities.remove(startCoordinate);
+        } else {
+            throw new RuntimeException(ERROR_COORDINATE_NOT_VALID);
+        }
     }
 }

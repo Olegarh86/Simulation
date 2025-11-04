@@ -19,14 +19,14 @@ public class TurnActions implements Actions {
                 creaturesCoordinates.put((Creature) entry.getValue(), entry.getKey());
             }
         }
-        allCreaturesMove(world, config, creaturesCoordinates);
+        allCreaturesMove(world, creaturesCoordinates);
     }
 
-    private void allCreaturesMove(MapOfWorld world, Config config, Map<Creature, Coordinate> creaturesCoordinates) {
+    private void allCreaturesMove(MapOfWorld world, Map<Creature, Coordinate> creaturesCoordinates) {
         for (Map.Entry<Creature, Coordinate> entry : creaturesCoordinates.entrySet()) {
             Coordinate startCoordinate = entry.getValue();
             Creature creature = entry.getKey();
-            creature.makeMove(world, config, creature, startCoordinate);
+            creature.makeMove(world, startCoordinate);
         }
     }
 }

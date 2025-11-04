@@ -1,7 +1,6 @@
 package simulation.world.pathFinder;
 
 import simulation.entity.Entity;
-import simulation.config.Config;
 import simulation.world.Coordinate;
 import simulation.world.MapOfWorld;
 
@@ -10,11 +9,6 @@ import java.util.*;
 import static simulation.world.Coordinate.getCoordinate;
 
 public class BFSPathFinder implements PathFinder {
-    private final Config config;
-
-    public BFSPathFinder(Config config) {
-        this.config = config;
-    }
 
     @Override
     public List<Coordinate> findWayToTarget(MapOfWorld map, Class<? extends Entity> target, List<Class<? extends Entity>> obstacles, Coordinate startCoordinate) {
@@ -60,7 +54,7 @@ public class BFSPathFinder implements PathFinder {
     private List<Coordinate> findAllCellsAvailableForMovement(MapOfWorld world, List<Class<? extends Entity>> obstacles, Coordinate startCoordinate) {
         List<Coordinate> allCellsAvailableForMove = new ArrayList<>();
         for (Coordinate coordinate : findAllShifts(startCoordinate)) {
-            if (isValidCoordinate(coordinate) && cellIsAvailableForMove(world, obstacles, coordinate)) {
+            if (world.coordinateIsValid(coordinate) && cellIsAvailableForMove(world, obstacles, coordinate)) {
                 allCellsAvailableForMove.add(coordinate);
             }
         }
@@ -79,11 +73,6 @@ public class BFSPathFinder implements PathFinder {
         allShifts.add(getCoordinate(startCoordinate.line(), startCoordinate.column() - 1));
         allShifts.add(getCoordinate(startCoordinate.line(), startCoordinate.column() + 1));
         return allShifts;
-    }
-
-    private boolean isValidCoordinate(Coordinate tempCoordinate) {
-        return tempCoordinate.line() >= 0 && tempCoordinate.line() < config.numberOfColumns &&
-                tempCoordinate.column() >= 0 && tempCoordinate.column() + 1 <= config.numberOfLines;
     }
 
     private boolean targetIsAvailable(Coordinate startCoordinate, Coordinate targetCoordinate) {

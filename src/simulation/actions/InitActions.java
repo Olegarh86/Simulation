@@ -10,22 +10,22 @@ public class InitActions implements Actions {
 
     @Override
     public void execute(MapOfWorld world, Config config) {
-        List<Actions> actions = getActions(world, config);
+        List<Actions> actions = getActions(config);
         for(Actions action :  actions) {
             action.execute(world, config);
         }
     }
 
-    private static List<Actions> getActions(MapOfWorld world, Config config) {
-        SpawnAction rockSpawnAction = new SpawnAction(() -> new RockFactory().create(world, config),
+    private static List<Actions> getActions(Config config) {
+        SpawnAction rockSpawnAction = new SpawnAction(() -> new RockFactory().create(config),
                 config.numberOfRocks);
-        SpawnAction treeSpawnAction = new SpawnAction(() -> new TreeFactory().create(world, config),
+        SpawnAction treeSpawnAction = new SpawnAction(() -> new TreeFactory().create(config),
                 config.numberOfTrees);
-        SpawnAction herbivoreSpawnAction = new SpawnAction(() -> new HerbivoreFactory().create(world, config),
+        SpawnAction herbivoreSpawnAction = new SpawnAction(() -> new HerbivoreFactory().create(config),
                 config.numberOfHerbivores);
-        SpawnAction predatorSpawnAction = new SpawnAction(() -> new PredatorFactory().create(world, config),
+        SpawnAction predatorSpawnAction = new SpawnAction(() -> new PredatorFactory().create(config),
                 config.numberOfPredators);
-        SpawnAction grassSpawnAction = new SpawnAction(() -> new GrassFactory().create(world, config),
+        SpawnAction grassSpawnAction = new SpawnAction(() -> new GrassFactory().create(config),
                 config.numberOfGrasses);
         return List.of(rockSpawnAction, treeSpawnAction, grassSpawnAction, herbivoreSpawnAction, predatorSpawnAction);
     }

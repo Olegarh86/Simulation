@@ -2,6 +2,7 @@ package simulation.entity.creatures;
 
 import simulation.entity.Entity;
 import simulation.config.Config;
+import simulation.entity.Grass;
 import simulation.world.pathFinder.BFSPathFinder;
 import simulation.world.Coordinate;
 import simulation.world.MapOfWorld;
@@ -18,13 +19,41 @@ public abstract class Creature extends Entity implements Comparable<Creature> {
         this.hp = hp;
     }
 
+    public void makeMove(MapOfWorld world, Coordinate startCoordinate) {
+        PathFinder pathFinder = new BFSPathFinder();
+        List<Coordinate> wayToTarget = pathFinder.findWayToTarget(world, this.getTarget(), this.getObstacles(), startCoordinate);
+        Coordinate newCoordinate = selectCoordinateForMoveWithCreatureSpeed(wayToTarget, startCoordinate);
+
+        if (newCoordinate.equals(startCoordinate)) {
+            this.decrementHp();
+
+            if (this.isDied()) {
+                world.deleteEntity(startCoordinate);
+            }
+            return;
+        }
+
+        if (world.getEntity(newCoordinate).isPresent() && this.getTarget().equals(world.getEntity(newCoordinate).get().getClass())) {
+            this.attackTarget(world, startCoordinate, newCoordinate);
+        } else {
+            world.moveCreature(this, startCoordinate, newCoordinate);
+            this.decrementHp();
+
+            if (this.isDied()) {
+                world.deleteEntity(newCoordinate);
+            }
+        }
+    }
+
     protected abstract Class<? extends Entity> getTarget();
 
     protected abstract List<Class<? extends Entity>> getObstacles();
 
-    protected abstract void attackTarget(MapOfWorld world, Creature creature, Coordinate startCoordinate, Coordinate newCoordinate);
+    protected abstract void attackTarget(MapOfWorld world, Coordinate startCoordinate, Coordinate newCoordinate);
 
-    protected abstract int getAttackPower();
+    protected boolean isDied() {
+        return this.getHp() < 1;
+    }
 
     protected int getHp() {
         return hp;
@@ -50,44 +79,14 @@ public abstract class Creature extends Entity implements Comparable<Creature> {
         return speed;
     }
 
-    public void makeMove(MapOfWorld world, Config config, Creature currentCreature, Coordinate startCoordinate) {
-        PathFinder pathFinder = new BFSPathFinder(config);
-        List<Coordinate> wayToTarget = pathFinder.findWayToTarget(world, currentCreature.getTarget(), currentCreature.getObstacles(), startCoordinate);
-        Coordinate newCoordinate = selectCoordinateForMoveWithCreatureSpeed(currentCreature, wayToTarget, startCoordinate);
-
-        if (newCoordinate.equals(startCoordinate)) {
-            currentCreature.decrementHp();
-
-            if (currentCreature.isDied()) {
-                world.deleteEntity(startCoordinate);
-            }
-            return;
-        }
-
-        if (world.getEntity(newCoordinate).isPresent() && currentCreature.getTarget().equals(world.getEntity(newCoordinate).get().getClass())) {
-            currentCreature.attackTarget(world, currentCreature, startCoordinate, newCoordinate);
-        } else {
-            world.moveCreature(currentCreature, startCoordinate, newCoordinate);
-            currentCreature.decrementHp();
-
-            if (currentCreature.isDied()) {
-                world.deleteEntity(newCoordinate);
-            }
-        }
-    }
-
-    private Coordinate selectCoordinateForMoveWithCreatureSpeed(Creature currentCreature, List<Coordinate> wayToTarget, Coordinate startCoordinate) {
+    private Coordinate selectCoordinateForMoveWithCreatureSpeed(List<Coordinate> wayToTarget, Coordinate startCoordinate) {
         if (wayToTarget.isEmpty()) {
             return startCoordinate;
         }
-        if (wayToTarget.size() > currentCreature.getSpeed()) {
-            return wayToTarget.get(currentCreature.getSpeed());
+        if (wayToTarget.size() > this.getSpeed()) {
+            return wayToTarget.get(this.getSpeed());
         }
         return wayToTarget.getLast();
-    }
-
-    protected boolean isDied() {
-        return this.getHp() < 1;
     }
 
     @Override

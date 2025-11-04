@@ -15,7 +15,7 @@ public class DefaultConfigFactory implements ConfigFactory {
     public final static int predatorsHp = 10;
     public final static int predatorsSpeed = 1;
     public final static int predatorsAttackPower = 5;
-    public final static int DELAY_BETWEEN_MOVES_IN_MILLISECONDS = 100;
+    public final static int DELAY_BETWEEN_MOVES_IN_MILLISECONDS = 500;
 
     protected DefaultConfigFactory() {
     }

@@ -8,7 +8,7 @@ public class FactoryConfigFactories {
     private final static String DEFAULT_CONFIG = "1";
     private final static String USER_CONFIG = "2";
     private final static String ERROR_CHANGE_CONFIG_FACTORY = "Incorrect symbol! Please, enter symbol for change " +
-            "configuration of the world: 1 - for default configuration or 2 - for manual configuration";
+            "configuration of the world: '1' - for default configuration or '2' - for manual configuration";
 
     public ConfigFactory getConfigFactory(Input consoleInput, Output consoleOutput) {
         configFactory = null;

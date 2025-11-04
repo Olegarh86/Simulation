@@ -25,7 +25,7 @@ public class BaseSimulationRenderer implements Renderer {
     }
 
     @Override
-    public void draw(Config config, MapOfWorld world) {
+    public void draw(MapOfWorld world, Config config) {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < config.numberOfLines; i++) {
             for (int j = 0; j < config.numberOfColumns; j++) {

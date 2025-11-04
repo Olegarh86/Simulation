@@ -29,7 +29,7 @@ public class ReSpawnActions implements Actions {
             }
             if (count < 1) {
                 FactoryEntityFactories factoryController = new FactoryEntityFactories(classEntity, config);
-                SpawnAction spawnAction = new SpawnAction(() -> factoryController.entityFactory.create(world, config),
+                SpawnAction spawnAction = new SpawnAction(() -> factoryController.entityFactory.create(config),
                         factoryController.amount);
                 spawnAction.execute(world, config);
             }

@@ -8,7 +8,7 @@ import simulation.config.Config;
 public class TreeFactory implements EntityFactory {
 
     @Override
-    public Entity create(MapOfWorld map, Config config) {
+    public Entity create(Config config) {
         return new Tree();
     }
 }

@@ -5,7 +5,7 @@ import simulation.world.MapOfWorld;
 import simulation.config.Config;
 
 public interface EntityFactory {
-    Entity create(MapOfWorld map, Config config);
+    Entity create(Config config);
 }
 
 

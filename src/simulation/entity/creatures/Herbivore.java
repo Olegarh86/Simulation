@@ -10,7 +10,7 @@ import simulation.world.MapOfWorld;
 import java.util.List;
 
 public class Herbivore extends Creature{
-    private static final Class<? extends Entity>  TARGET = Grass.class;
+    private static final Class<? extends Entity> TARGET = Grass.class;
     private static final List<Class<? extends Entity>> OBSTACLES = List.of(Rock.class, Tree.class, Herbivore.class, Predator.class);
 
     public Herbivore(int speed, int hp) {
@@ -28,13 +28,8 @@ public class Herbivore extends Creature{
     }
 
     @Override
-    protected void attackTarget(MapOfWorld world, Creature herbivore, Coordinate startCoordinate, Coordinate newCoordinate) {
-        world.moveCreature(herbivore, startCoordinate, newCoordinate);
-        herbivore.incrementHp();
-    }
-
-    @Override
-    protected int getAttackPower() {
-        return 0;
+    protected void attackTarget(MapOfWorld world, Coordinate startCoordinate, Coordinate newCoordinate) {
+        world.moveCreature(this, startCoordinate, newCoordinate);
+        this.incrementHp();
     }
 }

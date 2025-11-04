@@ -15,7 +15,7 @@ public class OutputActions implements Actions{
     @Override
     public void execute(MapOfWorld world, Config config) {
         output.printCount(Simulation.countOfMoves++);
-        renderer.draw(config, world);
+        renderer.draw(world, config);
         output.printMessageControls();
     }
 }
