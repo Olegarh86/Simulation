@@ -3,7 +3,7 @@ package simulation.entity.creatures;
 import simulation.entity.Entity;
 import simulation.world.pathFinder.BFSPathFinder;
 import simulation.world.Coordinate;
-import simulation.world.MapOfWorld;
+import simulation.world.WorldMap;
 import simulation.world.pathFinder.PathFinder;
 
 import java.util.List;
@@ -17,9 +17,9 @@ public abstract class Creature extends Entity {
         this.hp = hp;
     }
 
-    public void makeMove(MapOfWorld world, Coordinate startCoordinate) {
+    public void makeMove(WorldMap world, Coordinate startCoordinate) {
         PathFinder pathFinder = new BFSPathFinder();
-        List<Coordinate> wayToTarget = pathFinder.findWayToTarget(world, this.getTarget(), this.getObstacles(), startCoordinate);
+        List<Coordinate> wayToTarget = pathFinder.find(world, this.getTarget(), this.getObstacles(), startCoordinate);
         Coordinate newCoordinate = selectCoordinateForMoveWithCreatureSpeed(wayToTarget, startCoordinate);
 
         if (newCoordinate.equals(startCoordinate)) {
@@ -34,7 +34,7 @@ public abstract class Creature extends Entity {
         if (world.getEntity(newCoordinate).isPresent() && this.getTarget().equals(world.getEntity(newCoordinate).get().getClass())) {
             this.attackTarget(world, startCoordinate, newCoordinate);
         } else {
-            world.moveCreature(this, startCoordinate, newCoordinate);
+            moveCreature(world, startCoordinate, newCoordinate);
             this.decrementHp();
 
             if (this.isDied()) {
@@ -43,11 +43,16 @@ public abstract class Creature extends Entity {
         }
     }
 
+    public void moveCreature(WorldMap world,  Coordinate startCoordinate, Coordinate newCoordinate) {
+        world.setEntity(newCoordinate, this);
+        world.deleteEntity(startCoordinate);
+    }
+
     protected abstract Class<? extends Entity> getTarget();
 
     protected abstract List<Class<? extends Entity>> getObstacles();
 
-    protected abstract void attackTarget(MapOfWorld world, Coordinate startCoordinate, Coordinate newCoordinate);
+    protected abstract void attackTarget(WorldMap world, Coordinate startCoordinate, Coordinate newCoordinate);
 
     protected boolean isDied() {
         return this.getHp() < 1;

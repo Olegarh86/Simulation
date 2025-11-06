@@ -1,8 +1,8 @@
 package simulation.config;
 
 public class Config {
-    public int numberOfColumns;
-    public int numberOfLines;
+    public int gameMapWidth;
+    public int gameMapHeight;
     public int numberOfRocks;
     public int numberOfTrees;
     public int numberOfGrasses;

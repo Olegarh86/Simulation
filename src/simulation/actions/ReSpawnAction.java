@@ -8,15 +8,15 @@ import simulation.entity.creatures.Herbivore;
 import simulation.entity.creatures.Predator;
 import simulation.entity.entityFactories.FactoryEntityFactories;
 import simulation.config.Config;
-import simulation.world.MapOfWorld;
+import simulation.world.WorldMap;
 
 import java.util.List;
 
-public class ReSpawnActions implements Actions {
+public class ReSpawnAction implements Action {
     private final static List<Class<? extends Entity>> allClasses = List.of(Rock.class, Tree.class, Grass.class, Herbivore.class, Predator.class);
 
     @Override
-    public void execute(MapOfWorld world, Config config) {
+    public void execute(WorldMap world, Config config) {
         for (Class<? extends Entity> classEntity : allClasses) {
             int count = 0;
             for (Entity entity : world.getCoordinatesEntities().values()) {
@@ -27,6 +27,7 @@ public class ReSpawnActions implements Actions {
                     break;
                 }
             }
+
             if (count < 1) {
                 FactoryEntityFactories factoryController = new FactoryEntityFactories(classEntity, config);
                 SpawnAction spawnAction = new SpawnAction(() -> factoryController.entityFactory.create(config),

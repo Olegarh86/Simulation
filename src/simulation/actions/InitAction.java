@@ -1,22 +1,22 @@
 package simulation.actions;
 
 import simulation.entity.entityFactories.*;
-import simulation.world.MapOfWorld;
+import simulation.world.WorldMap;
 import simulation.config.Config;
 
 import java.util.List;
 
-public class InitActions implements Actions {
+public class InitAction implements Action {
 
     @Override
-    public void execute(MapOfWorld world, Config config) {
-        List<Actions> actions = getActions(config);
-        for(Actions action :  actions) {
+    public void execute(WorldMap world, Config config) {
+        List<Action> actions = getActions(config);
+        for(Action action :  actions) {
             action.execute(world, config);
         }
     }
 
-    private static List<Actions> getActions(Config config) {
+    private static List<Action> getActions(Config config) {
         SpawnAction rockSpawnAction = new SpawnAction(() -> new RockFactory().create(config),
                 config.numberOfRocks);
         SpawnAction treeSpawnAction = new SpawnAction(() -> new TreeFactory().create(config),

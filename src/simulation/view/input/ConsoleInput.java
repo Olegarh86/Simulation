@@ -10,7 +10,7 @@ public class ConsoleInput implements Input{
     }
 
     @Override
-    public String readInput() {
+    public String read() {
         return scanner.nextLine();
     }
 }

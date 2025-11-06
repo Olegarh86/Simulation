@@ -5,7 +5,7 @@ import simulation.entity.Grass;
 import simulation.entity.Rock;
 import simulation.entity.Tree;
 import simulation.world.Coordinate;
-import simulation.world.MapOfWorld;
+import simulation.world.WorldMap;
 
 import java.util.List;
 
@@ -28,8 +28,8 @@ public class Herbivore extends Creature{
     }
 
     @Override
-    protected void attackTarget(MapOfWorld world, Coordinate startCoordinate, Coordinate newCoordinate) {
-        world.moveCreature(this, startCoordinate, newCoordinate);
+    protected void attackTarget(WorldMap world, Coordinate startCoordinate, Coordinate newCoordinate) {
+        moveCreature(world, startCoordinate, newCoordinate);
         this.incrementHp();
     }
 }

@@ -3,38 +3,38 @@ package simulation.config.configFactories;
 import simulation.config.Config;
 
 public class DefaultConfigFactory implements ConfigFactory {
-    public final static int numberOfColumns = 10;
-    public final static int numberOfLines = 10;
-    public final static int numberOfRocks = 10;
-    public final static int numberOfTrees = 10;
-    public final static int numberOfGrasses = 15;
-    public final static int numberOfHerbivores = 10;
-    public final static int numberOfPredators = 10;
-    public final static int herbivoresHp = 10;
-    public final static int herbivoresSpeed = 1;
-    public final static int predatorsHp = 10;
-    public final static int predatorsSpeed = 1;
-    public final static int predatorsAttackPower = 5;
+    public final static int GAME_MAP_WIDTH = 10;
+    public final static int GAME_MAP_HEIGHT = 10;
+    public final static int NUMBER_OF_ROCKS = 10;
+    public final static int NUMBER_OF_TREES = 10;
+    public final static int NUMBER_OF_GRASSES = 15;
+    public final static int NUMBER_OF_HERBIVORES = 10;
+    public final static int NUMBER_OF_PREDATORS = 10;
+    public final static int HERBIVORES_HP = 10;
+    public final static int HERBIVORES_SPEED = 1;
+    public final static int PREDATORS_HP = 10;
+    public final static int PREDATORS_SPEED = 1;
+    public final static int PREDATORS_ATTACK_POWER = 5;
     public final static int DELAY_BETWEEN_MOVES_IN_MILLISECONDS = 500;
 
     protected DefaultConfigFactory() {
     }
 
     @Override
-    public Config getConfig() {
+    public Config get() {
         Config config = new Config();
-        config.numberOfColumns = numberOfColumns;
-        config.numberOfLines = numberOfLines;
-        config.numberOfRocks = numberOfRocks;
-        config.numberOfTrees = numberOfTrees;
-        config.numberOfGrasses = numberOfGrasses;
-        config.numberOfHerbivores = numberOfHerbivores;
-        config.numberOfPredators = numberOfPredators;
-        config.herbivoresHp = herbivoresHp;
-        config.herbivoresSpeed = herbivoresSpeed;
-        config.predatorsHp = predatorsHp;
-        config.predatorsSpeed = predatorsSpeed;
-        config.predatorsAttackPower = predatorsAttackPower;
+        config.gameMapWidth = GAME_MAP_WIDTH;
+        config.gameMapHeight = GAME_MAP_HEIGHT;
+        config.numberOfRocks = NUMBER_OF_ROCKS;
+        config.numberOfTrees = NUMBER_OF_TREES;
+        config.numberOfGrasses = NUMBER_OF_GRASSES;
+        config.numberOfHerbivores = NUMBER_OF_HERBIVORES;
+        config.numberOfPredators = NUMBER_OF_PREDATORS;
+        config.herbivoresHp = HERBIVORES_HP;
+        config.herbivoresSpeed = HERBIVORES_SPEED;
+        config.predatorsHp = PREDATORS_HP;
+        config.predatorsSpeed = PREDATORS_SPEED;
+        config.predatorsAttackPower = PREDATORS_ATTACK_POWER;
         config.delayBetweenMovesInMilliseconds = DELAY_BETWEEN_MOVES_IN_MILLISECONDS;
         return config;
     }

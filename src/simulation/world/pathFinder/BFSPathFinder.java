@@ -2,25 +2,30 @@ package simulation.world.pathFinder;
 
 import simulation.entity.Entity;
 import simulation.world.Coordinate;
-import simulation.world.MapOfWorld;
+import simulation.world.WorldMap;
 
 import java.util.*;
-
-import static simulation.world.Coordinate.getCoordinate;
 
 public class BFSPathFinder implements PathFinder {
 
     @Override
-    public List<Coordinate> findWayToTarget(MapOfWorld map, Class<? extends Entity> target, List<Class<? extends Entity>> obstacles, Coordinate startCoordinate) {
+    public List<Coordinate> find(WorldMap map,
+                                 Class<? extends Entity> target,
+                                 List<Class<? extends Entity>> obstacles,
+                                 Coordinate startCoordinate) {
         List<Nodes> allNodes = new ArrayList<>();
         Coordinate targetCoordinate = findTarget(map, target, obstacles, startCoordinate, allNodes);
-        if (targetIsAvailable(startCoordinate, targetCoordinate)) {
+        if (isTargetAvailable(startCoordinate, targetCoordinate)) {
             return routeConstruction(startCoordinate, targetCoordinate, allNodes);
         }
         return List.of();
     }
 
-    private Coordinate findTarget(MapOfWorld map, Class<? extends Entity> target, List<Class<? extends Entity>> obstacles, Coordinate startCoordinate, List<Nodes> allNodes) {
+    private Coordinate findTarget(WorldMap map,
+                                  Class<? extends Entity> target,
+                                  List<Class<? extends Entity>> obstacles,
+                                  Coordinate startCoordinate,
+                                  List<Nodes> allNodes) {
         Queue<Coordinate> queue = new LinkedList<>();
         Set<Coordinate> visited = new HashSet<>();
         Coordinate tempCoordinate = startCoordinate;
@@ -51,31 +56,31 @@ public class BFSPathFinder implements PathFinder {
         return tempCoordinate;
     }
 
-    private List<Coordinate> findAllCellsAvailableForMovement(MapOfWorld world, List<Class<? extends Entity>> obstacles, Coordinate startCoordinate) {
+    private List<Coordinate> findAllCellsAvailableForMovement(WorldMap world, List<Class<? extends Entity>> obstacles, Coordinate startCoordinate) {
         List<Coordinate> allCellsAvailableForMove = new ArrayList<>();
         for (Coordinate coordinate : findAllShifts(startCoordinate)) {
-            if (world.coordinateIsValid(coordinate) && cellIsAvailableForMove(world, obstacles, coordinate)) {
+            if (world.isValidCoordinate(coordinate) && isCellAvailableForMove(world, obstacles, coordinate)) {
                 allCellsAvailableForMove.add(coordinate);
             }
         }
         return allCellsAvailableForMove;
     }
 
-    private boolean cellIsAvailableForMove(MapOfWorld world, List<Class<? extends Entity>> obstacles, Coordinate tempCoordinate) {
+    private boolean isCellAvailableForMove(WorldMap world, List<Class<? extends Entity>> obstacles, Coordinate tempCoordinate) {
         Optional<Entity> cellForMove = world.getEntity(tempCoordinate);
         return cellForMove.map(entity -> !obstacles.contains(entity.getClass())).orElse(true);
     }
 
     private List<Coordinate> findAllShifts(Coordinate startCoordinate) {
         List<Coordinate> allShifts = new ArrayList<>();
-        allShifts.add(getCoordinate(startCoordinate.line() - 1, startCoordinate.column()));
-        allShifts.add(getCoordinate(startCoordinate.line() + 1, startCoordinate.column()));
-        allShifts.add(getCoordinate(startCoordinate.line(), startCoordinate.column() - 1));
-        allShifts.add(getCoordinate(startCoordinate.line(), startCoordinate.column() + 1));
+        allShifts.add(new Coordinate(startCoordinate.row() - 1, startCoordinate.column()));
+        allShifts.add(new Coordinate(startCoordinate.row() + 1, startCoordinate.column()));
+        allShifts.add(new Coordinate(startCoordinate.row(), startCoordinate.column() - 1));
+        allShifts.add(new Coordinate(startCoordinate.row(), startCoordinate.column() + 1));
         return allShifts;
     }
 
-    private boolean targetIsAvailable(Coordinate startCoordinate, Coordinate targetCoordinate) {
+    private boolean isTargetAvailable(Coordinate startCoordinate, Coordinate targetCoordinate) {
         return !targetCoordinate.equals(startCoordinate);
     }
 

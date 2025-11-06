@@ -6,8 +6,8 @@ import simulation.view.output.Output;
 
 public class UserConfigFactory implements ConfigFactory {
     private final static String ERROR = "Incorrect symbol, please, try again";
-    private final static String HOW_MANY_COLUMNS = "How many columns will there be? From %d to %d ";
-    private final static String HOW_MANY_LINES = "How many lines will there be? From %d to %d ";
+    private final static String GAME_MAP_WIDTH = "What width of the world do you want? From %d to %d ";
+    private final static String GAME_MAP_HEIGHT = "What height of the world do you want? From %d to %d ";
     private final static String HOW_MANY_ROCKS = "How many rocks will there be? From %d to %d ";
     private final static String HOW_MANY_TREES = "How many trees will there be? From %d to %d ";
     private final static String HOW_MUCH_GRASS = "How much grasses will there be? From %d to %d ";
@@ -21,8 +21,8 @@ public class UserConfigFactory implements ConfigFactory {
     private final static String DELAY = "What is the delay between moves? From %d to %d ";
     private final static int MIN = 0;
     private final static int MAX = 30;
-    private final static int MIN_COLUMNS_AND_LINES = 1;
-    private final static int MAX_COLUMNS_AND_LINES = 68;
+    private final static int MIN_COLUMNS_AND_ROWS = 1;
+    private final static int MAX_COLUMNS_AND_ROWS = 68;
     private final static int MIN_DELAY = 1;
     private final static int MAX_VALUE = Integer.MAX_VALUE;
     private final Output consoleOutput;
@@ -34,11 +34,11 @@ public class UserConfigFactory implements ConfigFactory {
     }
 
     @Override
-    public Config getConfig() {
+    public Config get() {
         Config config = new Config();
         consoleOutput.printMessageChangeConfig();
-        config.numberOfLines = input(HOW_MANY_COLUMNS, MIN_COLUMNS_AND_LINES, MAX_COLUMNS_AND_LINES);
-        config.numberOfColumns = input(HOW_MANY_LINES, MIN_COLUMNS_AND_LINES, MAX_COLUMNS_AND_LINES);
+        config.gameMapHeight = input(GAME_MAP_HEIGHT, MIN_COLUMNS_AND_ROWS, MAX_COLUMNS_AND_ROWS);
+        config.gameMapWidth = input(GAME_MAP_WIDTH, MIN_COLUMNS_AND_ROWS, MAX_COLUMNS_AND_ROWS);
         config.numberOfRocks = input(HOW_MANY_ROCKS, MIN, MAX);
         config.numberOfTrees = input(HOW_MANY_TREES, MIN, MAX);
         config.numberOfGrasses = input(HOW_MUCH_GRASS, MIN, MAX);
@@ -58,7 +58,7 @@ public class UserConfigFactory implements ConfigFactory {
         int value;
         while (true) {
             consoleOutput.printMessage(message.formatted(min, max));
-            inputSymbol = consoleInput.readInput();
+            inputSymbol = consoleInput.read();
             if (isInteger(inputSymbol)) {
                 value = Integer.parseInt(inputSymbol);
 

@@ -1,8 +1,14 @@
 package simulation.view.output;
 
 import simulation.config.configFactories.DefaultConfigFactory;
+import simulation.view.input.Input;
 
 public class ConsoleOutput implements Output{
+    private final Input input;
+
+    public ConsoleOutput(Input input) {
+        this.input = input;
+    }
 
     @Override
     public void printMessage(String message) {
@@ -36,8 +42,8 @@ public class ConsoleOutput implements Output{
     public void printDefaultConfigWithDelay() {
         String configDefault = ("""
                         Ok! default configuration:
-                        number of columns: %d
-                        number of lines: %d
+                        width of the world: %d
+                        height of the world: %d
                         number of rocks: %d
                         number of trees: %d
                         number of grasses: %d
@@ -49,26 +55,16 @@ public class ConsoleOutput implements Output{
                         predators speed: %d
                         predators attack power: %d
                         delay between moves: %d milliseconds
-                        start simulation after:
-                        3
-                        2
-                        1
-                        START!
-                        %n%n""".formatted(DefaultConfigFactory.numberOfColumns, DefaultConfigFactory.numberOfLines,
-        DefaultConfigFactory.numberOfRocks, DefaultConfigFactory.numberOfTrees,
-        DefaultConfigFactory.numberOfGrasses, DefaultConfigFactory.numberOfHerbivores,
-        DefaultConfigFactory.numberOfPredators, DefaultConfigFactory.herbivoresHp,
-        DefaultConfigFactory.herbivoresSpeed, DefaultConfigFactory.predatorsHp,
-        DefaultConfigFactory.predatorsSpeed, DefaultConfigFactory.predatorsAttackPower,
+                        
+                        Press 'Enter' to start""".formatted(DefaultConfigFactory.GAME_MAP_WIDTH, DefaultConfigFactory.GAME_MAP_HEIGHT,
+        DefaultConfigFactory.NUMBER_OF_ROCKS, DefaultConfigFactory.NUMBER_OF_TREES,
+        DefaultConfigFactory.NUMBER_OF_GRASSES, DefaultConfigFactory.NUMBER_OF_HERBIVORES,
+        DefaultConfigFactory.NUMBER_OF_PREDATORS, DefaultConfigFactory.HERBIVORES_HP,
+        DefaultConfigFactory.HERBIVORES_SPEED, DefaultConfigFactory.PREDATORS_HP,
+        DefaultConfigFactory.PREDATORS_SPEED, DefaultConfigFactory.PREDATORS_ATTACK_POWER,
         DefaultConfigFactory.DELAY_BETWEEN_MOVES_IN_MILLISECONDS));
 
-        for (int i = 0; i < configDefault.length(); i++) {
-            System.out.print(configDefault.charAt(i));
-            try {
-                Thread.sleep(40);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        System.out.println(configDefault);
+        input.read();
     }
 }

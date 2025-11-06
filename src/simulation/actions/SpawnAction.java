@@ -3,11 +3,12 @@ package simulation.actions;
 import simulation.entity.Entity;
 import simulation.config.Config;
 import simulation.world.Coordinate;
-import simulation.world.MapOfWorld;
+import simulation.world.WorldMap;
 
+import java.util.Random;
 import java.util.function.Supplier;
 
-public class SpawnAction implements Actions{
+public class SpawnAction implements Action {
     private final Supplier<Entity> entitySupplier;
     private final int amount;
 
@@ -17,7 +18,7 @@ public class SpawnAction implements Actions{
     }
 
     @Override
-    public void execute(MapOfWorld world, Config config) {
+    public void execute(WorldMap world, Config config) {
         for (int i = 0; i < amount; i++) {
             Entity entity = entitySupplier.get();
             Coordinate randomCoordinate = chooseEmptyRandomCoordinate(world, config);
@@ -25,11 +26,18 @@ public class SpawnAction implements Actions{
         }
     }
 
-    public Coordinate chooseEmptyRandomCoordinate(MapOfWorld world, Config config) {
-        Coordinate randomCoordinate = Coordinate.getRandomCoordinate(config);
+    public static Coordinate getRandomCoordinate(Config config) {
+        Random random = new Random();
+        int randomRow = random.nextInt(config.gameMapHeight);
+        int randomColumn = random.nextInt(config.gameMapWidth);
+        return new Coordinate(randomRow, randomColumn);
+    }
+
+    public Coordinate chooseEmptyRandomCoordinate(WorldMap world, Config config) {
+        Coordinate randomCoordinate = getRandomCoordinate(config);
 
         while (world.getEntity(randomCoordinate).isPresent()) {
-            randomCoordinate = Coordinate.getRandomCoordinate(config);
+            randomCoordinate = getRandomCoordinate(config);
         }
         return randomCoordinate;
     }

@@ -6,7 +6,7 @@ import simulation.entity.creatures.Predator;
 import simulation.config.Config;
 import simulation.view.output.Output;
 import simulation.world.Coordinate;
-import simulation.world.MapOfWorld;
+import simulation.world.WorldMap;
 
 public class BaseSimulationRenderer implements Renderer {
     private static final String EMPTY_CELL_SPRITE = "\u2B1C";
@@ -25,11 +25,12 @@ public class BaseSimulationRenderer implements Renderer {
     }
 
     @Override
-    public void draw(MapOfWorld world, Config config) {
+    public void draw(WorldMap world, Config config) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < config.numberOfLines; i++) {
-            for (int j = 0; j < config.numberOfColumns; j++) {
-                    stringBuilder.append(getSprite(world.getEntity(Coordinate.getCoordinate(i, j)).orElse(null)));
+        for (int i = 0; i < config.gameMapHeight; i++) {
+            for (int j = 0; j < config.gameMapWidth; j++) {
+                Entity entity = world.getEntity(new Coordinate(i, j)).orElse(null);
+                    stringBuilder.append(getSprite(entity));
                     stringBuilder.append(INTERVAL);
             }
             stringBuilder.append("\n");
@@ -37,8 +38,7 @@ public class BaseSimulationRenderer implements Renderer {
         output.printMessage(stringBuilder + "\n");
     }
 
-    @Override
-    public String getSprite (Object entity) {
+    private String getSprite (Entity entity) {
         return switch (entity) {
             case Tree t -> TREE_SPRITE;
             case Rock r -> ROCK_SPRITE;

@@ -4,15 +4,15 @@ import simulation.entity.creatures.Creature;
 import simulation.entity.Entity;
 import simulation.config.Config;
 import simulation.world.Coordinate;
-import simulation.world.MapOfWorld;
+import simulation.world.WorldMap;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class TurnActions implements Actions {
+public class TurnAction implements Action {
 
     @Override
-    public void execute(MapOfWorld world, Config config) {
+    public void execute(WorldMap world, Config config) {
         Map<Creature, Coordinate> creaturesCoordinates = new HashMap<>();
         for (Map.Entry<Coordinate, Entity> entry : world.getCoordinatesEntities().entrySet()) {
             if (entry.getValue() instanceof Creature) {
@@ -22,7 +22,7 @@ public class TurnActions implements Actions {
         allCreaturesMove(world, creaturesCoordinates);
     }
 
-    private void allCreaturesMove(MapOfWorld world, Map<Creature, Coordinate> creaturesCoordinates) {
+    private void allCreaturesMove(WorldMap world, Map<Creature, Coordinate> creaturesCoordinates) {
         for (Map.Entry<Creature, Coordinate> entry : creaturesCoordinates.entrySet()) {
             Coordinate startCoordinate = entry.getValue();
             Creature creature = entry.getKey();

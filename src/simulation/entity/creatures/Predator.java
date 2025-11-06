@@ -5,7 +5,7 @@ import simulation.entity.Grass;
 import simulation.entity.Rock;
 import simulation.entity.Tree;
 import simulation.world.Coordinate;
-import simulation.world.MapOfWorld;
+import simulation.world.WorldMap;
 
 import java.util.List;
 
@@ -30,13 +30,13 @@ public class Predator extends Creature {
     }
 
     @Override
-    protected void attackTarget(MapOfWorld world, Coordinate startCoordinate, Coordinate newCoordinate) {
+    protected void attackTarget(WorldMap world, Coordinate startCoordinate, Coordinate newCoordinate) {
         Creature target = (Creature) world.getEntity(newCoordinate).orElseThrow();
         this.incrementHp(Math.min(target.getHp(), this.getAttackPower()));
         target.decrementHp(this.getAttackPower());
 
         if (target.isDied()) {
-            world.moveCreature(this, startCoordinate, newCoordinate);
+            moveCreature(world, startCoordinate, newCoordinate);
         }
     }
 

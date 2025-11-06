@@ -20,44 +20,24 @@ public class FactoryEntityFactories {
     }
 
     private EntityFactory getEntityFactory(String classEntity) {
-        switch (classEntity) {
-            case ROCK -> {
-                return new RockFactory();
-            }
-            case TREE -> {
-                return new TreeFactory();
-            }
-            case GRASS -> {
-                return new GrassFactory();
-            }
-            case HERBIVORE -> {
-                return new HerbivoreFactory();
-            }
-            case PREDATOR -> {
-                return new PredatorFactory();
-            }
+        return switch (classEntity) {
+            case ROCK -> new RockFactory();
+            case TREE -> new TreeFactory();
+            case GRASS -> new GrassFactory();
+            case HERBIVORE -> new HerbivoreFactory();
+            case PREDATOR -> new PredatorFactory();
             default -> throw new RuntimeException(ERROR);
-        }
+        };
     }
 
     private int getAmount(String classEntity, Config config) {
-        switch (classEntity) {
-            case ROCK -> {
-                return config.numberOfRocks;
-            }
-            case TREE -> {
-                return config.numberOfTrees;
-            }
-            case GRASS -> {
-                return config.numberOfGrasses;
-            }
-            case HERBIVORE -> {
-                return config.numberOfHerbivores;
-            }
-            case PREDATOR -> {
-                return config.numberOfPredators;
-            }
+        return switch (classEntity) {
+            case ROCK -> config.numberOfRocks;
+            case TREE -> config.numberOfTrees;
+            case GRASS -> config.numberOfGrasses;
+            case HERBIVORE -> config.numberOfHerbivores;
+            case PREDATOR -> config.numberOfPredators;
             default -> throw new RuntimeException(ERROR);
-        }
+        };
     }
 }

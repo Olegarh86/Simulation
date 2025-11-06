@@ -1,21 +1,21 @@
 package simulation;
 
-import simulation.actions.Actions;
+import simulation.actions.Action;
 import simulation.view.input.Input;
-import simulation.world.MapOfWorld;
+import simulation.world.WorldMap;
 import simulation.config.Config;
 
 import java.util.List;
 
 public class Simulation {
     public static int countOfMoves;
-    private final MapOfWorld world;
+    private final WorldMap world;
     private final Config config;
     private final Input input;
-    private final List<Actions> initActions;
-    private final List<Actions> turnActions;
+    private final List<Action> initActions;
+    private final List<Action> turnActions;
 
-    public Simulation(Input input, Config config, MapOfWorld world, List<Actions> initActions, List<Actions> turnActions) {
+    public Simulation(Input input, Config config, WorldMap world, List<Action> initActions, List<Action> turnActions) {
         this.input = input;
         this.config = config;
         this.world = world;
@@ -27,7 +27,7 @@ public class Simulation {
         ThreadKeyListener threadKeyListener = new ThreadKeyListener(config, input);
         threadKeyListener.start();
 
-        for (Actions action : initActions) {
+        for (Action action : initActions) {
             action.execute(world, config);
         }
         while (!threadKeyListener.stopSimulation) {
@@ -46,7 +46,7 @@ public class Simulation {
                 }
             }
 
-            for (Actions action : turnActions) {
+            for (Action action : turnActions) {
                 action.execute(world, config);
             }
         }
@@ -70,7 +70,7 @@ public class Simulation {
         @Override
         public void run() {
             while (!stopSimulation) {
-                String answerFromUser = input.readInput();
+                String answerFromUser = input.read();
 
                 switch (answerFromUser) {
                     case resume -> resumeEndlessSimulation();
