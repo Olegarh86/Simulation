@@ -19,7 +19,7 @@ public abstract class Creature extends Entity {
 
     public void makeMove(WorldMap world, Coordinate startCoordinate) {
         PathFinder pathFinder = new BFSPathFinder();
-        List<Coordinate> wayToTarget = pathFinder.find(world, this.getTarget(), this.getObstacles(), startCoordinate);
+        List<Coordinate> wayToTarget = pathFinder.find(world, this.getTarget(), startCoordinate);
         Coordinate newCoordinate = selectCoordinateForMoveWithCreatureSpeed(wayToTarget, startCoordinate);
 
         if (newCoordinate.equals(startCoordinate)) {
@@ -49,8 +49,6 @@ public abstract class Creature extends Entity {
     }
 
     protected abstract Class<? extends Entity> getTarget();
-
-    protected abstract List<Class<? extends Entity>> getObstacles();
 
     protected abstract void attackTarget(WorldMap world, Coordinate startCoordinate, Coordinate newCoordinate);
 

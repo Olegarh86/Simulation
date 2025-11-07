@@ -13,17 +13,17 @@ public class FactoryConfigFactories {
 
     public ConfigFactory getConfigFactory(Input consoleInput, Output consoleOutput) {
         ConfigFactory configFactory = null;
-        consoleOutput.printGreetings();
+        consoleOutput.greeting();
 
         while (configFactory == null) {
             String typeOfConfig = consoleInput.read();
             if (typeOfConfig.equals(DEFAULT_CONFIG)) {
                 configFactory = new DefaultConfigFactory();
-                consoleOutput.printDefaultConfigWithDelay();
+                consoleOutput.defaultConfig();
             } else if (typeOfConfig.equals(USER_CONFIG)) {
                 configFactory = new UserConfigFactory(consoleInput, consoleOutput);
             } else {
-                consoleOutput.printMessage(ERROR_CHANGE_CONFIG_FACTORY);
+                consoleOutput.message(ERROR_CHANGE_CONFIG_FACTORY);
             }
         }
         return configFactory;

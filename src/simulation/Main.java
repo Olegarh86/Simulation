@@ -26,7 +26,7 @@ public class Main {
         Simulation simulation = new Simulation(input, config, world, initActions, turnActions);
         try {
             simulation.startSimulation();
-        } catch (InterruptedException e) {
+        } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
     }

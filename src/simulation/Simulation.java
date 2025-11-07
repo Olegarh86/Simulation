@@ -23,8 +23,8 @@ public class Simulation {
         this.turnActions = turnActions;
     }
 
-    public void startSimulation() throws InterruptedException {
-        ThreadKeyListener threadKeyListener = new ThreadKeyListener(config, input);
+    public void startSimulation() {
+        ThreadKeyListener threadKeyListener = new ThreadKeyListener(config.delayBetweenMovesInMilliseconds, input);
         threadKeyListener.start();
 
         for (Action action : initActions) {
@@ -53,17 +53,17 @@ public class Simulation {
     }
 
     static class ThreadKeyListener extends Thread {
+        protected final Object lock = new Object();
         private static final String resume = "1";
         private static final String oneTurn = "";
         private static final String stop = " ";
+        private final int delayBetweenMovesInMilliseconds;
+        private final Input input;
         volatile boolean pauseSimulation = false;
         volatile boolean stopSimulation = false;
-        final Object lock = new Object();
-        private final Config config;
-        private final Input input;
 
-        public ThreadKeyListener(Config config, Input input) {
-            this.config = config;
+        public ThreadKeyListener(int delayBetweenMovesInMilliseconds, Input input) {
+            this.delayBetweenMovesInMilliseconds = delayBetweenMovesInMilliseconds;
             this.input = input;
         }
 
@@ -84,7 +84,7 @@ public class Simulation {
         private void oneTurn() {
             resumeEndlessSimulation();
             try {
-                Thread.sleep(config.delayBetweenMovesInMilliseconds / 2);
+                Thread.sleep(delayBetweenMovesInMilliseconds / 2);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

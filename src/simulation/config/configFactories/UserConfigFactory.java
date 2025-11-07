@@ -36,7 +36,7 @@ public class UserConfigFactory implements ConfigFactory {
     @Override
     public Config get() {
         Config config = new Config();
-        consoleOutput.printMessageChangeConfig();
+        consoleOutput.changeConfig();
         config.gameMapHeight = input(GAME_MAP_HEIGHT, MIN_COLUMNS_AND_ROWS, MAX_COLUMNS_AND_ROWS);
         config.gameMapWidth = input(GAME_MAP_WIDTH, MIN_COLUMNS_AND_ROWS, MAX_COLUMNS_AND_ROWS);
         config.numberOfRocks = input(HOW_MANY_ROCKS, MIN, MAX);
@@ -57,7 +57,7 @@ public class UserConfigFactory implements ConfigFactory {
         String inputSymbol;
         int value;
         while (true) {
-            consoleOutput.printMessage(message.formatted(min, max));
+            consoleOutput.message(message.formatted(min, max));
             inputSymbol = consoleInput.read();
             if (isInteger(inputSymbol)) {
                 value = Integer.parseInt(inputSymbol);
@@ -66,7 +66,7 @@ public class UserConfigFactory implements ConfigFactory {
                     return value;
                 }
             }
-            consoleOutput.printMessage(ERROR);
+            consoleOutput.message(ERROR);
         }
     }
 

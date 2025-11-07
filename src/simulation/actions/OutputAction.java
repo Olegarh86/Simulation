@@ -18,8 +18,8 @@ public class OutputAction implements Action {
 
     @Override
     public void execute(WorldMap world, Config config) {
-        output.printCount(Simulation.countOfMoves++);
+        output.count(Simulation.countOfMoves++);
         renderer.draw(world, config);
-        output.printMessageControls();
+        output.controls();
     }
 }

@@ -8,6 +8,7 @@ public class Nodes {
     protected Node getHead() {
         return this.head;
     }
+
     protected void addNode(Coordinate coordinate) {
         if (head == null) {
             head = new Node(coordinate, null, null);
@@ -19,8 +20,8 @@ public class Nodes {
         }
         temp.next = new Node(coordinate, temp, null);
     }
-
     static class Node {
+
         private final Coordinate coordinate;
         private Node next;
 

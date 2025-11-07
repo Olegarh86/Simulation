@@ -1,10 +1,10 @@
 package simulation.view.output;
 
 public interface Output {
-    void printGreetings();
-    void printMessageControls();
-    void printMessage(String massage);
-    void printCount(int countOfMoves);
-    void printMessageChangeConfig();
-    void printDefaultConfigWithDelay();
+    void greeting();
+    void controls();
+    void message(String massage);
+    void count(int countOfMoves);
+    void changeConfig();
+    void defaultConfig();
 }

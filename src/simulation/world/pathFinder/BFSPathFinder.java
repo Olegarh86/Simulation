@@ -11,10 +11,9 @@ public class BFSPathFinder implements PathFinder {
     @Override
     public List<Coordinate> find(WorldMap map,
                                  Class<? extends Entity> target,
-                                 List<Class<? extends Entity>> obstacles,
                                  Coordinate startCoordinate) {
         List<Nodes> allNodes = new ArrayList<>();
-        Coordinate targetCoordinate = findTarget(map, target, obstacles, startCoordinate, allNodes);
+        Coordinate targetCoordinate = findTarget(map, target, startCoordinate, allNodes);
         if (isTargetAvailable(startCoordinate, targetCoordinate)) {
             return routeConstruction(startCoordinate, targetCoordinate, allNodes);
         }
@@ -23,7 +22,6 @@ public class BFSPathFinder implements PathFinder {
 
     private Coordinate findTarget(WorldMap map,
                                   Class<? extends Entity> target,
-                                  List<Class<? extends Entity>> obstacles,
                                   Coordinate startCoordinate,
                                   List<Nodes> allNodes) {
         Queue<Coordinate> queue = new LinkedList<>();
@@ -39,7 +37,7 @@ public class BFSPathFinder implements PathFinder {
             nodes.addNode(tempCoordinate);
 
             if (map.getEntity(tempCoordinate).isEmpty() || !target.equals(map.getEntity(tempCoordinate).get().getClass())) {
-                List<Coordinate> cellsAvailableForMove = findAllCellsAvailableForMovement(map, obstacles, tempCoordinate);
+                List<Coordinate> cellsAvailableForMove = findAllCellsAvailableForMovement(target, map, tempCoordinate);
 
                 for (Coordinate nextCoordinate : cellsAvailableForMove) {
 
@@ -56,19 +54,20 @@ public class BFSPathFinder implements PathFinder {
         return tempCoordinate;
     }
 
-    private List<Coordinate> findAllCellsAvailableForMovement(WorldMap world, List<Class<? extends Entity>> obstacles, Coordinate startCoordinate) {
+    private List<Coordinate> findAllCellsAvailableForMovement(Class<? extends Entity> target, WorldMap world,
+                                                              Coordinate startCoordinate) {
         List<Coordinate> allCellsAvailableForMove = new ArrayList<>();
         for (Coordinate coordinate : findAllShifts(startCoordinate)) {
-            if (world.isValidCoordinate(coordinate) && isCellAvailableForMove(world, obstacles, coordinate)) {
+            if (world.isValidCoordinate(coordinate) && isCellAvailableForMove(target, world, coordinate)) {
                 allCellsAvailableForMove.add(coordinate);
             }
         }
         return allCellsAvailableForMove;
     }
 
-    private boolean isCellAvailableForMove(WorldMap world, List<Class<? extends Entity>> obstacles, Coordinate tempCoordinate) {
+    private boolean isCellAvailableForMove(Class<? extends Entity> target, WorldMap world, Coordinate tempCoordinate) {
         Optional<Entity> cellForMove = world.getEntity(tempCoordinate);
-        return cellForMove.map(entity -> !obstacles.contains(entity.getClass())).orElse(true);
+        return cellForMove.map(entity -> entity.getClass().equals(target)).orElse(true);
     }
 
     private List<Coordinate> findAllShifts(Coordinate startCoordinate) {

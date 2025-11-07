@@ -29,13 +29,14 @@ public class BaseSimulationRenderer implements Renderer {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < config.gameMapHeight; i++) {
             for (int j = 0; j < config.gameMapWidth; j++) {
-                Entity entity = world.getEntity(new Coordinate(i, j)).orElse(null);
+                Coordinate coordinate = new Coordinate(i, j);
+                Entity entity = world.getEntity(coordinate).orElse(null);
                     stringBuilder.append(getSprite(entity));
                     stringBuilder.append(INTERVAL);
             }
             stringBuilder.append("\n");
         }
-        output.printMessage(stringBuilder + "\n");
+        output.message(stringBuilder + "\n");
     }
 
     private String getSprite (Entity entity) {

@@ -11,7 +11,7 @@ public class FactoryEntityFactories {
     private final static String PREDATOR = "simulation.entity.creatures.Predator";
     private final static String ERROR = "Factory controller can't create factory for that class";
     public final int amount;
-    public EntityFactory entityFactory;
+    public final EntityFactory entityFactory;
 
 
     public FactoryEntityFactories(Class<? extends Entity> classEntity, Config config) {
